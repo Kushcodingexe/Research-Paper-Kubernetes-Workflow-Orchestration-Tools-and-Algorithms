@@ -1,0 +1,840 @@
+{
+    "metadata": {
+        "name": "resilience-bench-vcpmd",
+        "generateName": "resilience-bench-",
+        "namespace": "argo",
+        "uid": "46d7a20e-596b-413d-985b-cf9104eaf94c",
+        "resourceVersion": "1629296",
+        "generation": 23,
+        "creationTimestamp": "2026-01-02T22:57:14Z",
+        "labels": {
+            "app": "resilience-simulation",
+            "platform": "argo-workflows",
+            "workflows.argoproj.io/completed": "true",
+            "workflows.argoproj.io/creator": "kubernetes-admin",
+            "workflows.argoproj.io/phase": "Succeeded"
+        },
+        "annotations": {
+            "workflows.argoproj.io/description": "Combined resilience simulation with comprehensive metrics for comparative analysis",
+            "workflows.argoproj.io/pod-name-format": "v2"
+        },
+        "managedFields": [
+            {
+                "manager": "argo",
+                "operation": "Update",
+                "apiVersion": "argoproj.io/v1alpha1",
+                "time": "2026-01-02T22:57:14Z",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:annotations": {
+                            ".": {},
+                            "f:workflows.argoproj.io/description": {}
+                        },
+                        "f:generateName": {},
+                        "f:labels": {
+                            ".": {},
+                            "f:app": {},
+                            "f:platform": {},
+                            "f:workflows.argoproj.io/creator": {}
+                        }
+                    },
+                    "f:spec": {}
+                }
+            },
+            {
+                "manager": "workflow-controller",
+                "operation": "Update",
+                "apiVersion": "argoproj.io/v1alpha1",
+                "time": "2026-01-02T23:11:35Z",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:annotations": {
+                            "f:workflows.argoproj.io/pod-name-format": {}
+                        },
+                        "f:labels": {
+                            "f:workflows.argoproj.io/completed": {},
+                            "f:workflows.argoproj.io/phase": {}
+                        }
+                    },
+                    "f:status": {}
+                }
+            }
+        ]
+    },
+    "spec": {
+        "templates": [
+            {
+                "name": "resilience-dag",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "dag": {
+                    "tasks": [
+                        {
+                            "name": "initialize",
+                            "template": "initialize-metrics",
+                            "arguments": {}
+                        },
+                        {
+                            "name": "health-check-1",
+                            "template": "run-health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "1"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "initialize"
+                            ]
+                        },
+                        {
+                            "name": "health-check-2",
+                            "template": "run-health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "2"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "initialize"
+                            ]
+                        },
+                        {
+                            "name": "health-check-3",
+                            "template": "run-health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "3"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "initialize"
+                            ]
+                        },
+                        {
+                            "name": "node-simulation",
+                            "template": "run-node-simulation",
+                            "arguments": {},
+                            "dependencies": [
+                                "health-check-1",
+                                "health-check-2",
+                                "health-check-3"
+                            ]
+                        },
+                        {
+                            "name": "interim-health-check",
+                            "template": "run-health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "interim"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "node-simulation"
+                            ]
+                        },
+                        {
+                            "name": "rack-simulation",
+                            "template": "run-rack-simulation",
+                            "arguments": {},
+                            "dependencies": [
+                                "interim-health-check"
+                            ]
+                        },
+                        {
+                            "name": "final-health-check",
+                            "template": "run-health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "final"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "rack-simulation"
+                            ]
+                        },
+                        {
+                            "name": "finalize",
+                            "template": "finalize-metrics",
+                            "arguments": {},
+                            "dependencies": [
+                                "final-health-check"
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "initialize-metrics",
+                "inputs": {},
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "kushsahni1/chaos-sim:latest",
+                    "command": [
+                        "/bin/bash",
+                        "-c"
+                    ],
+                    "args": [
+                        "set -e\n\nexport RUN_ID=\"argo-{{workflow.name}}\"\nexport LOG_DIR=\"/app/logs/${RUN_ID}\"\nexport METRICS_FILE=\"${LOG_DIR}/metrics.txt\"\nexport TIMING_FILE=\"${LOG_DIR}/timing.csv\"\n\nmkdir -p \"${LOG_DIR}\"\n\nWORKFLOW_START=$(date +%s)\n\n# Initialize timing CSV\necho \"step,start_epoch,end_epoch,duration_seconds,status\" \u003e \"${TIMING_FILE}\"\n\n# Initialize metrics file\ncat \u003e \"${METRICS_FILE}\" \u003c\u003c EOF\n# Resilience Simulation Metrics - Argo Workflows\n# Generated: $(date '+%Y-%m-%d %H:%M:%S')\n\nPLATFORM=Argo_Workflows\nRUN_ID=${RUN_ID}\nWORKFLOW_NAME={{workflow.name}}\nWORKFLOW_NAMESPACE={{workflow.namespace}}\nWORKFLOW_UID={{workflow.uid}}\nWORKFLOW_START_EPOCH=${WORKFLOW_START}\nWORKFLOW_START_ISO=$(date -d @${WORKFLOW_START} '+%Y-%m-%dT%H:%M:%S%z' 2\u003e/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')\nEOF\n\necho \"✅ Initialized metrics for RUN_ID: ${RUN_ID}\"\necho \"📁 Log directory: ${LOG_DIR}\"\n\n# Save RUN_ID for other steps\necho \"${RUN_ID}\" \u003e /tmp/run_id.txt\n"
+                    ],
+                    "env": [
+                        {
+                            "name": "PYTHONUNBUFFERED",
+                            "value": "1"
+                        },
+                        {
+                            "name": "NODE_NAME",
+                            "valueFrom": {
+                                "fieldRef": {
+                                    "fieldPath": "spec.nodeName"
+                                }
+                            }
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "log-vol",
+                            "mountPath": "/app/logs"
+                        }
+                    ],
+                    "imagePullPolicy": "Always",
+                    "securityContext": {
+                        "runAsUser": 0,
+                        "runAsGroup": 0
+                    }
+                },
+                "tolerations": [
+                    {
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node-role.kubernetes.io/control-plane",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    }
+                ]
+            },
+            {
+                "name": "run-health-check",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "kushsahni1/chaos-sim:latest",
+                    "command": [
+                        "/bin/bash",
+                        "-c"
+                    ],
+                    "args": [
+                        "set -e\n\nCHECK_ID=\"{{inputs.parameters.check-id}}\"\nexport RUN_ID=\"argo-{{workflow.name}}\"\nexport LOG_DIR=\"/app/logs/${RUN_ID}\"\nexport METRICS_FILE=\"${LOG_DIR}/metrics.txt\"\nexport TIMING_FILE=\"${LOG_DIR}/timing.csv\"\nexport STEP_LOG=\"${LOG_DIR}/health_check_${CHECK_ID}.log\"\n\nSTART_TIME=$(date +%s)\n\necho \"HEALTH_CHECK_${CHECK_ID}_START_EPOCH=${START_TIME}\" \u003e\u003e \"${METRICS_FILE}\"\n\necho \"===== HEALTH CHECK ${CHECK_ID} STARTED at $(date) =====\" | tee \"${STEP_LOG}\"\n\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time {{workflow.parameters.stabilization-time-health}} 2\u003e\u00261 | tee -a \"${STEP_LOG}\"\nEXIT_CODE=$?\n\nEND_TIME=$(date +%s)\nDURATION=$((END_TIME - START_TIME))\nSTATUS=$([ $EXIT_CODE -eq 0 ] \u0026\u0026 echo \"SUCCESS\" || echo \"FAILED\")\n\necho \"HEALTH_CHECK_${CHECK_ID},${START_TIME},${END_TIME},${DURATION},${STATUS}\" \u003e\u003e \"${TIMING_FILE}\"\necho \"HEALTH_CHECK_${CHECK_ID}_END_EPOCH=${END_TIME}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"HEALTH_CHECK_${CHECK_ID}_DURATION_SECONDS=${DURATION}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"HEALTH_CHECK_${CHECK_ID}_STATUS=${STATUS}\" \u003e\u003e \"${METRICS_FILE}\"\n\necho \"===== HEALTH CHECK ${CHECK_ID} COMPLETED in ${DURATION}s (${STATUS}) =====\" | tee -a \"${STEP_LOG}\"\n"
+                    ],
+                    "env": [
+                        {
+                            "name": "PYTHONUNBUFFERED",
+                            "value": "1"
+                        },
+                        {
+                            "name": "NODE_NAME",
+                            "valueFrom": {
+                                "fieldRef": {
+                                    "fieldPath": "spec.nodeName"
+                                }
+                            }
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "log-vol",
+                            "mountPath": "/app/logs"
+                        }
+                    ],
+                    "imagePullPolicy": "Always",
+                    "securityContext": {
+                        "runAsUser": 0,
+                        "runAsGroup": 0
+                    }
+                },
+                "tolerations": [
+                    {
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node-role.kubernetes.io/control-plane",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    }
+                ]
+            },
+            {
+                "name": "run-node-simulation",
+                "inputs": {},
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "kushsahni1/chaos-sim:latest",
+                    "command": [
+                        "/bin/bash",
+                        "-c"
+                    ],
+                    "args": [
+                        "set -e\n\nexport RUN_ID=\"argo-{{workflow.name}}\"\nexport LOG_DIR=\"/app/logs/${RUN_ID}\"\nexport METRICS_FILE=\"${LOG_DIR}/metrics.txt\"\nexport TIMING_FILE=\"${LOG_DIR}/timing.csv\"\nexport STEP_LOG=\"${LOG_DIR}/node_simulation.log\"\n\nSTART_TIME=$(date +%s)\n\necho \"NODE_SIM_START_EPOCH=${START_TIME}\" \u003e\u003e \"${METRICS_FILE}\"\n\necho \"===== NODE FAILURE SIMULATION STARTED at $(date) =====\" | tee \"${STEP_LOG}\"\n\npython3 /app/rack_resiliency_to_host.py simulate-node --stabilization-time {{workflow.parameters.stabilization-time-node}} 2\u003e\u00261 | tee -a \"${STEP_LOG}\"\nEXIT_CODE=$?\n\nEND_TIME=$(date +%s)\nDURATION=$((END_TIME - START_TIME))\nSTATUS=$([ $EXIT_CODE -eq 0 ] \u0026\u0026 echo \"SUCCESS\" || echo \"FAILED\")\n\necho \"NODE_SIMULATION,${START_TIME},${END_TIME},${DURATION},${STATUS}\" \u003e\u003e \"${TIMING_FILE}\"\necho \"NODE_SIM_END_EPOCH=${END_TIME}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"NODE_SIM_DURATION_SECONDS=${DURATION}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"NODE_SIM_STATUS=${STATUS}\" \u003e\u003e \"${METRICS_FILE}\"\n\necho \"===== NODE FAILURE SIMULATION COMPLETED in ${DURATION}s (${STATUS}) =====\" | tee -a \"${STEP_LOG}\"\n"
+                    ],
+                    "env": [
+                        {
+                            "name": "PYTHONUNBUFFERED",
+                            "value": "1"
+                        },
+                        {
+                            "name": "NODE_NAME",
+                            "valueFrom": {
+                                "fieldRef": {
+                                    "fieldPath": "spec.nodeName"
+                                }
+                            }
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "log-vol",
+                            "mountPath": "/app/logs"
+                        }
+                    ],
+                    "imagePullPolicy": "Always",
+                    "securityContext": {
+                        "runAsUser": 0,
+                        "runAsGroup": 0
+                    }
+                },
+                "tolerations": [
+                    {
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node-role.kubernetes.io/control-plane",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    }
+                ]
+            },
+            {
+                "name": "run-rack-simulation",
+                "inputs": {},
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "kushsahni1/chaos-sim:latest",
+                    "command": [
+                        "/bin/bash",
+                        "-c"
+                    ],
+                    "args": [
+                        "set -e\n\nexport RUN_ID=\"argo-{{workflow.name}}\"\nexport LOG_DIR=\"/app/logs/${RUN_ID}\"\nexport METRICS_FILE=\"${LOG_DIR}/metrics.txt\"\nexport TIMING_FILE=\"${LOG_DIR}/timing.csv\"\nexport STEP_LOG=\"${LOG_DIR}/rack_simulation.log\"\n\nSTART_TIME=$(date +%s)\n\necho \"RACK_SIM_START_EPOCH=${START_TIME}\" \u003e\u003e \"${METRICS_FILE}\"\n\necho \"===== RACK FAILURE SIMULATION STARTED at $(date) =====\" | tee \"${STEP_LOG}\"\n\npython3 /app/rack_resiliency_to_host.py simulate-rack --stabilization-time {{workflow.parameters.stabilization-time-rack}} --downtime {{workflow.parameters.downtime-rack}} 2\u003e\u00261 | tee -a \"${STEP_LOG}\"\nEXIT_CODE=$?\n\nEND_TIME=$(date +%s)\nDURATION=$((END_TIME - START_TIME))\nSTATUS=$([ $EXIT_CODE -eq 0 ] \u0026\u0026 echo \"SUCCESS\" || echo \"FAILED\")\n\necho \"RACK_SIMULATION,${START_TIME},${END_TIME},${DURATION},${STATUS}\" \u003e\u003e \"${TIMING_FILE}\"\necho \"RACK_SIM_END_EPOCH=${END_TIME}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"RACK_SIM_DURATION_SECONDS=${DURATION}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"RACK_SIM_STATUS=${STATUS}\" \u003e\u003e \"${METRICS_FILE}\"\n\necho \"===== RACK FAILURE SIMULATION COMPLETED in ${DURATION}s (${STATUS}) =====\" | tee -a \"${STEP_LOG}\"\n"
+                    ],
+                    "env": [
+                        {
+                            "name": "PYTHONUNBUFFERED",
+                            "value": "1"
+                        },
+                        {
+                            "name": "NODE_NAME",
+                            "valueFrom": {
+                                "fieldRef": {
+                                    "fieldPath": "spec.nodeName"
+                                }
+                            }
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "log-vol",
+                            "mountPath": "/app/logs"
+                        }
+                    ],
+                    "imagePullPolicy": "Always",
+                    "securityContext": {
+                        "runAsUser": 0,
+                        "runAsGroup": 0
+                    }
+                },
+                "tolerations": [
+                    {
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node-role.kubernetes.io/control-plane",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    }
+                ]
+            },
+            {
+                "name": "finalize-metrics",
+                "inputs": {},
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "kushsahni1/chaos-sim:latest",
+                    "command": [
+                        "/bin/bash",
+                        "-c"
+                    ],
+                    "args": [
+                        "set -e\n\nexport RUN_ID=\"argo-{{workflow.name}}\"\nexport LOG_DIR=\"/app/logs/${RUN_ID}\"\nexport METRICS_FILE=\"${LOG_DIR}/metrics.txt\"\nexport TIMING_FILE=\"${LOG_DIR}/timing.csv\"\n\nWORKFLOW_END=$(date +%s)\n\n# Get workflow start from metrics file\nWORKFLOW_START=$(grep \"WORKFLOW_START_EPOCH=\" \"${METRICS_FILE}\" | cut -d'=' -f2)\nTOTAL_DURATION=$((WORKFLOW_END - WORKFLOW_START))\n\n# Add final metrics\ncat \u003e\u003e \"${METRICS_FILE}\" \u003c\u003c EOF\n\n# Final Summary\nWORKFLOW_END_EPOCH=${WORKFLOW_END}\nWORKFLOW_END_ISO=$(date -d @${WORKFLOW_END} '+%Y-%m-%dT%H:%M:%S%z' 2\u003e/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')\nTOTAL_DURATION_SECONDS=${TOTAL_DURATION}\nTOTAL_DURATION_FORMATTED=$(printf '%02d:%02d:%02d' $((TOTAL_DURATION/3600)) $((TOTAL_DURATION%3600/60)) $((TOTAL_DURATION%60)))\nWORKFLOW_STATUS=Completed\nEOF\n\n# Create combined log\nCOMBINED_LOG=\"${LOG_DIR}/full_execution.log\"\necho \"===== ARGO WORKFLOWS RESILIENCE SIMULATION COMBINED LOG =====\" \u003e \"${COMBINED_LOG}\"\necho \"Run ID: ${RUN_ID}\" \u003e\u003e \"${COMBINED_LOG}\"\necho \"Workflow: {{workflow.name}}\" \u003e\u003e \"${COMBINED_LOG}\"\necho \"Generated: $(date)\" \u003e\u003e \"${COMBINED_LOG}\"\necho \"\" \u003e\u003e \"${COMBINED_LOG}\"\n\nfor log_file in health_check_1 health_check_2 health_check_3 node_simulation health_check_interim rack_simulation health_check_final; do\n  if [ -f \"${LOG_DIR}/${log_file}.log\" ]; then\n    echo \"\" \u003e\u003e \"${COMBINED_LOG}\"\n    echo \"===== ${log_file} =====\" \u003e\u003e \"${COMBINED_LOG}\"\n    cat \"${LOG_DIR}/${log_file}.log\" \u003e\u003e \"${COMBINED_LOG}\"\n  fi\ndone\n\n# Print summary\necho \"\"\necho \"===== WORKFLOW SUMMARY =====\"\necho \"Run ID: ${RUN_ID}\"\necho \"Total Duration: ${TOTAL_DURATION} seconds ($(printf '%02d:%02d:%02d' $((TOTAL_DURATION/3600)) $((TOTAL_DURATION%3600/60)) $((TOTAL_DURATION%60))))\"\necho \"\"\necho \"===== TIMING DATA =====\"\ncat \"${TIMING_FILE}\"\necho \"\"\necho \"===== METRICS =====\"\ncat \"${METRICS_FILE}\"\n\n# Fix permissions\nchmod -R 755 \"${LOG_DIR}\"\nchown -R 1000:1000 \"${LOG_DIR}\" 2\u003e/dev/null || true\n\necho \"\"\necho \"✅ Argo Workflow completed successfully!\"\necho \"📁 Logs saved to: ${LOG_DIR}\"\n"
+                    ],
+                    "env": [
+                        {
+                            "name": "PYTHONUNBUFFERED",
+                            "value": "1"
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "log-vol",
+                            "mountPath": "/app/logs"
+                        }
+                    ],
+                    "imagePullPolicy": "Always",
+                    "securityContext": {
+                        "runAsUser": 0,
+                        "runAsGroup": 0
+                    }
+                },
+                "tolerations": [
+                    {
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    },
+                    {
+                        "operator": "Exists",
+                        "effect": "NoExecute"
+                    },
+                    {
+                        "key": "node-role.kubernetes.io/control-plane",
+                        "operator": "Exists",
+                        "effect": "NoSchedule"
+                    }
+                ]
+            }
+        ],
+        "entrypoint": "resilience-dag",
+        "arguments": {
+            "parameters": [
+                {
+                    "name": "stabilization-time-health",
+                    "value": "10"
+                },
+                {
+                    "name": "stabilization-time-node",
+                    "value": "60"
+                },
+                {
+                    "name": "stabilization-time-rack",
+                    "value": "120"
+                },
+                {
+                    "name": "downtime-rack",
+                    "value": "60"
+                }
+            ]
+        },
+        "serviceAccountName": "argo-workflow",
+        "volumes": [
+            {
+                "name": "log-vol",
+                "hostPath": {
+                    "path": "/home/vagrant/argo-logs/resilience-sim-combined",
+                    "type": "DirectoryOrCreate"
+                }
+            }
+        ],
+        "ttlStrategy": {
+            "secondsAfterCompletion": 604800
+        }
+    },
+    "status": {
+        "phase": "Succeeded",
+        "startedAt": "2026-01-02T22:57:14Z",
+        "finishedAt": "2026-01-02T23:11:35Z",
+        "progress": "9/9",
+        "nodes": {
+            "resilience-bench-vcpmd": {
+                "id": "resilience-bench-vcpmd",
+                "name": "resilience-bench-vcpmd",
+                "displayName": "resilience-bench-vcpmd",
+                "type": "DAG",
+                "templateName": "resilience-dag",
+                "templateScope": "local/resilience-bench-vcpmd",
+                "phase": "Succeeded",
+                "startedAt": "2026-01-02T22:57:14Z",
+                "finishedAt": "2026-01-02T23:11:35Z",
+                "progress": "9/9",
+                "resourcesDuration": {
+                    "cpu": 145,
+                    "memory": 1561
+                },
+                "children": [
+                    "resilience-bench-vcpmd-1376644322"
+                ],
+                "outboundNodes": [
+                    "resilience-bench-vcpmd-726233750"
+                ]
+            },
+            "resilience-bench-vcpmd-1067870552": {
+                "id": "resilience-bench-vcpmd-1067870552",
+                "name": "resilience-bench-vcpmd.final-health-check",
+                "displayName": "final-health-check",
+                "type": "Pod",
+                "templateName": "run-health-check",
+                "templateScope": "local/resilience-bench-vcpmd",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-bench-vcpmd",
+                "startedAt": "2026-01-02T23:10:23Z",
+                "finishedAt": "2026-01-02T23:11:07Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 5,
+                    "memory": 63
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "final"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-bench-vcpmd-726233750"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-bench-vcpmd-1376644322": {
+                "id": "resilience-bench-vcpmd-1376644322",
+                "name": "resilience-bench-vcpmd.initialize",
+                "displayName": "initialize",
+                "type": "Pod",
+                "templateName": "initialize-metrics",
+                "templateScope": "local/resilience-bench-vcpmd",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-bench-vcpmd",
+                "startedAt": "2026-01-02T22:57:14Z",
+                "finishedAt": "2026-01-02T22:57:38Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 20
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-bench-vcpmd-1733019357",
+                    "resilience-bench-vcpmd-1682686500",
+                    "resilience-bench-vcpmd-1699464119"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-bench-vcpmd-1682686500": {
+                "id": "resilience-bench-vcpmd-1682686500",
+                "name": "resilience-bench-vcpmd.health-check-2",
+                "displayName": "health-check-2",
+                "type": "Pod",
+                "templateName": "run-health-check",
+                "templateScope": "local/resilience-bench-vcpmd",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-bench-vcpmd",
+                "startedAt": "2026-01-02T22:57:48Z",
+                "finishedAt": "2026-01-02T22:59:15Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 11,
+                    "memory": 118
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "2"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-bench-vcpmd-837891804"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-bench-vcpmd-1699464119": {
+                "id": "resilience-bench-vcpmd-1699464119",
+                "name": "resilience-bench-vcpmd.health-check-3",
+                "displayName": "health-check-3",
+                "type": "Pod",
+                "templateName": "run-health-check",
+                "templateScope": "local/resilience-bench-vcpmd",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-bench-vcpmd",
+                "startedAt": "2026-01-02T22:57:48Z",
+                "finishedAt": "2026-01-02T22:59:15Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 10,
+                    "memory": 113
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "3"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-bench-vcpmd-837891804"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-bench-vcpmd-1733019357": {
+                "id": "resilience-bench-vcpmd-1733019357",
+                "name": "resilience-bench-vcpmd.health-check-1",
+                "displayName": "health-check-1",
+                "type": "Pod",
+                "templateName": "run-health-check",
+                "templateScope": "local/resilience-bench-vcpmd",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-bench-vcpmd",
+                "startedAt": "2026-01-02T22:57:48Z",
+                "finishedAt": "2026-01-02T22:59:15Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 10,
+                    "memory": 109
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "1"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-bench-vcpmd-837891804"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-bench-vcpmd-1810425057": {
+                "id": "resilience-bench-vcpmd-1810425057",
+                "name": "resilience-bench-vcpmd.rack-simulation",
+                "displayName": "rack-simulation",
+                "type": "Pod",
+                "templateName": "run-rack-simulation",
+                "templateScope": "local/resilience-bench-vcpmd",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-bench-vcpmd",
+                "startedAt": "2026-01-02T23:03:55Z",
+                "finishedAt": "2026-01-02T23:10:14Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 71,
+                    "memory": 730
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-bench-vcpmd-1067870552"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-bench-vcpmd-3588532220": {
+                "id": "resilience-bench-vcpmd-3588532220",
+                "name": "resilience-bench-vcpmd.interim-health-check",
+                "displayName": "interim-health-check",
+                "type": "Pod",
+                "templateName": "run-health-check",
+                "templateScope": "local/resilience-bench-vcpmd",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-bench-vcpmd",
+                "startedAt": "2026-01-02T23:03:02Z",
+                "finishedAt": "2026-01-02T23:03:46Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 5,
+                    "memory": 63
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "interim"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-bench-vcpmd-1810425057"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-bench-vcpmd-726233750": {
+                "id": "resilience-bench-vcpmd-726233750",
+                "name": "resilience-bench-vcpmd.finalize",
+                "displayName": "finalize",
+                "type": "Pod",
+                "templateName": "finalize-metrics",
+                "templateScope": "local/resilience-bench-vcpmd",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-bench-vcpmd",
+                "startedAt": "2026-01-02T23:11:15Z",
+                "finishedAt": "2026-01-02T23:11:29Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 8
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "hostNodeName": "master-m003"
+            },
+            "resilience-bench-vcpmd-837891804": {
+                "id": "resilience-bench-vcpmd-837891804",
+                "name": "resilience-bench-vcpmd.node-simulation",
+                "displayName": "node-simulation",
+                "type": "Pod",
+                "templateName": "run-node-simulation",
+                "templateScope": "local/resilience-bench-vcpmd",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-bench-vcpmd",
+                "startedAt": "2026-01-02T22:59:38Z",
+                "finishedAt": "2026-01-02T23:02:52Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 33,
+                    "memory": 337
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-bench-vcpmd-3588532220"
+                ],
+                "hostNodeName": "master-m003"
+            }
+        },
+        "conditions": [
+            {
+                "type": "PodRunning",
+                "status": "False"
+            },
+            {
+                "type": "Completed",
+                "status": "True"
+            }
+        ],
+        "resourcesDuration": {
+            "cpu": 145,
+            "memory": 1561
+        },
+        "artifactRepositoryRef": {
+            "default": true,
+            "artifactRepository": {}
+        },
+        "artifactGCStatus": {
+            "notSpecified": true
+        },
+        "taskResultsCompletionStatus": {
+            "resilience-bench-vcpmd-1067870552": true,
+            "resilience-bench-vcpmd-1376644322": true,
+            "resilience-bench-vcpmd-1682686500": true,
+            "resilience-bench-vcpmd-1699464119": true,
+            "resilience-bench-vcpmd-1733019357": true,
+            "resilience-bench-vcpmd-1810425057": true,
+            "resilience-bench-vcpmd-3588532220": true,
+            "resilience-bench-vcpmd-726233750": true,
+            "resilience-bench-vcpmd-837891804": true
+        }
+    }
+}

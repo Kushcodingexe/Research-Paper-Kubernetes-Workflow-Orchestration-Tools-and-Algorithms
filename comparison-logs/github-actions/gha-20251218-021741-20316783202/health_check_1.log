@@ -1,0 +1,134 @@
+===== HEALTH CHECK 1 STARTED at Thu Dec 18 02:19:45 AM IST 2025 =====
+===== HEALTH CHECK 1 =====
+Log directory created/verified: /app/logs
+File logging configured successfully
+2025-12-17 20:50:23,262 [INFO] Loaded in-cluster Kubernetes config
+2025-12-17 20:50:23,263 [INFO] Running on host: gha-hc1-20316783202-wbjnv
+2025-12-17 20:50:23,263 [INFO] Detected current node: master-m003, zone: R3
+2025-12-17 20:50:23,263 [INFO] Checking if we have permissions to modify nodes...
+2025-12-17 20:50:24,034 [INFO] Testing permissions using node: master-m001
+2025-12-17 20:50:24,042 [INFO] Permission check successful - we can modify nodes
+2025-12-17 20:50:24,043 [INFO] Using real Kubernetes API for node control
+2025-12-17 20:50:24,044 [INFO] Action received: health-check
+2025-12-17 20:50:24,044 [INFO] Stabilization time: 10 seconds
+2025-12-17 20:50:24,044 [INFO] Starting full health check
+2025-12-17 20:50:24,044 [INFO] 
+============ DETAILED NODE STATUS ============
+2025-12-17 20:50:24,044 [INFO] Basic Node Information (kubectl get nodes -o wide):
+2025-12-17 20:50:29,443 [INFO]   NAME          STATUS   ROLES           AGE     VERSION    INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+2025-12-17 20:50:29,443 [INFO]   master-m001   Ready    control-plane   3d16h   v1.32.10   192.168.56.101   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-17 20:50:29,444 [INFO]   master-m002   Ready    control-plane   3d16h   v1.32.10   192.168.56.102   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-17 20:50:29,444 [INFO]   master-m003   Ready    control-plane   3d16h   v1.32.10   192.168.56.103   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-17 20:50:29,444 [INFO]   worker-w001   Ready    <none>          3d15h   v1.32.10   192.168.56.104   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-17 20:50:29,444 [INFO]   worker-w002   Ready    <none>          3d15h   v1.32.10   192.168.56.105   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-17 20:50:29,444 [INFO]   worker-w003   Ready    <none>          3d15h   v1.32.10   192.168.56.106   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-17 20:50:29,444 [INFO]   worker-w004   Ready    <none>          3d15h   v1.32.10   192.168.56.107   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-17 20:50:29,444 [INFO]   worker-w005   Ready    <none>          3d15h   v1.32.10   192.168.56.108   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-17 20:50:29,444 [INFO]   worker-w006   Ready    <none>          3d15h   v1.32.10   192.168.56.109   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-17 20:50:29,445 [INFO] 
+Enhanced Node Status (with taint and cordon indicators):
+2025-12-17 20:50:29,445 [INFO]   NAME                STATUS    ROLES           ZONE   CORDONED   TAINTS
+2025-12-17 20:50:29,762 [INFO]   master-m001     Ready  ✓ worker         R1    No       node-role.kubernetes.io/control-plane 
+2025-12-17 20:50:29,945 [INFO]   master-m002     Ready  ✓ worker         R2    No       None 
+2025-12-17 20:50:30,156 [INFO]   master-m003     Ready  ✓ worker         R3    No       None 
+2025-12-17 20:50:30,362 [INFO]   worker-w001     Ready  ✓ worker         R1    No       None 
+2025-12-17 20:50:30,540 [INFO]   worker-w002     Ready  ✓ worker         R1    No       None 
+2025-12-17 20:50:30,858 [INFO]   worker-w003     Ready  ✓ worker         R2    No       None 
+2025-12-17 20:50:31,112 [INFO]   worker-w004     Ready  ✓ worker         R2    No       None 
+2025-12-17 20:50:31,401 [INFO]   worker-w005     Ready  ✓ worker         R3    No       None 
+2025-12-17 20:50:31,643 [INFO]   worker-w006     Ready  ✓ worker         R3    No       None 
+2025-12-17 20:50:31,644 [INFO] 
+Legend:
+2025-12-17 20:50:31,644 [INFO]   ✓ = Node is Ready
+2025-12-17 20:50:31,644 [INFO]   ⚠️ = Warning indicator (NotReady, Cordoned, or has simulated-failure taint)
+2025-12-17 20:50:31,644 [INFO] ============ DETAILED POD INFORMATION ============
+2025-12-17 20:50:31,644 [INFO] Running 'kubectl get pods -o wide' to show detailed pod placement:
+2025-12-17 20:50:31,752 [INFO]   NAMESPACE     NAME                                                     READY   STATUS      RESTARTS       AGE     IP                NODE          NOMINATED NODE   READINESS GATES
+2025-12-17 20:50:31,752 [INFO]   default       gha-hc1-20316783202-wbjnv                                1/1     Running     0              46s     192.168.221.81    master-m003   <none>           <none>
+2025-12-17 20:50:31,752 [INFO]   default       my-app-1-6bcf4588d6-94gsg                                1/1     Running     0              70m     192.168.195.195   worker-w002   <none>           <none>
+2025-12-17 20:50:31,752 [INFO]   default       my-app-1-6bcf4588d6-gwzbf                                1/1     Running     0              13m     192.168.191.73    worker-w006   <none>           <none>
+2025-12-17 20:50:31,752 [INFO]   default       my-app-1-6bcf4588d6-qkb4l                                1/1     Running     0              52m     192.168.132.133   worker-w001   <none>           <none>
+2025-12-17 20:50:31,752 [INFO]   default       my-app-2-6ffdb85595-6t7lk                                1/1     Running     0              52m     192.168.15.202    worker-w005   <none>           <none>
+2025-12-17 20:50:31,752 [INFO]   default       my-app-2-6ffdb85595-gb8kc                                1/1     Running     0              70m     192.168.195.194   worker-w002   <none>           <none>
+2025-12-17 20:50:31,752 [INFO]   default       my-app-2-6ffdb85595-h6wng                                1/1     Running     0              13m     192.168.191.74    worker-w006   <none>           <none>
+2025-12-17 20:50:31,752 [INFO]   default       my-app-3-5cbdb55-42p8k                                   1/1     Running     0              52m     192.168.15.201    worker-w005   <none>           <none>
+2025-12-17 20:50:31,752 [INFO]   default       my-app-3-5cbdb55-dpbvl                                   1/1     Running     0              13m     192.168.195.197   worker-w002   <none>           <none>
+2025-12-17 20:50:31,752 [INFO]   default       my-app-3-5cbdb55-m4xjx                                   1/1     Running     0              70m     192.168.132.130   worker-w001   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   default       my-app-4-6c4c9fdcd6-msrc6                                1/1     Running     0              52m     192.168.15.200    worker-w005   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   default       my-app-4-6c4c9fdcd6-s6rcc                                1/1     Running     0              70m     192.168.132.132   worker-w001   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   default       my-app-4-6c4c9fdcd6-vzj6r                                1/1     Running     0              13m     192.168.191.72    worker-w006   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   default       my-app-5-69ff8cdccd-jll4m                                1/1     Running     0              52m     192.168.195.196   worker-w002   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   default       my-app-5-69ff8cdccd-vjh96                                1/1     Running     0              13m     192.168.191.71    worker-w006   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   default       my-app-5-69ff8cdccd-x6c4j                                1/1     Running     0              70m     192.168.132.131   worker-w001   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   default       resilience-sim-native-bn68k-k6qmz                        0/1     Completed   0              59m     192.168.221.71    master-m003   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   default       resilience-sim-workflow-manual-5d9v9                     0/1     Completed   0              135m    192.168.56.103    master-m003   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   calico-kube-controllers-7498b9bb4c-zprt4                 1/1     Running     0              3d16h   192.168.196.131   master-m001   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   calico-node-4prf8                                        1/1     Running     0              3d15h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   calico-node-67d4l                                        1/1     Running     2 (3d2h ago)   3d16h   192.168.56.103    master-m003   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   calico-node-7vx45                                        1/1     Running     0              3d15h   192.168.56.109    worker-w006   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   calico-node-8mjfh                                        1/1     Running     0              3d16h   192.168.56.101    master-m001   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   calico-node-jrqgn                                        1/1     Running     0              3d15h   192.168.56.107    worker-w004   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   calico-node-pgpb9                                        1/1     Running     0              3d15h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   calico-node-r6v47                                        1/1     Running     0              3d15h   10.0.2.15         worker-w005   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   calico-node-tzmkz                                        1/1     Running     0              3d15h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   calico-node-xtxwj                                        1/1     Running     0              3d16h   192.168.56.102    master-m002   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   coredns-668d6bf9bc-rs89n                                 1/1     Running     0              3d16h   192.168.196.129   master-m001   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   coredns-668d6bf9bc-t6mf4                                 1/1     Running     0              3d16h   192.168.196.130   master-m001   <none>           <none>
+2025-12-17 20:50:31,753 [INFO]   kube-system   etcd-master-m001                                         1/1     Running     0              3d16h   10.0.2.15         master-m001   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-apiserver-master-m001                               1/1     Running     0              3d16h   10.0.2.15         master-m001   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-controller-manager-master-m001                      1/1     Running     0              3d16h   10.0.2.15         master-m001   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-proxy-9rq2r                                         1/1     Running     0              3d16h   192.168.56.102    master-m002   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-proxy-gsxtg                                         1/1     Running     0              3d15h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-proxy-h47z7                                         1/1     Running     0              3d15h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-proxy-kdwrx                                         1/1     Running     0              3d15h   10.0.2.15         worker-w005   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-proxy-mq6tc                                         1/1     Running     0              3d15h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-proxy-p5qfp                                         1/1     Running     0              3d16h   192.168.56.103    master-m003   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-proxy-sh4vz                                         1/1     Running     0              3d16h   192.168.56.101    master-m001   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-proxy-w2z24                                         1/1     Running     0              3d15h   192.168.56.107    worker-w004   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-proxy-zp26m                                         1/1     Running     0              3d15h   192.168.56.109    worker-w006   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   kube-system   kube-scheduler-master-m001                               1/1     Running     0              3d16h   10.0.2.15         master-m001   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   monitoring    alertmanager-prometheus-kube-prometheus-alertmanager-0   2/2     Running     0              3d7h    192.168.221.68    master-m003   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   monitoring    prometheus-grafana-5ddf8dff47-655cz                      3/3     Running     0              3d7h    192.168.221.66    master-m003   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   monitoring    prometheus-kube-prometheus-operator-6446c4c4d8-tnvqg     1/1     Running     0              3d7h    192.168.195.193   worker-w002   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   monitoring    prometheus-kube-state-metrics-758d4f8db5-49qcn           1/1     Running     2 (55m ago)    3d7h    192.168.221.67    master-m003   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   monitoring    prometheus-prometheus-kube-prometheus-prometheus-0       2/2     Running     2 (56m ago)    3d7h    192.168.221.69    master-m003   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   monitoring    prometheus-prometheus-node-exporter-2xrpj                1/1     Running     0              3d7h    192.168.56.104    worker-w001   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   monitoring    prometheus-prometheus-node-exporter-4xzpn                1/1     Running     3 (56m ago)    3d7h    192.168.56.103    master-m003   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   monitoring    prometheus-prometheus-node-exporter-8n2sn                1/1     Running     0              16m     192.168.56.109    worker-w006   <none>           <none>
+2025-12-17 20:50:31,754 [INFO]   monitoring    prometheus-prometheus-node-exporter-98bgg                1/1     Running     0              53m     192.168.56.108    worker-w005   <none>           <none>
+2025-12-17 20:50:31,755 [INFO]   monitoring    prometheus-prometheus-node-exporter-9pp7s                1/1     Running     0              3d7h    192.168.56.105    worker-w002   <none>           <none>
+2025-12-17 20:50:31,755 [INFO]   monitoring    prometheus-prometheus-node-exporter-j8jkw                1/1     Running     0              10m     192.168.56.106    worker-w003   <none>           <none>
+2025-12-17 20:50:31,755 [INFO]   monitoring    prometheus-prometheus-node-exporter-lgjrs                1/1     Running     0              3d7h    192.168.56.101    master-m001   <none>           <none>
+2025-12-17 20:50:31,755 [INFO]   monitoring    prometheus-prometheus-node-exporter-pkvnc                1/1     Running     0              10m     192.168.56.102    master-m002   <none>           <none>
+2025-12-17 20:50:31,755 [INFO]   monitoring    prometheus-prometheus-node-exporter-tdnw4                1/1     Running     0              10m     192.168.56.107    worker-w004   <none>           <none>
+2025-12-17 20:50:31,755 [INFO] 
+Pod distribution by node:
+2025-12-17 20:50:31,937 [INFO]   Node master-m003: 6 pods
+2025-12-17 20:50:31,937 [INFO]   Node worker-w002: 8 pods
+2025-12-17 20:50:31,937 [INFO]   Node worker-w006: 7 pods
+2025-12-17 20:50:31,937 [INFO]   Node worker-w001: 7 pods
+2025-12-17 20:50:31,937 [INFO]   Node worker-w005: 6 pods
+2025-12-17 20:50:31,937 [INFO]   Node master-m001: 10 pods
+2025-12-17 20:50:31,937 [INFO]   Node worker-w003: 3 pods
+2025-12-17 20:50:31,937 [INFO]   Node 3d16h: 1 pods
+2025-12-17 20:50:31,937 [INFO]   Node worker-w004: 3 pods
+2025-12-17 20:50:31,937 [INFO]   Node master-m002: 3 pods
+2025-12-17 20:50:31,937 [INFO]   Node 3d7h: 3 pods
+2025-12-17 20:50:31,938 [INFO] 
+Filtering for simulation services:
+2025-12-17 20:50:32,282 [INFO] Node master-m001 is Ready
+2025-12-17 20:50:32,283 [INFO] Node master-m002 is Ready
+2025-12-17 20:50:32,283 [INFO] Node master-m003 is Ready
+2025-12-17 20:50:32,283 [INFO] Node worker-w001 is Ready
+2025-12-17 20:50:32,283 [INFO] Node worker-w002 is Ready
+2025-12-17 20:50:32,283 [INFO] Node worker-w003 is Ready
+2025-12-17 20:50:32,283 [INFO] Node worker-w004 is Ready
+2025-12-17 20:50:32,283 [INFO] Node worker-w005 is Ready
+2025-12-17 20:50:32,283 [INFO] Node worker-w006 is Ready
+2025-12-17 20:50:32,307 [INFO] Service etcd-sim zone distribution: {'R1': 2, 'R3': 1}
+2025-12-17 20:50:32,329 [INFO] Service postgres-sim zone distribution: {'R3': 2, 'R1': 1}
+2025-12-17 20:50:32,349 [INFO] Service redis-sim zone distribution: {'R3': 1, 'R1': 2}
+2025-12-17 20:50:32,370 [INFO] Service nginx-sim zone distribution: {'R3': 2, 'R1': 1}
+2025-12-17 20:50:32,392 [INFO] Service auth-sim zone distribution: {'R1': 2, 'R3': 1}
+2025-12-17 20:50:32,392 [INFO] Completed full health check
+===== HEALTH CHECK 1 COMPLETED at Thu Dec 18 02:21:02 AM IST 2025 (SUCCESS) =====

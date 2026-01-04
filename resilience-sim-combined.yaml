@@ -1,0 +1,477 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: resilience-sim-argo-
+  namespace: argo
+  labels:
+    app: resilience-simulation
+    platform: argo-workflows
+  annotations:
+    workflows.argoproj.io/description: "Combined resilience simulation with comprehensive metrics for comparative analysis"
+spec:
+  serviceAccountName: argo-workflow
+  
+  # Keep workflow visible for comparison analysis
+  ttlStrategy:
+    secondsAfterCompletion: 604800  # 7 days
+  
+  entrypoint: resilience-dag
+  
+  # Global parameters
+  arguments:
+    parameters:
+    - name: stabilization-time-health
+      value: "10"
+    - name: stabilization-time-node
+      value: "60"
+    - name: stabilization-time-rack
+      value: "120"
+    - name: downtime-rack
+      value: "60"
+  
+  templates:
+  # =============================================
+  # MAIN DAG TEMPLATE
+  # =============================================
+  - name: resilience-dag
+    dag:
+      tasks:
+      # Initialize metrics
+      - name: initialize
+        template: initialize-metrics
+      
+      # Parallel health checks
+      - name: health-check-1
+        dependencies: [initialize]
+        template: run-health-check
+        arguments:
+          parameters:
+          - name: check-id
+            value: "1"
+      
+      - name: health-check-2
+        dependencies: [initialize]
+        template: run-health-check
+        arguments:
+          parameters:
+          - name: check-id
+            value: "2"
+      
+      - name: health-check-3
+        dependencies: [initialize]
+        template: run-health-check
+        arguments:
+          parameters:
+          - name: check-id
+            value: "3"
+      
+      # Node simulation after health checks
+      - name: node-simulation
+        dependencies: [health-check-1, health-check-2, health-check-3]
+        template: run-node-simulation
+      
+      # Interim health check
+      - name: interim-health-check
+        dependencies: [node-simulation]
+        template: run-health-check
+        arguments:
+          parameters:
+          - name: check-id
+            value: "interim"
+      
+      # Rack simulation
+      - name: rack-simulation
+        dependencies: [interim-health-check]
+        template: run-rack-simulation
+      
+      # Final health check
+      - name: final-health-check
+        dependencies: [rack-simulation]
+        template: run-health-check
+        arguments:
+          parameters:
+          - name: check-id
+            value: "final"
+      
+      # Finalize and generate summary
+      - name: finalize
+        dependencies: [final-health-check]
+        template: finalize-metrics
+
+  # =============================================
+  # INITIALIZE METRICS TEMPLATE
+  # =============================================
+  - name: initialize-metrics
+    container:
+      image: kushsahni1/chaos-sim:latest
+      imagePullPolicy: Always
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      
+      command: ["/bin/bash", "-c"]
+      args:
+        - |
+          set -e
+          
+          export RUN_ID="argo-{{workflow.name}}"
+          export LOG_DIR="/app/logs/${RUN_ID}"
+          export METRICS_FILE="${LOG_DIR}/metrics.txt"
+          export TIMING_FILE="${LOG_DIR}/timing.csv"
+          
+          mkdir -p "${LOG_DIR}"
+          
+          WORKFLOW_START=$(date +%s)
+          
+          # Initialize timing CSV
+          echo "step,start_epoch,end_epoch,duration_seconds,status" > "${TIMING_FILE}"
+          
+          # Initialize metrics file
+          cat > "${METRICS_FILE}" << EOF
+          # Resilience Simulation Metrics - Argo Workflows
+          # Generated: $(date '+%Y-%m-%d %H:%M:%S')
+          
+          PLATFORM=Argo_Workflows
+          RUN_ID=${RUN_ID}
+          WORKFLOW_NAME={{workflow.name}}
+          WORKFLOW_NAMESPACE={{workflow.namespace}}
+          WORKFLOW_UID={{workflow.uid}}
+          WORKFLOW_START_EPOCH=${WORKFLOW_START}
+          WORKFLOW_START_ISO=$(date -d @${WORKFLOW_START} '+%Y-%m-%dT%H:%M:%S%z' 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')
+          EOF
+          
+          echo "✅ Initialized metrics for RUN_ID: ${RUN_ID}"
+          echo "📁 Log directory: ${LOG_DIR}"
+          
+          # Save RUN_ID for other steps
+          echo "${RUN_ID}" > /tmp/run_id.txt
+      
+      env:
+      - name: PYTHONUNBUFFERED
+        value: "1"
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+      
+      volumeMounts:
+      - name: log-vol
+        mountPath: /app/logs
+    
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+  # =============================================
+  # HEALTH CHECK TEMPLATE
+  # =============================================
+  - name: run-health-check
+    inputs:
+      parameters:
+      - name: check-id
+    container:
+      image: kushsahni1/chaos-sim:latest
+      imagePullPolicy: Always
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      
+      command: ["/bin/bash", "-c"]
+      args:
+        - |
+          set -e
+          
+          CHECK_ID="{{inputs.parameters.check-id}}"
+          export RUN_ID="argo-{{workflow.name}}"
+          export LOG_DIR="/app/logs/${RUN_ID}"
+          export METRICS_FILE="${LOG_DIR}/metrics.txt"
+          export TIMING_FILE="${LOG_DIR}/timing.csv"
+          export STEP_LOG="${LOG_DIR}/health_check_${CHECK_ID}.log"
+          
+          START_TIME=$(date +%s)
+          
+          echo "HEALTH_CHECK_${CHECK_ID}_START_EPOCH=${START_TIME}" >> "${METRICS_FILE}"
+          
+          echo "===== HEALTH CHECK ${CHECK_ID} STARTED at $(date) =====" | tee "${STEP_LOG}"
+          
+          python3 /app/rack_resiliency_to_host.py health-check --stabilization-time {{workflow.parameters.stabilization-time-health}} 2>&1 | tee -a "${STEP_LOG}"
+          EXIT_CODE=$?
+          
+          END_TIME=$(date +%s)
+          DURATION=$((END_TIME - START_TIME))
+          STATUS=$([ $EXIT_CODE -eq 0 ] && echo "SUCCESS" || echo "FAILED")
+          
+          echo "HEALTH_CHECK_${CHECK_ID},${START_TIME},${END_TIME},${DURATION},${STATUS}" >> "${TIMING_FILE}"
+          echo "HEALTH_CHECK_${CHECK_ID}_END_EPOCH=${END_TIME}" >> "${METRICS_FILE}"
+          echo "HEALTH_CHECK_${CHECK_ID}_DURATION_SECONDS=${DURATION}" >> "${METRICS_FILE}"
+          echo "HEALTH_CHECK_${CHECK_ID}_STATUS=${STATUS}" >> "${METRICS_FILE}"
+          
+          echo "===== HEALTH CHECK ${CHECK_ID} COMPLETED in ${DURATION}s (${STATUS}) =====" | tee -a "${STEP_LOG}"
+      
+      env:
+      - name: PYTHONUNBUFFERED
+        value: "1"
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+      
+      volumeMounts:
+      - name: log-vol
+        mountPath: /app/logs
+    
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+  # =============================================
+  # NODE SIMULATION TEMPLATE
+  # =============================================
+  - name: run-node-simulation
+    container:
+      image: kushsahni1/chaos-sim:latest
+      imagePullPolicy: Always
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      
+      command: ["/bin/bash", "-c"]
+      args:
+        - |
+          set -e
+          
+          export RUN_ID="argo-{{workflow.name}}"
+          export LOG_DIR="/app/logs/${RUN_ID}"
+          export METRICS_FILE="${LOG_DIR}/metrics.txt"
+          export TIMING_FILE="${LOG_DIR}/timing.csv"
+          export STEP_LOG="${LOG_DIR}/node_simulation.log"
+          
+          START_TIME=$(date +%s)
+          
+          echo "NODE_SIM_START_EPOCH=${START_TIME}" >> "${METRICS_FILE}"
+          
+          echo "===== NODE FAILURE SIMULATION STARTED at $(date) =====" | tee "${STEP_LOG}"
+          
+          python3 /app/rack_resiliency_to_host.py simulate-node --stabilization-time {{workflow.parameters.stabilization-time-node}} 2>&1 | tee -a "${STEP_LOG}"
+          EXIT_CODE=$?
+          
+          END_TIME=$(date +%s)
+          DURATION=$((END_TIME - START_TIME))
+          STATUS=$([ $EXIT_CODE -eq 0 ] && echo "SUCCESS" || echo "FAILED")
+          
+          echo "NODE_SIMULATION,${START_TIME},${END_TIME},${DURATION},${STATUS}" >> "${TIMING_FILE}"
+          echo "NODE_SIM_END_EPOCH=${END_TIME}" >> "${METRICS_FILE}"
+          echo "NODE_SIM_DURATION_SECONDS=${DURATION}" >> "${METRICS_FILE}"
+          echo "NODE_SIM_STATUS=${STATUS}" >> "${METRICS_FILE}"
+          
+          echo "===== NODE FAILURE SIMULATION COMPLETED in ${DURATION}s (${STATUS}) =====" | tee -a "${STEP_LOG}"
+      
+      env:
+      - name: PYTHONUNBUFFERED
+        value: "1"
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+      
+      volumeMounts:
+      - name: log-vol
+        mountPath: /app/logs
+    
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+  # =============================================
+  # RACK SIMULATION TEMPLATE
+  # =============================================
+  - name: run-rack-simulation
+    container:
+      image: kushsahni1/chaos-sim:latest
+      imagePullPolicy: Always
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      
+      command: ["/bin/bash", "-c"]
+      args:
+        - |
+          set -e
+          
+          export RUN_ID="argo-{{workflow.name}}"
+          export LOG_DIR="/app/logs/${RUN_ID}"
+          export METRICS_FILE="${LOG_DIR}/metrics.txt"
+          export TIMING_FILE="${LOG_DIR}/timing.csv"
+          export STEP_LOG="${LOG_DIR}/rack_simulation.log"
+          
+          START_TIME=$(date +%s)
+          
+          echo "RACK_SIM_START_EPOCH=${START_TIME}" >> "${METRICS_FILE}"
+          
+          echo "===== RACK FAILURE SIMULATION STARTED at $(date) =====" | tee "${STEP_LOG}"
+          
+          python3 /app/rack_resiliency_to_host.py simulate-rack --stabilization-time {{workflow.parameters.stabilization-time-rack}} --downtime {{workflow.parameters.downtime-rack}} 2>&1 | tee -a "${STEP_LOG}"
+          EXIT_CODE=$?
+          
+          END_TIME=$(date +%s)
+          DURATION=$((END_TIME - START_TIME))
+          STATUS=$([ $EXIT_CODE -eq 0 ] && echo "SUCCESS" || echo "FAILED")
+          
+          echo "RACK_SIMULATION,${START_TIME},${END_TIME},${DURATION},${STATUS}" >> "${TIMING_FILE}"
+          echo "RACK_SIM_END_EPOCH=${END_TIME}" >> "${METRICS_FILE}"
+          echo "RACK_SIM_DURATION_SECONDS=${DURATION}" >> "${METRICS_FILE}"
+          echo "RACK_SIM_STATUS=${STATUS}" >> "${METRICS_FILE}"
+          
+          echo "===== RACK FAILURE SIMULATION COMPLETED in ${DURATION}s (${STATUS}) =====" | tee -a "${STEP_LOG}"
+      
+      env:
+      - name: PYTHONUNBUFFERED
+        value: "1"
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+      
+      volumeMounts:
+      - name: log-vol
+        mountPath: /app/logs
+    
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+  # =============================================
+  # FINALIZE METRICS TEMPLATE
+  # =============================================
+  - name: finalize-metrics
+    container:
+      image: kushsahni1/chaos-sim:latest
+      imagePullPolicy: Always
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      
+      command: ["/bin/bash", "-c"]
+      args:
+        - |
+          set -e
+          
+          export RUN_ID="argo-{{workflow.name}}"
+          export LOG_DIR="/app/logs/${RUN_ID}"
+          export METRICS_FILE="${LOG_DIR}/metrics.txt"
+          export TIMING_FILE="${LOG_DIR}/timing.csv"
+          
+          WORKFLOW_END=$(date +%s)
+          
+          # Get workflow start from metrics file
+          WORKFLOW_START=$(grep "WORKFLOW_START_EPOCH=" "${METRICS_FILE}" | cut -d'=' -f2)
+          TOTAL_DURATION=$((WORKFLOW_END - WORKFLOW_START))
+          
+          # Add final metrics
+          cat >> "${METRICS_FILE}" << EOF
+          
+          # Final Summary
+          WORKFLOW_END_EPOCH=${WORKFLOW_END}
+          WORKFLOW_END_ISO=$(date -d @${WORKFLOW_END} '+%Y-%m-%dT%H:%M:%S%z' 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')
+          TOTAL_DURATION_SECONDS=${TOTAL_DURATION}
+          TOTAL_DURATION_FORMATTED=$(printf '%02d:%02d:%02d' $((TOTAL_DURATION/3600)) $((TOTAL_DURATION%3600/60)) $((TOTAL_DURATION%60)))
+          WORKFLOW_STATUS=Completed
+          EOF
+          
+          # Create combined log
+          COMBINED_LOG="${LOG_DIR}/full_execution.log"
+          echo "===== ARGO WORKFLOWS RESILIENCE SIMULATION COMBINED LOG =====" > "${COMBINED_LOG}"
+          echo "Run ID: ${RUN_ID}" >> "${COMBINED_LOG}"
+          echo "Workflow: {{workflow.name}}" >> "${COMBINED_LOG}"
+          echo "Generated: $(date)" >> "${COMBINED_LOG}"
+          echo "" >> "${COMBINED_LOG}"
+          
+          for log_file in health_check_1 health_check_2 health_check_3 node_simulation health_check_interim rack_simulation health_check_final; do
+            if [ -f "${LOG_DIR}/${log_file}.log" ]; then
+              echo "" >> "${COMBINED_LOG}"
+              echo "===== ${log_file} =====" >> "${COMBINED_LOG}"
+              cat "${LOG_DIR}/${log_file}.log" >> "${COMBINED_LOG}"
+            fi
+          done
+          
+          # Print summary
+          echo ""
+          echo "===== WORKFLOW SUMMARY ====="
+          echo "Run ID: ${RUN_ID}"
+          echo "Total Duration: ${TOTAL_DURATION} seconds ($(printf '%02d:%02d:%02d' $((TOTAL_DURATION/3600)) $((TOTAL_DURATION%3600/60)) $((TOTAL_DURATION%60))))"
+          echo ""
+          echo "===== TIMING DATA ====="
+          cat "${TIMING_FILE}"
+          echo ""
+          echo "===== METRICS ====="
+          cat "${METRICS_FILE}"
+          
+          # Fix permissions
+          chmod -R 755 "${LOG_DIR}"
+          chown -R 1000:1000 "${LOG_DIR}" 2>/dev/null || true
+          
+          echo ""
+          echo "✅ Argo Workflow completed successfully!"
+          echo "📁 Logs saved to: ${LOG_DIR}"
+      
+      env:
+      - name: PYTHONUNBUFFERED
+        value: "1"
+      
+      volumeMounts:
+      - name: log-vol
+        mountPath: /app/logs
+    
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+
+  # =============================================
+  # SHARED VOLUME
+  # =============================================
+  volumes:
+  - name: log-vol
+    hostPath:
+      path: /home/vagrant/argo-logs/resilience-sim-combined
+      type: DirectoryOrCreate
+

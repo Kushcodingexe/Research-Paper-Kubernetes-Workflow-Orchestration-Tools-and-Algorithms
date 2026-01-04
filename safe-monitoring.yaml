@@ -1,0 +1,59 @@
+# 1. Prometheus (The Database)
+# - Pinned to master-m003 to survive worker node crashes
+prometheus:
+  prometheusSpec:
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+
+# 2. Grafana (The Dashboard)
+# - Pinned to master-m003
+# - Exposes port 30000+ so you can access it
+grafana:
+  # OPEN THE DOOR (Fixes "ClusterIP" issue)
+  service:
+    type: NodePort
+  
+  # Pin to Master Node
+  nodeSelector:
+    kubernetes.io/hostname: master-m003
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+    - key: node-role.kubernetes.io/master
+      operator: Exists
+      effect: NoSchedule
+
+# 3. Alertmanager (Notifications)
+# - Pinned to master-m003
+alertmanager:
+  alertmanagerSpec:
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+
+# 4. Kube-State-Metrics (Cluster Stats)
+# - Pinned to master-m003
+kube-state-metrics:
+  nodeSelector:
+    kubernetes.io/hostname: master-m003
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
+    - key: node-role.kubernetes.io/master
+      operator: Exists
+      effect: NoSchedule

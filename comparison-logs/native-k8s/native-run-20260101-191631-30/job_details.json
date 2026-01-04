@@ -1,0 +1,163 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "creationTimestamp": "2026-01-01T13:46:31Z",
+        "generation": 1,
+        "labels": {
+            "app": "resilience-simulation",
+            "platform": "native-kubernetes"
+        },
+        "name": "resilience-bench-30-191631",
+        "namespace": "default",
+        "resourceVersion": "1309768",
+        "uid": "d6f108d3-8ccb-4ee1-8223-9d132153adeb"
+    },
+    "spec": {
+        "backoffLimit": 0,
+        "completionMode": "NonIndexed",
+        "completions": 1,
+        "manualSelector": false,
+        "parallelism": 1,
+        "podReplacementPolicy": "TerminatingOrFailed",
+        "selector": {
+            "matchLabels": {
+                "batch.kubernetes.io/controller-uid": "d6f108d3-8ccb-4ee1-8223-9d132153adeb"
+            }
+        },
+        "suspend": false,
+        "template": {
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "resilience-simulation",
+                    "batch.kubernetes.io/controller-uid": "d6f108d3-8ccb-4ee1-8223-9d132153adeb",
+                    "batch.kubernetes.io/job-name": "resilience-bench-30-191631",
+                    "controller-uid": "d6f108d3-8ccb-4ee1-8223-9d132153adeb",
+                    "job-name": "resilience-bench-30-191631",
+                    "platform": "native-kubernetes"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "set -e\n\n# ===== CONFIGURATION =====\nexport RUN_ID=\"native-$(date +%Y%m%d-%H%M%S)-${POD_NAME##*-}\"\nexport LOG_DIR=\"/app/logs/${RUN_ID}\"\nexport LOG_FILE=\"${LOG_DIR}/full_execution.log\"\nexport METRICS_FILE=\"${LOG_DIR}/metrics.txt\"\nexport TIMING_FILE=\"${LOG_DIR}/timing.csv\"\n\nmkdir -p \"${LOG_DIR}\"\n\n# ===== LOGGING HELPERS =====\nlog() {\n    local msg=\"[$(date '+%Y-%m-%d %H:%M:%S')] $1\"\n    echo \"$msg\" | tee -a \"${LOG_FILE}\"\n}\n\nlog_section() {\n    echo \"\" | tee -a \"${LOG_FILE}\"\n    echo \"================================================================\" | tee -a \"${LOG_FILE}\"\n    echo \" $1\" | tee -a \"${LOG_FILE}\"\n    echo \" Time: $(date '+%Y-%m-%d %H:%M:%S')\" | tee -a \"${LOG_FILE}\"\n    echo \"================================================================\" | tee -a \"${LOG_FILE}\"\n}\n\nrecord_timing() {\n    local step=\"$1\"\n    local start=\"$2\"\n    local end=\"$3\"\n    local duration=$((end - start))\n    echo \"${step},${start},${end},${duration}\" \u003e\u003e \"${TIMING_FILE}\"\n    log \"TIMING: ${step} completed in ${duration} seconds\"\n}\n\n# ===== INITIALIZE METRICS =====\nWORKFLOW_START=$(date +%s)\n\n# CSV Header for timing\necho \"step,start_epoch,end_epoch,duration_seconds\" \u003e \"${TIMING_FILE}\"\n\n# Metrics file header\ncat \u003e \"${METRICS_FILE}\" \u003c\u003c EOF\n# Resilience Simulation Metrics - Native Kubernetes Job\n# Generated: $(date '+%Y-%m-%d %H:%M:%S')\n\nPLATFORM=Native_Kubernetes\nRUN_ID=${RUN_ID}\nNODE_NAME=${NODE_NAME}\nPOD_NAME=${POD_NAME}\nWORKFLOW_START_EPOCH=${WORKFLOW_START}\nWORKFLOW_START_ISO=$(date -d @${WORKFLOW_START} '+%Y-%m-%dT%H:%M:%S%z' 2\u003e/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')\nEOF\n\nlog_section \"INITIALIZATION\"\nlog \"Run ID: ${RUN_ID}\"\nlog \"Platform: Native Kubernetes Job\"\nlog \"Node: ${NODE_NAME}\"\nlog \"Pod: ${POD_NAME}\"\nlog \"Log Directory: ${LOG_DIR}\"\n\n# ===== STEP 1: PARALLEL HEALTH CHECKS =====\nlog_section \"STEP 1: PARALLEL HEALTH CHECKS (3x)\"\n\nHEALTH_CHECK_START=$(date +%s)\necho \"HEALTH_CHECK_START_EPOCH=${HEALTH_CHECK_START}\" \u003e\u003e \"${METRICS_FILE}\"\n\n# Create temp files for parallel execution output\nHC_LOG1=\"/tmp/health_check_1.log\"\nHC_LOG2=\"/tmp/health_check_2.log\"\nHC_LOG3=\"/tmp/health_check_3.log\"\n\nlog \"Starting 3 parallel health checks...\"\n\n# Run 3 health checks in parallel\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time 10 \u003e \"${HC_LOG1}\" 2\u003e\u00261 \u0026\nPID1=$!\n\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time 10 \u003e \"${HC_LOG2}\" 2\u003e\u00261 \u0026\nPID2=$!\n\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time 10 \u003e \"${HC_LOG3}\" 2\u003e\u00261 \u0026\nPID3=$!\n\n# Wait for all to complete\nwait $PID1 \u0026\u0026 HC1_STATUS=\"SUCCESS\" || HC1_STATUS=\"FAILED\"\nwait $PID2 \u0026\u0026 HC2_STATUS=\"SUCCESS\" || HC2_STATUS=\"FAILED\"\nwait $PID3 \u0026\u0026 HC3_STATUS=\"SUCCESS\" || HC3_STATUS=\"FAILED\"\n\nHEALTH_CHECK_END=$(date +%s)\n\n# Append health check logs to main log\nlog \"--- Health Check 1 Output (${HC1_STATUS}) ---\"\ncat \"${HC_LOG1}\" \u003e\u003e \"${LOG_FILE}\"\nlog \"--- Health Check 2 Output (${HC2_STATUS}) ---\"\ncat \"${HC_LOG2}\" \u003e\u003e \"${LOG_FILE}\"\nlog \"--- Health Check 3 Output (${HC3_STATUS}) ---\"\ncat \"${HC_LOG3}\" \u003e\u003e \"${LOG_FILE}\"\n\nrecord_timing \"HEALTH_CHECKS_PARALLEL\" \"${HEALTH_CHECK_START}\" \"${HEALTH_CHECK_END}\"\n\necho \"HEALTH_CHECK_END_EPOCH=${HEALTH_CHECK_END}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"HEALTH_CHECK_DURATION_SECONDS=$((HEALTH_CHECK_END - HEALTH_CHECK_START))\" \u003e\u003e \"${METRICS_FILE}\"\necho \"HEALTH_CHECK_1_STATUS=${HC1_STATUS}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"HEALTH_CHECK_2_STATUS=${HC2_STATUS}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"HEALTH_CHECK_3_STATUS=${HC3_STATUS}\" \u003e\u003e \"${METRICS_FILE}\"\n\n# ===== STEP 2: NODE FAILURE SIMULATION =====\nlog_section \"STEP 2: NODE FAILURE SIMULATION\"\n\nNODE_SIM_START=$(date +%s)\necho \"NODE_SIM_START_EPOCH=${NODE_SIM_START}\" \u003e\u003e \"${METRICS_FILE}\"\n\nlog \"Starting node failure simulation (stabilization: 60s)...\"\n\npython3 /app/rack_resiliency_to_host.py simulate-node --stabilization-time 60 2\u003e\u00261 | tee -a \"${LOG_FILE}\"\nNODE_SIM_STATUS=$?\n\nNODE_SIM_END=$(date +%s)\nrecord_timing \"NODE_SIMULATION\" \"${NODE_SIM_START}\" \"${NODE_SIM_END}\"\n\necho \"NODE_SIM_END_EPOCH=${NODE_SIM_END}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"NODE_SIM_DURATION_SECONDS=$((NODE_SIM_END - NODE_SIM_START))\" \u003e\u003e \"${METRICS_FILE}\"\necho \"NODE_SIM_STATUS=$([ $NODE_SIM_STATUS -eq 0 ] \u0026\u0026 echo 'SUCCESS' || echo 'FAILED')\" \u003e\u003e \"${METRICS_FILE}\"\n\n# ===== STEP 3: INTERIM HEALTH CHECK =====\nlog_section \"STEP 3: INTERIM HEALTH CHECK\"\n\nINTERIM_HC_START=$(date +%s)\necho \"INTERIM_HC_START_EPOCH=${INTERIM_HC_START}\" \u003e\u003e \"${METRICS_FILE}\"\n\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time 10 2\u003e\u00261 | tee -a \"${LOG_FILE}\"\n\nINTERIM_HC_END=$(date +%s)\nrecord_timing \"INTERIM_HEALTH_CHECK\" \"${INTERIM_HC_START}\" \"${INTERIM_HC_END}\"\n\necho \"INTERIM_HC_END_EPOCH=${INTERIM_HC_END}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"INTERIM_HC_DURATION_SECONDS=$((INTERIM_HC_END - INTERIM_HC_START))\" \u003e\u003e \"${METRICS_FILE}\"\n\n# ===== STEP 4: RACK FAILURE SIMULATION =====\nlog_section \"STEP 4: RACK FAILURE SIMULATION\"\n\nRACK_SIM_START=$(date +%s)\necho \"RACK_SIM_START_EPOCH=${RACK_SIM_START}\" \u003e\u003e \"${METRICS_FILE}\"\n\nlog \"Starting rack failure simulation (stabilization: 120s, downtime: 60s)...\"\n\npython3 /app/rack_resiliency_to_host.py simulate-rack --stabilization-time 120 --downtime 60 2\u003e\u00261 | tee -a \"${LOG_FILE}\"\nRACK_SIM_STATUS=$?\n\nRACK_SIM_END=$(date +%s)\nrecord_timing \"RACK_SIMULATION\" \"${RACK_SIM_START}\" \"${RACK_SIM_END}\"\n\necho \"RACK_SIM_END_EPOCH=${RACK_SIM_END}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"RACK_SIM_DURATION_SECONDS=$((RACK_SIM_END - RACK_SIM_START))\" \u003e\u003e \"${METRICS_FILE}\"\necho \"RACK_SIM_STATUS=$([ $RACK_SIM_STATUS -eq 0 ] \u0026\u0026 echo 'SUCCESS' || echo 'FAILED')\" \u003e\u003e \"${METRICS_FILE}\"\n\n# ===== STEP 5: FINAL HEALTH CHECK =====\nlog_section \"STEP 5: FINAL HEALTH CHECK\"\n\nFINAL_HC_START=$(date +%s)\necho \"FINAL_HC_START_EPOCH=${FINAL_HC_START}\" \u003e\u003e \"${METRICS_FILE}\"\n\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time 10 2\u003e\u00261 | tee -a \"${LOG_FILE}\"\n\nFINAL_HC_END=$(date +%s)\nrecord_timing \"FINAL_HEALTH_CHECK\" \"${FINAL_HC_START}\" \"${FINAL_HC_END}\"\n\necho \"FINAL_HC_END_EPOCH=${FINAL_HC_END}\" \u003e\u003e \"${METRICS_FILE}\"\necho \"FINAL_HC_DURATION_SECONDS=$((FINAL_HC_END - FINAL_HC_START))\" \u003e\u003e \"${METRICS_FILE}\"\n\n# ===== WORKFLOW COMPLETE =====\nWORKFLOW_END=$(date +%s)\nTOTAL_DURATION=$((WORKFLOW_END - WORKFLOW_START))\n\nlog_section \"WORKFLOW COMPLETE\"\nlog \"Total Duration: ${TOTAL_DURATION} seconds\"\nlog \"Log files saved to: ${LOG_DIR}\"\n\n# Final metrics\ncat \u003e\u003e \"${METRICS_FILE}\" \u003c\u003c EOF\n\n# Final Summary\nWORKFLOW_END_EPOCH=${WORKFLOW_END}\nWORKFLOW_END_ISO=$(date -d @${WORKFLOW_END} '+%Y-%m-%dT%H:%M:%S%z' 2\u003e/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')\nTOTAL_DURATION_SECONDS=${TOTAL_DURATION}\nTOTAL_DURATION_FORMATTED=$(printf '%02d:%02d:%02d' $((TOTAL_DURATION/3600)) $((TOTAL_DURATION%3600/60)) $((TOTAL_DURATION%60)))\nEOF\n\n# Print summary\nlog \"\"\nlog \"===== TIMING SUMMARY =====\"\ncat \"${TIMING_FILE}\" | tee -a \"${LOG_FILE}\"\nlog \"\"\nlog \"===== METRICS SUMMARY =====\"\ncat \"${METRICS_FILE}\" | tee -a \"${LOG_FILE}\"\n\n# Fix permissions for vagrant user\nchmod -R 755 \"${LOG_DIR}\"\nchown -R 1000:1000 \"${LOG_DIR}\" 2\u003e/dev/null || true\n\nlog \"Native Kubernetes Job completed successfully!\"\n"
+                        ],
+                        "command": [
+                            "/bin/bash",
+                            "-c"
+                        ],
+                        "env": [
+                            {
+                                "name": "PYTHONUNBUFFERED",
+                                "value": "1"
+                            },
+                            {
+                                "name": "NODE_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "spec.nodeName"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POD_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.name"
+                                    }
+                                }
+                            }
+                        ],
+                        "image": "kushsahni1/chaos-sim:latest",
+                        "imagePullPolicy": "Always",
+                        "name": "resilience-controller",
+                        "resources": {
+                            "limits": {
+                                "cpu": "500m",
+                                "memory": "512Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "256Mi"
+                            }
+                        },
+                        "securityContext": {
+                            "runAsGroup": 0,
+                            "runAsUser": 0
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/app/logs",
+                                "name": "log-vol"
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "chaos-admin",
+                "serviceAccountName": "chaos-admin",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoSchedule",
+                        "key": "node-role.kubernetes.io/control-plane",
+                        "operator": "Exists"
+                    },
+                    {
+                        "effect": "NoSchedule",
+                        "key": "node-role.kubernetes.io/master",
+                        "operator": "Exists"
+                    }
+                ],
+                "volumes": [
+                    {
+                        "hostPath": {
+                            "path": "/home/vagrant/k8s-sim-logs/native-runs",
+                            "type": "DirectoryOrCreate"
+                        },
+                        "name": "log-vol"
+                    }
+                ]
+            }
+        },
+        "ttlSecondsAfterFinished": 86400
+    },
+    "status": {
+        "completionTime": "2026-01-01T13:55:16Z",
+        "conditions": [
+            {
+                "lastProbeTime": "2026-01-01T13:55:16Z",
+                "lastTransitionTime": "2026-01-01T13:55:16Z",
+                "message": "Reached expected number of succeeded pods",
+                "reason": "CompletionsReached",
+                "status": "True",
+                "type": "SuccessCriteriaMet"
+            },
+            {
+                "lastProbeTime": "2026-01-01T13:55:16Z",
+                "lastTransitionTime": "2026-01-01T13:55:16Z",
+                "message": "Reached expected number of succeeded pods",
+                "reason": "CompletionsReached",
+                "status": "True",
+                "type": "Complete"
+            }
+        ],
+        "ready": 0,
+        "startTime": "2026-01-01T13:46:31Z",
+        "succeeded": 1,
+        "terminating": 0,
+        "uncountedTerminatedPods": {}
+    }
+}

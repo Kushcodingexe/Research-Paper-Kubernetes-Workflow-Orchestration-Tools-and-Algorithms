@@ -1,0 +1,123 @@
+===== GITHUB ACTIONS RESILIENCE SIMULATION =====
+Run ID: gha-bench-20260104-062751-100
+Start: Sun Jan  4 06:28:02 AM IST 2026
+End: Sun Jan  4 06:39:24 AM IST 2026
+Duration: 682 seconds
+
+
+===== health_check_1.log =====
+===== HEALTH CHECK 1 STARTED at Sun Jan  4 06:29:18 AM IST 2026 =====
+===== HEALTH CHECK 1 =====
+Log directory created/verified: /app/logs
+File logging configured successfully
+2026-01-04 00:59:22,573 [INFO] Loaded in-cluster Kubernetes config
+2026-01-04 00:59:22,574 [INFO] Running on host: gha-hc1-100-4ndkc
+2026-01-04 00:59:22,574 [INFO] Detected current node: master-m003, zone: R3
+2026-01-04 00:59:22,574 [INFO] Checking if we have permissions to modify nodes...
+2026-01-04 00:59:22,606 [INFO] Testing permissions using node: master-m001
+2026-01-04 00:59:22,612 [INFO] Permission check successful - we can modify nodes
+2026-01-04 00:59:22,613 [INFO] Using real Kubernetes API for node control
+2026-01-04 00:59:22,614 [INFO] Action received: health-check
+2026-01-04 00:59:22,614 [INFO] Stabilization time: 10 seconds
+2026-01-04 00:59:22,614 [INFO] Starting full health check
+2026-01-04 00:59:22,614 [INFO] 
+============ DETAILED NODE STATUS ============
+2026-01-04 00:59:22,614 [INFO] Basic Node Information (kubectl get nodes -o wide):
+2026-01-04 00:59:22,683 [INFO]   NAME          STATUS   ROLES           AGE   VERSION    INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+2026-01-04 00:59:22,683 [INFO]   master-m001   Ready    control-plane   9d    v1.32.11   192.168.56.101   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2026-01-04 00:59:22,683 [INFO]   master-m002   Ready    control-plane   9d    v1.32.11   192.168.56.102   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2026-01-04 00:59:22,683 [INFO]   master-m003   Ready    control-plane   9d    v1.32.11   192.168.56.103   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2026-01-04 00:59:22,683 [INFO]   worker-w001   Ready    <none>          9d    v1.32.11   192.168.56.104   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2026-01-04 00:59:22,683 [INFO]   worker-w002   Ready    <none>          9d    v1.32.11   192.168.56.105   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2026-01-04 00:59:22,683 [INFO]   worker-w003   Ready    <none>          9d    v1.32.11   192.168.56.106   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2026-01-04 00:59:22,683 [INFO]   worker-w004   Ready    <none>          9d    v1.32.11   192.168.56.107   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2026-01-04 00:59:22,683 [INFO]   worker-w005   Ready    <none>          9d    v1.32.11   192.168.56.108   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2026-01-04 00:59:22,683 [INFO]   worker-w006   Ready    <none>          9d    v1.32.11   192.168.56.109   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2026-01-04 00:59:22,683 [INFO] 
+Enhanced Node Status (with taint and cordon indicators):
+2026-01-04 00:59:22,684 [INFO]   NAME                STATUS    ROLES           ZONE   CORDONED   TAINTS
+2026-01-04 00:59:22,947 [INFO]   master-m001     Ready  ✓ worker         R1    No       node-role.kubernetes.io/control-plane 
+2026-01-04 00:59:23,135 [INFO]   master-m002     Ready  ✓ worker         R2    No       None 
+2026-01-04 00:59:23,318 [INFO]   master-m003     Ready  ✓ worker         R3    No       None 
+2026-01-04 00:59:23,495 [INFO]   worker-w001     Ready  ✓ worker         R1    No       None 
+2026-01-04 00:59:23,654 [INFO]   worker-w002     Ready  ✓ worker         R1    No       None 
+2026-01-04 00:59:23,774 [INFO]   worker-w003     Ready  ✓ worker         R2    No       None 
+2026-01-04 00:59:23,919 [INFO]   worker-w004     Ready  ✓ worker         R2    No       None 
+2026-01-04 00:59:24,087 [INFO]   worker-w005     Ready  ✓ worker         R3    No       None 
+2026-01-04 00:59:24,279 [INFO]   worker-w006     Ready  ✓ worker         R3    No       None 
+2026-01-04 00:59:24,280 [INFO] 
+Legend:
+2026-01-04 00:59:24,280 [INFO]   ✓ = Node is Ready
+2026-01-04 00:59:24,280 [INFO]   ⚠️ = Warning indicator (NotReady, Cordoned, or has simulated-failure taint)
+2026-01-04 00:59:24,281 [INFO] ============ DETAILED POD INFORMATION ============
+2026-01-04 00:59:24,281 [INFO] Running 'kubectl get pods -o wide' to show detailed pod placement:
+2026-01-04 00:59:24,383 [INFO]   NAMESPACE     NAME                                                    READY   STATUS      RESTARTS      AGE     IP                NODE          NOMINATED NODE   READINESS GATES
+2026-01-04 00:59:24,384 [INFO]   argo          argo-server-5c69cb69db-gdkl6                            1/1     Running     0             6d10h   192.168.221.65    master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          resilience-bench-ptngm-initialize-metrics-940927476     0/2     Completed   0             27h     192.168.221.125   master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          resilience-bench-ptngm-run-health-check-1168793163      0/2     Completed   0             27h     192.168.221.67    master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          resilience-bench-ptngm-run-health-check-1185570782      0/2     Completed   0             27h     192.168.221.66    master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          resilience-bench-ptngm-run-health-check-1202348401      0/2     Completed   0             27h     192.168.221.122   master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          resilience-bench-wf87f-initialize-metrics-3677018408    0/2     Completed   0             28h     192.168.221.100   master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          resilience-bench-wf87f-run-health-check-2914150102      0/2     Completed   0             28h     192.168.221.105   master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          resilience-bench-wf87f-run-health-check-3931060015      0/2     Completed   0             28h     192.168.221.104   master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          resilience-bench-wf87f-run-health-check-3947837634      0/2     Completed   0             28h     192.168.221.98    master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          resilience-bench-wf87f-run-health-check-3964615253      0/2     Completed   0             28h     192.168.221.103   master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          resilience-bench-wf87f-run-node-simulation-4173146970   0/2     Completed   0             28h     192.168.221.101   master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          resilience-bench-wf87f-run-rack-simulation-1356070019   0/2     Completed   0             28h     192.168.221.109   master-m003   <none>           <none>
+2026-01-04 00:59:24,384 [INFO]   argo          workflow-controller-ccbd949dc-pxkms                     1/1     Running     0             87m     192.168.195.242   worker-w002   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   default       gha-hc1-100-4ndkc                                       1/1     Running     0             6s      192.168.221.76    master-m003   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   calico-kube-controllers-7498b9bb4c-xd7tb                1/1     Running     0             35m     192.168.191.108   worker-w006   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   calico-node-4zhd4                                       1/1     Running     0             9d      192.168.56.105    worker-w002   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   calico-node-75nx6                                       1/1     Running     0             9d      192.168.56.109    worker-w006   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   calico-node-7lkdq                                       1/1     Running     0             9d      192.168.56.104    worker-w001   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   calico-node-85f8c                                       1/1     Running     0             9d      192.168.56.102    master-m002   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   calico-node-j8nb9                                       1/1     Running     0             9d      192.168.56.101    master-m001   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   calico-node-lbcb2                                       1/1     Running     0             9d      192.168.56.106    worker-w003   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   calico-node-wlr5v                                       1/1     Running     0             9d      192.168.56.107    worker-w004   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   calico-node-xnzjw                                       1/1     Running     0             9d      192.168.56.103    master-m003   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   calico-node-xsltn                                       1/1     Running     0             9d      192.168.56.108    worker-w005   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   coredns-668d6bf9bc-2f74f                                1/1     Running     0             126m    192.168.15.230    worker-w005   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   coredns-668d6bf9bc-ssl9h                                1/1     Running     0             87m     192.168.132.165   worker-w001   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   etcd-master-m001                                        1/1     Running     0             9d      192.168.56.101    master-m001   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   kube-apiserver-master-m001                              1/1     Running     1 (21h ago)   9d      192.168.56.101    master-m001   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   kube-controller-manager-master-m001                     1/1     Running     8 (21h ago)   9d      192.168.56.101    master-m001   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   kube-proxy-5lzhj                                        1/1     Running     0             9d      192.168.56.102    master-m002   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   kube-proxy-7jqkv                                        1/1     Running     0             9d      192.168.56.109    worker-w006   <none>           <none>
+2026-01-04 00:59:24,385 [INFO]   kube-system   kube-proxy-cv5dt                                        1/1     Running     0             9d      192.168.56.108    worker-w005   <none>           <none>
+2026-01-04 00:59:24,386 [INFO]   kube-system   kube-proxy-fvpmr                                        1/1     Running     0             9d      192.168.56.101    master-m001   <none>           <none>
+2026-01-04 00:59:24,386 [INFO]   kube-system   kube-proxy-hgs5z                                        1/1     Running     0             9d      192.168.56.106    worker-w003   <none>           <none>
+2026-01-04 00:59:24,386 [INFO]   kube-system   kube-proxy-kmgqr                                        1/1     Running     0             9d      192.168.56.105    worker-w002   <none>           <none>
+2026-01-04 00:59:24,386 [INFO]   kube-system   kube-proxy-rdbz5                                        1/1     Running     0             9d      192.168.56.107    worker-w004   <none>           <none>
+2026-01-04 00:59:24,386 [INFO]   kube-system   kube-proxy-w8mnb                                        1/1     Running     0             9d      192.168.56.103    master-m003   <none>           <none>
+2026-01-04 00:59:24,386 [INFO]   kube-system   kube-proxy-x9jxr                                        1/1     Running     0             9d      192.168.56.104    worker-w001   <none>           <none>
+2026-01-04 00:59:24,386 [INFO]   kube-system   kube-scheduler-master-m001                              1/1     Running     8 (21h ago)   9d      192.168.56.101    master-m001   <none>           <none>
+2026-01-04 00:59:24,386 [INFO] 
+Pod distribution by node:
+2026-01-04 00:59:24,488 [INFO]   Node master-m003: 15 pods
+2026-01-04 00:59:24,489 [INFO]   Node worker-w002: 3 pods
+2026-01-04 00:59:24,489 [INFO]   Node worker-w006: 3 pods
+2026-01-04 00:59:24,489 [INFO]   Node worker-w001: 3 pods
+2026-01-04 00:59:24,489 [INFO]   Node master-m002: 2 pods
+2026-01-04 00:59:24,489 [INFO]   Node master-m001: 3 pods
+2026-01-04 00:59:24,489 [INFO]   Node worker-w003: 2 pods
+2026-01-04 00:59:24,489 [INFO]   Node worker-w004: 2 pods
+2026-01-04 00:59:24,489 [INFO]   Node worker-w005: 3 pods
+2026-01-04 00:59:24,490 [INFO]   Node 9d: 3 pods
+2026-01-04 00:59:24,490 [INFO] 
+Filtering for simulation services:
+2026-01-04 00:59:24,576 [INFO] Node master-m001 is Ready
+2026-01-04 00:59:24,576 [INFO] Node master-m002 is Ready
+2026-01-04 00:59:24,576 [INFO] Node master-m003 is Ready
+2026-01-04 00:59:24,576 [INFO] Node worker-w001 is Ready
+2026-01-04 00:59:24,577 [INFO] Node worker-w002 is Ready
+2026-01-04 00:59:24,577 [INFO] Node worker-w003 is Ready
+2026-01-04 00:59:24,577 [INFO] Node worker-w004 is Ready
+2026-01-04 00:59:24,577 [INFO] Node worker-w005 is Ready
+2026-01-04 00:59:24,577 [INFO] Node worker-w006 is Ready
+2026-01-04 00:59:24,580 [WARNING] No pods found for etcd-sim
+2026-01-04 00:59:24,582 [WARNING] No pods found for postgres-sim
+2026-01-04 00:59:24,584 [WARNING] No pods found for redis-sim
+2026-01-04 00:59:24,586 [WARNING] No pods found for nginx-sim
+2026-01-04 00:59:24,588 [WARNING] No pods found for auth-sim
+2026-01-04 00:59:24,589 [INFO] Completed full health check
+===== HEALTH CHECK 1 COMPLETED at Sun Jan  4 06:29:28 AM IST 2026 (SUCCESS) =====

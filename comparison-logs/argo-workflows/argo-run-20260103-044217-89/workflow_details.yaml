@@ -1,0 +1,678 @@
+metadata:
+  annotations:
+    workflows.argoproj.io/description: Combined resilience simulation with comprehensive
+      metrics for comparative analysis
+    workflows.argoproj.io/pod-name-format: v2
+  creationTimestamp: "2026-01-02T23:12:17Z"
+  generateName: resilience-bench-
+  generation: 25
+  labels:
+    app: resilience-simulation
+    platform: argo-workflows
+    workflows.argoproj.io/completed: "true"
+    workflows.argoproj.io/creator: kubernetes-admin
+    workflows.argoproj.io/phase: Succeeded
+  managedFields:
+  - apiVersion: argoproj.io/v1alpha1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:workflows.argoproj.io/description: {}
+        f:generateName: {}
+        f:labels:
+          .: {}
+          f:app: {}
+          f:platform: {}
+          f:workflows.argoproj.io/creator: {}
+      f:spec: {}
+    manager: argo
+    operation: Update
+    time: "2026-01-02T23:12:17Z"
+  - apiVersion: argoproj.io/v1alpha1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          f:workflows.argoproj.io/pod-name-format: {}
+        f:labels:
+          f:workflows.argoproj.io/completed: {}
+          f:workflows.argoproj.io/phase: {}
+      f:status: {}
+    manager: workflow-controller
+    operation: Update
+    time: "2026-01-02T23:27:32Z"
+  name: resilience-bench-95l65
+  namespace: argo
+  resourceVersion: "1631901"
+  uid: b0aa33e7-1de9-4f06-8c12-32b38d1fe7f1
+spec:
+  arguments:
+    parameters:
+    - name: stabilization-time-health
+      value: "10"
+    - name: stabilization-time-node
+      value: "60"
+    - name: stabilization-time-rack
+      value: "120"
+    - name: downtime-rack
+      value: "60"
+  entrypoint: resilience-dag
+  serviceAccountName: argo-workflow
+  templates:
+  - dag:
+      tasks:
+      - arguments: {}
+        name: initialize
+        template: initialize-metrics
+      - arguments:
+          parameters:
+          - name: check-id
+            value: "1"
+        dependencies:
+        - initialize
+        name: health-check-1
+        template: run-health-check
+      - arguments:
+          parameters:
+          - name: check-id
+            value: "2"
+        dependencies:
+        - initialize
+        name: health-check-2
+        template: run-health-check
+      - arguments:
+          parameters:
+          - name: check-id
+            value: "3"
+        dependencies:
+        - initialize
+        name: health-check-3
+        template: run-health-check
+      - arguments: {}
+        dependencies:
+        - health-check-1
+        - health-check-2
+        - health-check-3
+        name: node-simulation
+        template: run-node-simulation
+      - arguments:
+          parameters:
+          - name: check-id
+            value: interim
+        dependencies:
+        - node-simulation
+        name: interim-health-check
+        template: run-health-check
+      - arguments: {}
+        dependencies:
+        - interim-health-check
+        name: rack-simulation
+        template: run-rack-simulation
+      - arguments:
+          parameters:
+          - name: check-id
+            value: final
+        dependencies:
+        - rack-simulation
+        name: final-health-check
+        template: run-health-check
+      - arguments: {}
+        dependencies:
+        - final-health-check
+        name: finalize
+        template: finalize-metrics
+    inputs: {}
+    metadata: {}
+    name: resilience-dag
+    outputs: {}
+  - container:
+      args:
+      - "set -e\n\nexport RUN_ID=\"argo-{{workflow.name}}\"\nexport LOG_DIR=\"/app/logs/${RUN_ID}\"\nexport
+        METRICS_FILE=\"${LOG_DIR}/metrics.txt\"\nexport TIMING_FILE=\"${LOG_DIR}/timing.csv\"\n\nmkdir
+        -p \"${LOG_DIR}\"\n\nWORKFLOW_START=$(date +%s)\n\n# Initialize timing CSV\necho
+        \"step,start_epoch,end_epoch,duration_seconds,status\" > \"${TIMING_FILE}\"\n\n#
+        Initialize metrics file\ncat > \"${METRICS_FILE}\" << EOF\n# Resilience Simulation
+        Metrics - Argo Workflows\n# Generated: $(date '+%Y-%m-%d %H:%M:%S')\n\nPLATFORM=Argo_Workflows\nRUN_ID=${RUN_ID}\nWORKFLOW_NAME={{workflow.name}}\nWORKFLOW_NAMESPACE={{workflow.namespace}}\nWORKFLOW_UID={{workflow.uid}}\nWORKFLOW_START_EPOCH=${WORKFLOW_START}\nWORKFLOW_START_ISO=$(date
+        -d @${WORKFLOW_START} '+%Y-%m-%dT%H:%M:%S%z' 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')\nEOF\n\necho
+        \"✅ Initialized metrics for RUN_ID: ${RUN_ID}\"\necho \"\U0001F4C1 Log directory:
+        ${LOG_DIR}\"\n\n# Save RUN_ID for other steps\necho \"${RUN_ID}\" > /tmp/run_id.txt\n"
+      command:
+      - /bin/bash
+      - -c
+      env:
+      - name: PYTHONUNBUFFERED
+        value: "1"
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+      image: kushsahni1/chaos-sim:latest
+      imagePullPolicy: Always
+      name: ""
+      resources: {}
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0
+      volumeMounts:
+      - mountPath: /app/logs
+        name: log-vol
+    inputs: {}
+    metadata: {}
+    name: initialize-metrics
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    outputs: {}
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+  - container:
+      args:
+      - |
+        set -e
+
+        CHECK_ID="{{inputs.parameters.check-id}}"
+        export RUN_ID="argo-{{workflow.name}}"
+        export LOG_DIR="/app/logs/${RUN_ID}"
+        export METRICS_FILE="${LOG_DIR}/metrics.txt"
+        export TIMING_FILE="${LOG_DIR}/timing.csv"
+        export STEP_LOG="${LOG_DIR}/health_check_${CHECK_ID}.log"
+
+        START_TIME=$(date +%s)
+
+        echo "HEALTH_CHECK_${CHECK_ID}_START_EPOCH=${START_TIME}" >> "${METRICS_FILE}"
+
+        echo "===== HEALTH CHECK ${CHECK_ID} STARTED at $(date) =====" | tee "${STEP_LOG}"
+
+        python3 /app/rack_resiliency_to_host.py health-check --stabilization-time {{workflow.parameters.stabilization-time-health}} 2>&1 | tee -a "${STEP_LOG}"
+        EXIT_CODE=$?
+
+        END_TIME=$(date +%s)
+        DURATION=$((END_TIME - START_TIME))
+        STATUS=$([ $EXIT_CODE -eq 0 ] && echo "SUCCESS" || echo "FAILED")
+
+        echo "HEALTH_CHECK_${CHECK_ID},${START_TIME},${END_TIME},${DURATION},${STATUS}" >> "${TIMING_FILE}"
+        echo "HEALTH_CHECK_${CHECK_ID}_END_EPOCH=${END_TIME}" >> "${METRICS_FILE}"
+        echo "HEALTH_CHECK_${CHECK_ID}_DURATION_SECONDS=${DURATION}" >> "${METRICS_FILE}"
+        echo "HEALTH_CHECK_${CHECK_ID}_STATUS=${STATUS}" >> "${METRICS_FILE}"
+
+        echo "===== HEALTH CHECK ${CHECK_ID} COMPLETED in ${DURATION}s (${STATUS}) =====" | tee -a "${STEP_LOG}"
+      command:
+      - /bin/bash
+      - -c
+      env:
+      - name: PYTHONUNBUFFERED
+        value: "1"
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+      image: kushsahni1/chaos-sim:latest
+      imagePullPolicy: Always
+      name: ""
+      resources: {}
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0
+      volumeMounts:
+      - mountPath: /app/logs
+        name: log-vol
+    inputs:
+      parameters:
+      - name: check-id
+    metadata: {}
+    name: run-health-check
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    outputs: {}
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+  - container:
+      args:
+      - |
+        set -e
+
+        export RUN_ID="argo-{{workflow.name}}"
+        export LOG_DIR="/app/logs/${RUN_ID}"
+        export METRICS_FILE="${LOG_DIR}/metrics.txt"
+        export TIMING_FILE="${LOG_DIR}/timing.csv"
+        export STEP_LOG="${LOG_DIR}/node_simulation.log"
+
+        START_TIME=$(date +%s)
+
+        echo "NODE_SIM_START_EPOCH=${START_TIME}" >> "${METRICS_FILE}"
+
+        echo "===== NODE FAILURE SIMULATION STARTED at $(date) =====" | tee "${STEP_LOG}"
+
+        python3 /app/rack_resiliency_to_host.py simulate-node --stabilization-time {{workflow.parameters.stabilization-time-node}} 2>&1 | tee -a "${STEP_LOG}"
+        EXIT_CODE=$?
+
+        END_TIME=$(date +%s)
+        DURATION=$((END_TIME - START_TIME))
+        STATUS=$([ $EXIT_CODE -eq 0 ] && echo "SUCCESS" || echo "FAILED")
+
+        echo "NODE_SIMULATION,${START_TIME},${END_TIME},${DURATION},${STATUS}" >> "${TIMING_FILE}"
+        echo "NODE_SIM_END_EPOCH=${END_TIME}" >> "${METRICS_FILE}"
+        echo "NODE_SIM_DURATION_SECONDS=${DURATION}" >> "${METRICS_FILE}"
+        echo "NODE_SIM_STATUS=${STATUS}" >> "${METRICS_FILE}"
+
+        echo "===== NODE FAILURE SIMULATION COMPLETED in ${DURATION}s (${STATUS}) =====" | tee -a "${STEP_LOG}"
+      command:
+      - /bin/bash
+      - -c
+      env:
+      - name: PYTHONUNBUFFERED
+        value: "1"
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+      image: kushsahni1/chaos-sim:latest
+      imagePullPolicy: Always
+      name: ""
+      resources: {}
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0
+      volumeMounts:
+      - mountPath: /app/logs
+        name: log-vol
+    inputs: {}
+    metadata: {}
+    name: run-node-simulation
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    outputs: {}
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+  - container:
+      args:
+      - |
+        set -e
+
+        export RUN_ID="argo-{{workflow.name}}"
+        export LOG_DIR="/app/logs/${RUN_ID}"
+        export METRICS_FILE="${LOG_DIR}/metrics.txt"
+        export TIMING_FILE="${LOG_DIR}/timing.csv"
+        export STEP_LOG="${LOG_DIR}/rack_simulation.log"
+
+        START_TIME=$(date +%s)
+
+        echo "RACK_SIM_START_EPOCH=${START_TIME}" >> "${METRICS_FILE}"
+
+        echo "===== RACK FAILURE SIMULATION STARTED at $(date) =====" | tee "${STEP_LOG}"
+
+        python3 /app/rack_resiliency_to_host.py simulate-rack --stabilization-time {{workflow.parameters.stabilization-time-rack}} --downtime {{workflow.parameters.downtime-rack}} 2>&1 | tee -a "${STEP_LOG}"
+        EXIT_CODE=$?
+
+        END_TIME=$(date +%s)
+        DURATION=$((END_TIME - START_TIME))
+        STATUS=$([ $EXIT_CODE -eq 0 ] && echo "SUCCESS" || echo "FAILED")
+
+        echo "RACK_SIMULATION,${START_TIME},${END_TIME},${DURATION},${STATUS}" >> "${TIMING_FILE}"
+        echo "RACK_SIM_END_EPOCH=${END_TIME}" >> "${METRICS_FILE}"
+        echo "RACK_SIM_DURATION_SECONDS=${DURATION}" >> "${METRICS_FILE}"
+        echo "RACK_SIM_STATUS=${STATUS}" >> "${METRICS_FILE}"
+
+        echo "===== RACK FAILURE SIMULATION COMPLETED in ${DURATION}s (${STATUS}) =====" | tee -a "${STEP_LOG}"
+      command:
+      - /bin/bash
+      - -c
+      env:
+      - name: PYTHONUNBUFFERED
+        value: "1"
+      - name: NODE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.nodeName
+      image: kushsahni1/chaos-sim:latest
+      imagePullPolicy: Always
+      name: ""
+      resources: {}
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0
+      volumeMounts:
+      - mountPath: /app/logs
+        name: log-vol
+    inputs: {}
+    metadata: {}
+    name: run-rack-simulation
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    outputs: {}
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+  - container:
+      args:
+      - "set -e\n\nexport RUN_ID=\"argo-{{workflow.name}}\"\nexport LOG_DIR=\"/app/logs/${RUN_ID}\"\nexport
+        METRICS_FILE=\"${LOG_DIR}/metrics.txt\"\nexport TIMING_FILE=\"${LOG_DIR}/timing.csv\"\n\nWORKFLOW_END=$(date
+        +%s)\n\n# Get workflow start from metrics file\nWORKFLOW_START=$(grep \"WORKFLOW_START_EPOCH=\"
+        \"${METRICS_FILE}\" | cut -d'=' -f2)\nTOTAL_DURATION=$((WORKFLOW_END - WORKFLOW_START))\n\n#
+        Add final metrics\ncat >> \"${METRICS_FILE}\" << EOF\n\n# Final Summary\nWORKFLOW_END_EPOCH=${WORKFLOW_END}\nWORKFLOW_END_ISO=$(date
+        -d @${WORKFLOW_END} '+%Y-%m-%dT%H:%M:%S%z' 2>/dev/null || date '+%Y-%m-%dT%H:%M:%S%z')\nTOTAL_DURATION_SECONDS=${TOTAL_DURATION}\nTOTAL_DURATION_FORMATTED=$(printf
+        '%02d:%02d:%02d' $((TOTAL_DURATION/3600)) $((TOTAL_DURATION%3600/60)) $((TOTAL_DURATION%60)))\nWORKFLOW_STATUS=Completed\nEOF\n\n#
+        Create combined log\nCOMBINED_LOG=\"${LOG_DIR}/full_execution.log\"\necho
+        \"===== ARGO WORKFLOWS RESILIENCE SIMULATION COMBINED LOG =====\" > \"${COMBINED_LOG}\"\necho
+        \"Run ID: ${RUN_ID}\" >> \"${COMBINED_LOG}\"\necho \"Workflow: {{workflow.name}}\"
+        >> \"${COMBINED_LOG}\"\necho \"Generated: $(date)\" >> \"${COMBINED_LOG}\"\necho
+        \"\" >> \"${COMBINED_LOG}\"\n\nfor log_file in health_check_1 health_check_2
+        health_check_3 node_simulation health_check_interim rack_simulation health_check_final;
+        do\n  if [ -f \"${LOG_DIR}/${log_file}.log\" ]; then\n    echo \"\" >> \"${COMBINED_LOG}\"\n
+        \   echo \"===== ${log_file} =====\" >> \"${COMBINED_LOG}\"\n    cat \"${LOG_DIR}/${log_file}.log\"
+        >> \"${COMBINED_LOG}\"\n  fi\ndone\n\n# Print summary\necho \"\"\necho \"=====
+        WORKFLOW SUMMARY =====\"\necho \"Run ID: ${RUN_ID}\"\necho \"Total Duration:
+        ${TOTAL_DURATION} seconds ($(printf '%02d:%02d:%02d' $((TOTAL_DURATION/3600))
+        $((TOTAL_DURATION%3600/60)) $((TOTAL_DURATION%60))))\"\necho \"\"\necho \"=====
+        TIMING DATA =====\"\ncat \"${TIMING_FILE}\"\necho \"\"\necho \"===== METRICS
+        =====\"\ncat \"${METRICS_FILE}\"\n\n# Fix permissions\nchmod -R 755 \"${LOG_DIR}\"\nchown
+        -R 1000:1000 \"${LOG_DIR}\" 2>/dev/null || true\n\necho \"\"\necho \"✅ Argo
+        Workflow completed successfully!\"\necho \"\U0001F4C1 Logs saved to: ${LOG_DIR}\"\n"
+      command:
+      - /bin/bash
+      - -c
+      env:
+      - name: PYTHONUNBUFFERED
+        value: "1"
+      image: kushsahni1/chaos-sim:latest
+      imagePullPolicy: Always
+      name: ""
+      resources: {}
+      securityContext:
+        runAsGroup: 0
+        runAsUser: 0
+      volumeMounts:
+      - mountPath: /app/logs
+        name: log-vol
+    inputs: {}
+    metadata: {}
+    name: finalize-metrics
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    outputs: {}
+    tolerations:
+    - effect: NoSchedule
+      operator: Exists
+    - effect: NoExecute
+      operator: Exists
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/control-plane
+      operator: Exists
+  ttlStrategy:
+    secondsAfterCompletion: 604800
+  volumes:
+  - hostPath:
+      path: /home/vagrant/argo-logs/resilience-sim-combined
+      type: DirectoryOrCreate
+    name: log-vol
+status:
+  artifactGCStatus:
+    notSpecified: true
+  artifactRepositoryRef:
+    artifactRepository: {}
+    default: true
+  conditions:
+  - status: "False"
+    type: PodRunning
+  - status: "True"
+    type: Completed
+  finishedAt: "2026-01-02T23:27:32Z"
+  nodes:
+    resilience-bench-95l65:
+      children:
+      - resilience-bench-95l65-838292363
+      displayName: resilience-bench-95l65
+      finishedAt: "2026-01-02T23:27:32Z"
+      id: resilience-bench-95l65
+      name: resilience-bench-95l65
+      outboundNodes:
+      - resilience-bench-95l65-797788223
+      phase: Succeeded
+      progress: 9/9
+      resourcesDuration:
+        cpu: 146
+        memory: 1579
+      startedAt: "2026-01-02T23:12:17Z"
+      templateName: resilience-dag
+      templateScope: local/resilience-bench-95l65
+      type: DAG
+    resilience-bench-95l65-797788223:
+      boundaryID: resilience-bench-95l65
+      displayName: finalize
+      finishedAt: "2026-01-02T23:27:20Z"
+      hostNodeName: master-m003
+      id: resilience-bench-95l65-797788223
+      name: resilience-bench-95l65.finalize
+      outputs:
+        exitCode: "0"
+      phase: Succeeded
+      progress: 1/1
+      resourcesDuration:
+        cpu: 0
+        memory: 20
+      startedAt: "2026-01-02T23:26:59Z"
+      templateName: finalize-metrics
+      templateScope: local/resilience-bench-95l65
+      type: Pod
+    resilience-bench-95l65-838292363:
+      boundaryID: resilience-bench-95l65
+      children:
+      - resilience-bench-95l65-2743879008
+      - resilience-bench-95l65-2794211865
+      - resilience-bench-95l65-2777434246
+      displayName: initialize
+      finishedAt: "2026-01-02T23:12:34Z"
+      hostNodeName: master-m003
+      id: resilience-bench-95l65-838292363
+      name: resilience-bench-95l65.initialize
+      outputs:
+        exitCode: "0"
+      phase: Succeeded
+      progress: 1/1
+      resourcesDuration:
+        cpu: 0
+        memory: 14
+      startedAt: "2026-01-02T23:12:17Z"
+      templateName: initialize-metrics
+      templateScope: local/resilience-bench-95l65
+      type: Pod
+    resilience-bench-95l65-1240060341:
+      boundaryID: resilience-bench-95l65
+      children:
+      - resilience-bench-95l65-797788223
+      displayName: final-health-check
+      finishedAt: "2026-01-02T23:26:38Z"
+      hostNodeName: master-m003
+      id: resilience-bench-95l65-1240060341
+      inputs:
+        parameters:
+        - name: check-id
+          value: final
+      name: resilience-bench-95l65.final-health-check
+      outputs:
+        exitCode: "0"
+      phase: Succeeded
+      progress: 1/1
+      resourcesDuration:
+        cpu: 3
+        memory: 45
+      startedAt: "2026-01-02T23:26:05Z"
+      templateName: run-health-check
+      templateScope: local/resilience-bench-95l65
+      type: Pod
+    resilience-bench-95l65-2255458069:
+      boundaryID: resilience-bench-95l65
+      children:
+      - resilience-bench-95l65-3346121822
+      displayName: interim-health-check
+      finishedAt: "2026-01-02T23:19:39Z"
+      hostNodeName: master-m003
+      id: resilience-bench-95l65-2255458069
+      inputs:
+        parameters:
+        - name: check-id
+          value: interim
+      name: resilience-bench-95l65.interim-health-check
+      outputs:
+        exitCode: "0"
+      phase: Succeeded
+      progress: 1/1
+      resourcesDuration:
+        cpu: 8
+        memory: 88
+      startedAt: "2026-01-02T23:18:36Z"
+      templateName: run-health-check
+      templateScope: local/resilience-bench-95l65
+      type: Pod
+    resilience-bench-95l65-2626851567:
+      boundaryID: resilience-bench-95l65
+      children:
+      - resilience-bench-95l65-2255458069
+      displayName: node-simulation
+      finishedAt: "2026-01-02T23:18:16Z"
+      hostNodeName: master-m003
+      id: resilience-bench-95l65-2626851567
+      name: resilience-bench-95l65.node-simulation
+      outputs:
+        exitCode: "0"
+      phase: Succeeded
+      progress: 1/1
+      resourcesDuration:
+        cpu: 31
+        memory: 326
+      startedAt: "2026-01-02T23:15:03Z"
+      templateName: run-node-simulation
+      templateScope: local/resilience-bench-95l65
+      type: Pod
+    resilience-bench-95l65-2743879008:
+      boundaryID: resilience-bench-95l65
+      children:
+      - resilience-bench-95l65-2626851567
+      displayName: health-check-1
+      finishedAt: "2026-01-02T23:14:28Z"
+      hostNodeName: master-m003
+      id: resilience-bench-95l65-2743879008
+      inputs:
+        parameters:
+        - name: check-id
+          value: "1"
+      name: resilience-bench-95l65.health-check-1
+      outputs:
+        exitCode: "0"
+      phase: Succeeded
+      progress: 1/1
+      resourcesDuration:
+        cpu: 11
+        memory: 123
+      startedAt: "2026-01-02T23:12:38Z"
+      templateName: run-health-check
+      templateScope: local/resilience-bench-95l65
+      type: Pod
+    resilience-bench-95l65-2777434246:
+      boundaryID: resilience-bench-95l65
+      children:
+      - resilience-bench-95l65-2626851567
+      displayName: health-check-3
+      finishedAt: "2026-01-02T23:14:28Z"
+      hostNodeName: master-m003
+      id: resilience-bench-95l65-2777434246
+      inputs:
+        parameters:
+        - name: check-id
+          value: "3"
+      name: resilience-bench-95l65.health-check-3
+      outputs:
+        exitCode: "0"
+      phase: Succeeded
+      progress: 1/1
+      resourcesDuration:
+        cpu: 11
+        memory: 122
+      startedAt: "2026-01-02T23:12:38Z"
+      templateName: run-health-check
+      templateScope: local/resilience-bench-95l65
+      type: Pod
+    resilience-bench-95l65-2794211865:
+      boundaryID: resilience-bench-95l65
+      children:
+      - resilience-bench-95l65-2626851567
+      displayName: health-check-2
+      finishedAt: "2026-01-02T23:14:28Z"
+      hostNodeName: master-m003
+      id: resilience-bench-95l65-2794211865
+      inputs:
+        parameters:
+        - name: check-id
+          value: "2"
+      name: resilience-bench-95l65.health-check-2
+      outputs:
+        exitCode: "0"
+      phase: Succeeded
+      progress: 1/1
+      resourcesDuration:
+        cpu: 12
+        memory: 126
+      startedAt: "2026-01-02T23:12:38Z"
+      templateName: run-health-check
+      templateScope: local/resilience-bench-95l65
+      type: Pod
+    resilience-bench-95l65-3346121822:
+      boundaryID: resilience-bench-95l65
+      children:
+      - resilience-bench-95l65-1240060341
+      displayName: rack-simulation
+      finishedAt: "2026-01-02T23:25:55Z"
+      hostNodeName: master-m003
+      id: resilience-bench-95l65-3346121822
+      name: resilience-bench-95l65.rack-simulation
+      outputs:
+        exitCode: "0"
+      phase: Succeeded
+      progress: 1/1
+      resourcesDuration:
+        cpu: 70
+        memory: 715
+      startedAt: "2026-01-02T23:19:48Z"
+      templateName: run-rack-simulation
+      templateScope: local/resilience-bench-95l65
+      type: Pod
+  phase: Succeeded
+  progress: 9/9
+  resourcesDuration:
+    cpu: 146
+    memory: 1579
+  startedAt: "2026-01-02T23:12:17Z"
+  taskResultsCompletionStatus:
+    resilience-bench-95l65-797788223: true
+    resilience-bench-95l65-838292363: true
+    resilience-bench-95l65-1240060341: true
+    resilience-bench-95l65-2255458069: true
+    resilience-bench-95l65-2626851567: true
+    resilience-bench-95l65-2743879008: true
+    resilience-bench-95l65-2777434246: true
+    resilience-bench-95l65-2794211865: true
+    resilience-bench-95l65-3346121822: true

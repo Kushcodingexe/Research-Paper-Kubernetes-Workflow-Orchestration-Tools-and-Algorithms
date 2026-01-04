@@ -1,0 +1,1211 @@
+
+================================================================
+ INITIALIZATION
+ Time: 2025-12-30 05:20:48
+================================================================
+[2025-12-30 05:20:48] Run ID: native-20251230-052047-mqw8r
+[2025-12-30 05:20:48] Platform: Native Kubernetes Job
+[2025-12-30 05:20:48] Node: master-m003
+[2025-12-30 05:20:48] Pod: resilience-bench-2-105043-mqw8r
+[2025-12-30 05:20:48] Log Directory: /app/logs/native-20251230-052047-mqw8r
+
+================================================================
+ STEP 1: PARALLEL HEALTH CHECKS (3x)
+ Time: 2025-12-30 05:20:48
+================================================================
+[2025-12-30 05:20:48] Starting 3 parallel health checks...
+[2025-12-30 05:21:09] --- Health Check 1 Output (SUCCESS) ---
+[2025-12-30 05:21:09] --- Health Check 2 Output (SUCCESS) ---
+[2025-12-30 05:21:09] --- Health Check 3 Output (SUCCESS) ---
+[2025-12-30 05:21:09] TIMING: HEALTH_CHECKS_PARALLEL completed in 21 seconds
+
+================================================================
+ STEP 2: NODE FAILURE SIMULATION
+ Time: 2025-12-30 05:21:09
+================================================================
+[2025-12-30 05:21:09] Starting node failure simulation (stabilization: 60s)...
+Log directory created/verified: /app/logs
+File logging configured successfully
+2025-12-30 05:21:10,132 [INFO] Loaded in-cluster Kubernetes config
+2025-12-30 05:21:10,132 [INFO] Running on host: resilience-bench-2-105043-mqw8r
+2025-12-30 05:21:10,133 [INFO] Detected current node: master-m003, zone: R3
+2025-12-30 05:21:10,133 [INFO] Checking if we have permissions to modify nodes...
+2025-12-30 05:21:11,764 [INFO] Testing permissions using node: master-m001
+2025-12-30 05:21:11,934 [INFO] Permission check successful - we can modify nodes
+2025-12-30 05:21:11,934 [INFO] Using real Kubernetes API for node control
+2025-12-30 05:21:11,935 [INFO] Action received: simulate-node
+2025-12-30 05:21:11,935 [INFO] Stabilization time: 60 seconds
+2025-12-30 05:21:11,936 [INFO] Simulating node failure: worker-w003
+2025-12-30 05:21:11,936 [INFO] Simulating node failure for worker-w003 using Kubernetes API
+2025-12-30 05:21:11,968 [INFO] Node worker-w003 cordoned
+2025-12-30 05:21:12,060 [INFO] Node worker-w003 tainted with NoExecute
+2025-12-30 05:21:12,060 [INFO] Node worker-w003 powered off (delay 5s)
+2025-12-30 05:21:12,060 [INFO] Node worker-w003 down for 10 seconds
+2025-12-30 05:21:12,060 [INFO] Waiting 60 seconds for the cluster to stabilize before health check...
+2025-12-30 05:22:12,111 [INFO] Running health check after node power off
+2025-12-30 05:22:12,111 [INFO] Starting full health check
+2025-12-30 05:22:12,111 [INFO] 
+============ DETAILED NODE STATUS ============
+2025-12-30 05:22:12,111 [INFO] Basic Node Information (kubectl get nodes -o wide):
+2025-12-30 05:22:12,221 [INFO]   NAME          STATUS                     ROLES           AGE     VERSION    INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+2025-12-30 05:22:12,221 [INFO]   master-m001   Ready                      control-plane   4d10h   v1.32.11   192.168.56.101   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:12,221 [INFO]   master-m002   Ready                      control-plane   4d10h   v1.32.11   192.168.56.102   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:12,221 [INFO]   master-m003   Ready                      control-plane   4d10h   v1.32.11   192.168.56.103   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:12,221 [INFO]   worker-w001   Ready                      <none>          4d10h   v1.32.11   192.168.56.104   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:12,221 [INFO]   worker-w002   Ready                      <none>          4d10h   v1.32.11   192.168.56.105   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:12,221 [INFO]   worker-w003   Ready,SchedulingDisabled   <none>          4d10h   v1.32.11   192.168.56.106   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:12,221 [INFO]   worker-w004   Ready                      <none>          4d9h    v1.32.11   192.168.56.107   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:12,221 [INFO]   worker-w005   Ready                      <none>          4d9h    v1.32.11   192.168.56.108   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:12,222 [INFO]   worker-w006   Ready                      <none>          4d9h    v1.32.11   192.168.56.109   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:12,222 [INFO] 
+Enhanced Node Status (with taint and cordon indicators):
+2025-12-30 05:22:12,222 [INFO]   NAME                STATUS    ROLES           ZONE   CORDONED   TAINTS
+2025-12-30 05:22:12,725 [INFO]   master-m001     Ready  ✓ worker         R1    No       node-role.kubernetes.io/control-plane 
+2025-12-30 05:22:13,045 [INFO]   master-m002     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:22:13,428 [INFO]   master-m003     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:22:13,755 [INFO]   worker-w001     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:22:14,141 [INFO]   worker-w002     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:22:14,540 [INFO]   worker-w003     Ready  ✓ worker         R2    YES     ⚠️ simulated-failure, node.kubernetes.io/unschedulable ⚠️
+2025-12-30 05:22:14,926 [INFO]   worker-w004     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:22:15,251 [INFO]   worker-w005     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:22:15,633 [INFO]   worker-w006     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:22:15,633 [INFO] 
+Legend:
+2025-12-30 05:22:15,633 [INFO]   ✓ = Node is Ready
+2025-12-30 05:22:15,633 [INFO]   ⚠️ = Warning indicator (NotReady, Cordoned, or has simulated-failure taint)
+2025-12-30 05:22:15,633 [INFO] ============ DETAILED POD INFORMATION ============
+2025-12-30 05:22:15,633 [INFO] Running 'kubectl get pods -o wide' to show detailed pod placement:
+2025-12-30 05:22:15,838 [INFO]   NAMESPACE     NAME                                                       READY   STATUS      RESTARTS       AGE     IP                NODE          NOMINATED NODE   READINESS GATES
+2025-12-30 05:22:15,838 [INFO]   argo          argo-server-5c69cb69db-gdkl6                               1/1     Running     0              38h     192.168.221.65    master-m003   <none>           <none>
+2025-12-30 05:22:15,838 [INFO]   argo          resilience-bench-gzmt6-finalize-metrics-4126634228         0/2     Completed   0              17h     192.168.221.101   master-m003   <none>           <none>
+2025-12-30 05:22:15,838 [INFO]   argo          resilience-bench-gzmt6-initialize-metrics-77741412         0/2     Completed   0              17h     192.168.221.93    master-m003   <none>           <none>
+2025-12-30 05:22:15,838 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4154250290         0/2     Completed   0              17h     192.168.221.98    master-m003   <none>           <none>
+2025-12-30 05:22:15,838 [INFO]   argo          resilience-bench-gzmt6-run-health-check-416242235          0/2     Completed   0              17h     192.168.221.95    master-m003   <none>           <none>
+2025-12-30 05:22:15,838 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4236524422         0/2     Completed   0              17h     192.168.221.100   master-m003   <none>           <none>
+2025-12-30 05:22:15,838 [INFO]   argo          resilience-bench-gzmt6-run-health-check-433019854          0/2     Completed   0              17h     192.168.221.94    master-m003   <none>           <none>
+2025-12-30 05:22:15,838 [INFO]   argo          resilience-bench-gzmt6-run-health-check-449797473          0/2     Completed   0              17h     192.168.221.96    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-bench-gzmt6-run-node-simulation-801212678       0/2     Completed   0              17h     192.168.221.97    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-bench-gzmt6-run-rack-simulation-437033535       0/2     Completed   0              17h     192.168.221.99    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-bench-mrzb2-finalize-metrics-3679752311         0/2     Completed   0              22h     192.168.221.92    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-bench-mrzb2-initialize-metrics-445472771        0/2     Completed   0              22h     192.168.221.84    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2956474392         0/2     Completed   0              22h     192.168.221.85    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2990029630         0/2     Completed   0              22h     192.168.221.87    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3006807249         0/2     Completed   0              22h     192.168.221.86    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3146255069         0/2     Completed   0              22h     192.168.221.91    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3987847309         0/2     Completed   0              22h     192.168.221.89    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-bench-mrzb2-run-node-simulation-1708426071      0/2     Completed   0              22h     192.168.221.88    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-bench-mrzb2-run-rack-simulation-395353974       0/2     Completed   0              22h     192.168.221.90    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-5sxnj-finalize-metrics-787649287       0/2     Completed   0              38h     192.168.221.74    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-5sxnj-initialize-metrics-2680879475    0/2     Completed   0              38h     192.168.221.66    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3469088989      0/2     Completed   0              38h     192.168.221.71    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3961717576      0/2     Completed   0              38h     192.168.221.69    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3995272814      0/2     Completed   0              38h     192.168.221.68    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-4012050433      0/2     Completed   0              38h     192.168.221.67    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-737247917       0/2     Completed   0              38h     192.168.221.73    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-5sxnj-run-node-simulation-4063685255   0/2     Completed   0              38h     192.168.221.70    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-5sxnj-run-rack-simulation-2208326982   0/2     Completed   0              38h     192.168.221.72    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-kzw5c-finalize-metrics-3389586321      0/2     Completed   0              24h     192.168.221.83    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-kzw5c-initialize-metrics-3368568425    0/2     Completed   0              24h     192.168.221.75    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3147592231      0/2     Completed   0              24h     192.168.221.82    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3617814844      0/2     Completed   0              24h     192.168.221.77    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3634592463      0/2     Completed   0              24h     192.168.221.78    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3651370082      0/2     Completed   0              24h     192.168.221.76    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3829464063      0/2     Completed   0              24h     192.168.221.80    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-kzw5c-run-node-simulation-3449613549   0/2     Completed   0              24h     192.168.221.79    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          resilience-sim-argo-kzw5c-run-rack-simulation-2627060560   0/2     Completed   0              24h     192.168.221.81    master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   argo          workflow-controller-ccbd949dc-mkc6k                        1/1     Running     0              38h     192.168.15.194    worker-w005   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   default       resilience-bench-1-101852-6h2tc                            0/1     Completed   0              33m     192.168.221.102   master-m003   <none>           <none>
+2025-12-30 05:22:15,839 [INFO]   default       resilience-bench-2-105043-mqw8r                            1/1     Running     0              92s     192.168.221.104   master-m003   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   calico-kube-controllers-7498b9bb4c-f6fsd                   1/1     Running     0              33m     192.168.195.193   worker-w002   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   calico-node-4zhd4                                          1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   calico-node-75nx6                                          1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   calico-node-7lkdq                                          1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   calico-node-85f8c                                          1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   calico-node-j8nb9                                          1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   calico-node-lbcb2                                          1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   calico-node-wlr5v                                          1/1     Running     0              4d9h    192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   calico-node-xnzjw                                          1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   calico-node-xsltn                                          1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   coredns-668d6bf9bc-f9tlp                                   1/1     Running     0              22h     192.168.191.65    worker-w006   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   coredns-668d6bf9bc-x2gx4                                   1/1     Running     0              30m     192.168.132.130   worker-w001   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   etcd-master-m001                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-apiserver-master-m001                                 1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-controller-manager-master-m001                        1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-proxy-5lzhj                                           1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-proxy-7jqkv                                           1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-proxy-cv5dt                                           1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-proxy-fvpmr                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-proxy-hgs5z                                           1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-proxy-kmgqr                                           1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-proxy-rdbz5                                           1/1     Running     0              4d9h    192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-proxy-w8mnb                                           1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-proxy-x9jxr                                           1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:22:15,840 [INFO]   kube-system   kube-scheduler-master-m001                                 1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:15,840 [INFO] 
+Pod distribution by node:
+2025-12-30 05:22:16,055 [INFO]   Node master-m003: 41 pods
+2025-12-30 05:22:16,055 [INFO]   Node worker-w005: 3 pods
+2025-12-30 05:22:16,055 [INFO]   Node worker-w002: 3 pods
+2025-12-30 05:22:16,055 [INFO]   Node worker-w006: 3 pods
+2025-12-30 05:22:16,055 [INFO]   Node worker-w001: 3 pods
+2025-12-30 05:22:16,056 [INFO]   Node master-m002: 2 pods
+2025-12-30 05:22:16,056 [INFO]   Node master-m001: 4 pods
+2025-12-30 05:22:16,056 [INFO]   Node worker-w003: 2 pods
+2025-12-30 05:22:16,056 [INFO]   Node worker-w004: 2 pods
+2025-12-30 05:22:16,056 [INFO]   Node 4d10h: 2 pods
+2025-12-30 05:22:16,056 [INFO] 
+Filtering for simulation services:
+2025-12-30 05:22:16,259 [INFO] Node master-m001 is Ready
+2025-12-30 05:22:16,259 [INFO] Node master-m002 is Ready
+2025-12-30 05:22:16,259 [INFO] Node master-m003 is Ready
+2025-12-30 05:22:16,259 [INFO] Node worker-w001 is Ready
+2025-12-30 05:22:16,259 [INFO] Node worker-w002 is Ready
+2025-12-30 05:22:16,259 [INFO] Node worker-w003 is Ready
+2025-12-30 05:22:16,259 [INFO] Node worker-w004 is Ready
+2025-12-30 05:22:16,259 [INFO] Node worker-w005 is Ready
+2025-12-30 05:22:16,259 [INFO] Node worker-w006 is Ready
+2025-12-30 05:22:16,262 [WARNING] No pods found for etcd-sim
+2025-12-30 05:22:16,264 [WARNING] No pods found for postgres-sim
+2025-12-30 05:22:16,266 [WARNING] No pods found for redis-sim
+2025-12-30 05:22:16,268 [WARNING] No pods found for nginx-sim
+2025-12-30 05:22:16,270 [WARNING] No pods found for auth-sim
+2025-12-30 05:22:16,270 [INFO] Completed full health check
+2025-12-30 05:22:26,271 [INFO] Running health check before node power on
+2025-12-30 05:22:26,271 [INFO] Starting full health check
+2025-12-30 05:22:26,271 [INFO] 
+============ DETAILED NODE STATUS ============
+2025-12-30 05:22:26,271 [INFO] Basic Node Information (kubectl get nodes -o wide):
+2025-12-30 05:22:26,331 [INFO]   NAME          STATUS                     ROLES           AGE     VERSION    INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+2025-12-30 05:22:26,331 [INFO]   master-m001   Ready                      control-plane   4d10h   v1.32.11   192.168.56.101   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:26,331 [INFO]   master-m002   Ready                      control-plane   4d10h   v1.32.11   192.168.56.102   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:26,331 [INFO]   master-m003   Ready                      control-plane   4d10h   v1.32.11   192.168.56.103   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:26,331 [INFO]   worker-w001   Ready                      <none>          4d10h   v1.32.11   192.168.56.104   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:26,331 [INFO]   worker-w002   Ready                      <none>          4d10h   v1.32.11   192.168.56.105   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:26,332 [INFO]   worker-w003   Ready,SchedulingDisabled   <none>          4d10h   v1.32.11   192.168.56.106   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:26,332 [INFO]   worker-w004   Ready                      <none>          4d9h    v1.32.11   192.168.56.107   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:26,332 [INFO]   worker-w005   Ready                      <none>          4d9h    v1.32.11   192.168.56.108   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:26,332 [INFO]   worker-w006   Ready                      <none>          4d9h    v1.32.11   192.168.56.109   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:22:26,332 [INFO] 
+Enhanced Node Status (with taint and cordon indicators):
+2025-12-30 05:22:26,332 [INFO]   NAME                STATUS    ROLES           ZONE   CORDONED   TAINTS
+2025-12-30 05:22:26,932 [INFO]   master-m001     Ready  ✓ worker         R1    No       node-role.kubernetes.io/control-plane 
+2025-12-30 05:22:27,242 [INFO]   master-m002     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:22:27,930 [INFO]   master-m003     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:22:28,257 [INFO]   worker-w001     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:22:28,689 [INFO]   worker-w002     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:22:29,018 [INFO]   worker-w003     Ready  ✓ worker         R2    YES     ⚠️ simulated-failure, node.kubernetes.io/unschedulable ⚠️
+2025-12-30 05:22:29,457 [INFO]   worker-w004     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:22:29,830 [INFO]   worker-w005     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:22:30,229 [INFO]   worker-w006     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:22:30,229 [INFO] 
+Legend:
+2025-12-30 05:22:30,229 [INFO]   ✓ = Node is Ready
+2025-12-30 05:22:30,229 [INFO]   ⚠️ = Warning indicator (NotReady, Cordoned, or has simulated-failure taint)
+2025-12-30 05:22:30,229 [INFO] ============ DETAILED POD INFORMATION ============
+2025-12-30 05:22:30,229 [INFO] Running 'kubectl get pods -o wide' to show detailed pod placement:
+2025-12-30 05:22:30,446 [INFO]   NAMESPACE     NAME                                                       READY   STATUS      RESTARTS       AGE     IP                NODE          NOMINATED NODE   READINESS GATES
+2025-12-30 05:22:30,446 [INFO]   argo          argo-server-5c69cb69db-gdkl6                               1/1     Running     0              38h     192.168.221.65    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-gzmt6-finalize-metrics-4126634228         0/2     Completed   0              17h     192.168.221.101   master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-gzmt6-initialize-metrics-77741412         0/2     Completed   0              17h     192.168.221.93    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4154250290         0/2     Completed   0              17h     192.168.221.98    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-gzmt6-run-health-check-416242235          0/2     Completed   0              17h     192.168.221.95    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4236524422         0/2     Completed   0              17h     192.168.221.100   master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-gzmt6-run-health-check-433019854          0/2     Completed   0              17h     192.168.221.94    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-gzmt6-run-health-check-449797473          0/2     Completed   0              17h     192.168.221.96    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-gzmt6-run-node-simulation-801212678       0/2     Completed   0              17h     192.168.221.97    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-gzmt6-run-rack-simulation-437033535       0/2     Completed   0              17h     192.168.221.99    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-mrzb2-finalize-metrics-3679752311         0/2     Completed   0              22h     192.168.221.92    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-mrzb2-initialize-metrics-445472771        0/2     Completed   0              22h     192.168.221.84    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2956474392         0/2     Completed   0              22h     192.168.221.85    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2990029630         0/2     Completed   0              22h     192.168.221.87    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3006807249         0/2     Completed   0              22h     192.168.221.86    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3146255069         0/2     Completed   0              22h     192.168.221.91    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3987847309         0/2     Completed   0              22h     192.168.221.89    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-mrzb2-run-node-simulation-1708426071      0/2     Completed   0              22h     192.168.221.88    master-m003   <none>           <none>
+2025-12-30 05:22:30,446 [INFO]   argo          resilience-bench-mrzb2-run-rack-simulation-395353974       0/2     Completed   0              22h     192.168.221.90    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-5sxnj-finalize-metrics-787649287       0/2     Completed   0              38h     192.168.221.74    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-5sxnj-initialize-metrics-2680879475    0/2     Completed   0              38h     192.168.221.66    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3469088989      0/2     Completed   0              38h     192.168.221.71    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3961717576      0/2     Completed   0              38h     192.168.221.69    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3995272814      0/2     Completed   0              38h     192.168.221.68    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-4012050433      0/2     Completed   0              38h     192.168.221.67    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-737247917       0/2     Completed   0              38h     192.168.221.73    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-5sxnj-run-node-simulation-4063685255   0/2     Completed   0              38h     192.168.221.70    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-5sxnj-run-rack-simulation-2208326982   0/2     Completed   0              38h     192.168.221.72    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-kzw5c-finalize-metrics-3389586321      0/2     Completed   0              24h     192.168.221.83    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-kzw5c-initialize-metrics-3368568425    0/2     Completed   0              24h     192.168.221.75    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3147592231      0/2     Completed   0              24h     192.168.221.82    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3617814844      0/2     Completed   0              24h     192.168.221.77    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3634592463      0/2     Completed   0              24h     192.168.221.78    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3651370082      0/2     Completed   0              24h     192.168.221.76    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3829464063      0/2     Completed   0              24h     192.168.221.80    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-kzw5c-run-node-simulation-3449613549   0/2     Completed   0              24h     192.168.221.79    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          resilience-sim-argo-kzw5c-run-rack-simulation-2627060560   0/2     Completed   0              24h     192.168.221.81    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   argo          workflow-controller-ccbd949dc-mkc6k                        1/1     Running     0              38h     192.168.15.194    worker-w005   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   default       resilience-bench-1-101852-6h2tc                            0/1     Completed   0              33m     192.168.221.102   master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   default       resilience-bench-2-105043-mqw8r                            1/1     Running     0              107s    192.168.221.104   master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   calico-kube-controllers-7498b9bb4c-f6fsd                   1/1     Running     0              33m     192.168.195.193   worker-w002   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   calico-node-4zhd4                                          1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   calico-node-75nx6                                          1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   calico-node-7lkdq                                          1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   calico-node-85f8c                                          1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   calico-node-j8nb9                                          1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   calico-node-lbcb2                                          1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   calico-node-wlr5v                                          1/1     Running     0              4d9h    192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   calico-node-xnzjw                                          1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   calico-node-xsltn                                          1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   coredns-668d6bf9bc-f9tlp                                   1/1     Running     0              22h     192.168.191.65    worker-w006   <none>           <none>
+2025-12-30 05:22:30,447 [INFO]   kube-system   coredns-668d6bf9bc-x2gx4                                   1/1     Running     0              30m     192.168.132.130   worker-w001   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   etcd-master-m001                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-apiserver-master-m001                                 1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-controller-manager-master-m001                        1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-proxy-5lzhj                                           1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-proxy-7jqkv                                           1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-proxy-cv5dt                                           1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-proxy-fvpmr                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-proxy-hgs5z                                           1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-proxy-kmgqr                                           1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-proxy-rdbz5                                           1/1     Running     0              4d9h    192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-proxy-w8mnb                                           1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-proxy-x9jxr                                           1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:22:30,448 [INFO]   kube-system   kube-scheduler-master-m001                                 1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:22:30,448 [INFO] 
+Pod distribution by node:
+2025-12-30 05:22:30,652 [INFO]   Node master-m003: 41 pods
+2025-12-30 05:22:30,652 [INFO]   Node worker-w005: 3 pods
+2025-12-30 05:22:30,652 [INFO]   Node worker-w002: 3 pods
+2025-12-30 05:22:30,652 [INFO]   Node worker-w006: 3 pods
+2025-12-30 05:22:30,652 [INFO]   Node worker-w001: 3 pods
+2025-12-30 05:22:30,652 [INFO]   Node master-m002: 2 pods
+2025-12-30 05:22:30,652 [INFO]   Node master-m001: 4 pods
+2025-12-30 05:22:30,653 [INFO]   Node worker-w003: 2 pods
+2025-12-30 05:22:30,653 [INFO]   Node worker-w004: 2 pods
+2025-12-30 05:22:30,653 [INFO]   Node 4d10h: 2 pods
+2025-12-30 05:22:30,653 [INFO] 
+Filtering for simulation services:
+2025-12-30 05:22:30,850 [INFO] Node master-m001 is Ready
+2025-12-30 05:22:30,850 [INFO] Node master-m002 is Ready
+2025-12-30 05:22:30,850 [INFO] Node master-m003 is Ready
+2025-12-30 05:22:30,850 [INFO] Node worker-w001 is Ready
+2025-12-30 05:22:30,850 [INFO] Node worker-w002 is Ready
+2025-12-30 05:22:30,850 [INFO] Node worker-w003 is Ready
+2025-12-30 05:22:30,850 [INFO] Node worker-w004 is Ready
+2025-12-30 05:22:30,851 [INFO] Node worker-w005 is Ready
+2025-12-30 05:22:30,851 [INFO] Node worker-w006 is Ready
+2025-12-30 05:22:30,853 [WARNING] No pods found for etcd-sim
+2025-12-30 05:22:30,856 [WARNING] No pods found for postgres-sim
+2025-12-30 05:22:30,858 [WARNING] No pods found for redis-sim
+2025-12-30 05:22:30,860 [WARNING] No pods found for nginx-sim
+2025-12-30 05:22:30,861 [WARNING] No pods found for auth-sim
+2025-12-30 05:22:30,862 [INFO] Completed full health check
+2025-12-30 05:22:30,862 [INFO] Simulating node recovery for worker-w003 using Kubernetes API
+2025-12-30 05:22:30,876 [INFO] Removed simulated-failure taint from node worker-w003
+2025-12-30 05:22:30,895 [INFO] Node worker-w003 uncordoned and ready
+2025-12-30 05:22:30,914 [INFO] Node worker-w003 has been powered back on
+2025-12-30 05:22:30,914 [INFO] Waiting 60 seconds for the cluster to stabilize after recovery...
+2025-12-30 05:23:30,938 [INFO] Running final health check
+2025-12-30 05:23:30,939 [INFO] Starting full health check
+2025-12-30 05:23:30,939 [INFO] 
+============ DETAILED NODE STATUS ============
+2025-12-30 05:23:30,939 [INFO] Basic Node Information (kubectl get nodes -o wide):
+2025-12-30 05:23:31,035 [INFO]   NAME          STATUS   ROLES           AGE     VERSION    INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+2025-12-30 05:23:31,035 [INFO]   master-m001   Ready    control-plane   4d10h   v1.32.11   192.168.56.101   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:31,035 [INFO]   master-m002   Ready    control-plane   4d10h   v1.32.11   192.168.56.102   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:31,035 [INFO]   master-m003   Ready    control-plane   4d10h   v1.32.11   192.168.56.103   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:31,035 [INFO]   worker-w001   Ready    <none>          4d10h   v1.32.11   192.168.56.104   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:31,036 [INFO]   worker-w002   Ready    <none>          4d10h   v1.32.11   192.168.56.105   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:31,036 [INFO]   worker-w003   Ready    <none>          4d10h   v1.32.11   192.168.56.106   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:31,036 [INFO]   worker-w004   Ready    <none>          4d9h    v1.32.11   192.168.56.107   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:31,036 [INFO]   worker-w005   Ready    <none>          4d9h    v1.32.11   192.168.56.108   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:31,036 [INFO]   worker-w006   Ready    <none>          4d9h    v1.32.11   192.168.56.109   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:31,036 [INFO] 
+Enhanced Node Status (with taint and cordon indicators):
+2025-12-30 05:23:31,037 [INFO]   NAME                STATUS    ROLES           ZONE   CORDONED   TAINTS
+2025-12-30 05:23:31,527 [INFO]   master-m001     Ready  ✓ worker         R1    No       node-role.kubernetes.io/control-plane 
+2025-12-30 05:23:31,877 [INFO]   master-m002     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:23:32,215 [INFO]   master-m003     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:23:32,558 [INFO]   worker-w001     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:23:33,041 [INFO]   worker-w002     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:23:33,441 [INFO]   worker-w003     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:23:33,818 [INFO]   worker-w004     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:23:34,144 [INFO]   worker-w005     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:23:34,538 [INFO]   worker-w006     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:23:34,539 [INFO] 
+Legend:
+2025-12-30 05:23:34,539 [INFO]   ✓ = Node is Ready
+2025-12-30 05:23:34,539 [INFO]   ⚠️ = Warning indicator (NotReady, Cordoned, or has simulated-failure taint)
+2025-12-30 05:23:34,539 [INFO] ============ DETAILED POD INFORMATION ============
+2025-12-30 05:23:34,539 [INFO] Running 'kubectl get pods -o wide' to show detailed pod placement:
+2025-12-30 05:23:34,738 [INFO]   NAMESPACE     NAME                                                       READY   STATUS      RESTARTS       AGE     IP                NODE          NOMINATED NODE   READINESS GATES
+2025-12-30 05:23:34,739 [INFO]   argo          argo-server-5c69cb69db-gdkl6                               1/1     Running     0              39h     192.168.221.65    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-gzmt6-finalize-metrics-4126634228         0/2     Completed   0              17h     192.168.221.101   master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-gzmt6-initialize-metrics-77741412         0/2     Completed   0              17h     192.168.221.93    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4154250290         0/2     Completed   0              17h     192.168.221.98    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-gzmt6-run-health-check-416242235          0/2     Completed   0              17h     192.168.221.95    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4236524422         0/2     Completed   0              17h     192.168.221.100   master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-gzmt6-run-health-check-433019854          0/2     Completed   0              17h     192.168.221.94    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-gzmt6-run-health-check-449797473          0/2     Completed   0              17h     192.168.221.96    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-gzmt6-run-node-simulation-801212678       0/2     Completed   0              17h     192.168.221.97    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-gzmt6-run-rack-simulation-437033535       0/2     Completed   0              17h     192.168.221.99    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-mrzb2-finalize-metrics-3679752311         0/2     Completed   0              22h     192.168.221.92    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-mrzb2-initialize-metrics-445472771        0/2     Completed   0              22h     192.168.221.84    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2956474392         0/2     Completed   0              22h     192.168.221.85    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2990029630         0/2     Completed   0              22h     192.168.221.87    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3006807249         0/2     Completed   0              22h     192.168.221.86    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3146255069         0/2     Completed   0              22h     192.168.221.91    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3987847309         0/2     Completed   0              22h     192.168.221.89    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-mrzb2-run-node-simulation-1708426071      0/2     Completed   0              22h     192.168.221.88    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-bench-mrzb2-run-rack-simulation-395353974       0/2     Completed   0              22h     192.168.221.90    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-sim-argo-5sxnj-finalize-metrics-787649287       0/2     Completed   0              38h     192.168.221.74    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-sim-argo-5sxnj-initialize-metrics-2680879475    0/2     Completed   0              38h     192.168.221.66    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3469088989      0/2     Completed   0              38h     192.168.221.71    master-m003   <none>           <none>
+2025-12-30 05:23:34,739 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3961717576      0/2     Completed   0              38h     192.168.221.69    master-m003   <none>           <none>
+2025-12-30 05:23:34,740 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3995272814      0/2     Completed   0              38h     192.168.221.68    master-m003   <none>           <none>
+2025-12-30 05:23:34,740 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-4012050433      0/2     Completed   0              38h     192.168.221.67    master-m003   <none>           <none>
+2025-12-30 05:23:34,740 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-737247917       0/2     Completed   0              38h     192.168.221.73    master-m003   <none>           <none>
+2025-12-30 05:23:34,740 [INFO]   argo          resilience-sim-argo-5sxnj-run-node-simulation-4063685255   0/2     Completed   0              38h     192.168.221.70    master-m003   <none>           <none>
+2025-12-30 05:23:34,740 [INFO]   argo          resilience-sim-argo-5sxnj-run-rack-simulation-2208326982   0/2     Completed   0              38h     192.168.221.72    master-m003   <none>           <none>
+2025-12-30 05:23:34,740 [INFO]   argo          resilience-sim-argo-kzw5c-finalize-metrics-3389586321      0/2     Completed   0              24h     192.168.221.83    master-m003   <none>           <none>
+2025-12-30 05:23:34,741 [INFO]   argo          resilience-sim-argo-kzw5c-initialize-metrics-3368568425    0/2     Completed   0              24h     192.168.221.75    master-m003   <none>           <none>
+2025-12-30 05:23:34,741 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3147592231      0/2     Completed   0              24h     192.168.221.82    master-m003   <none>           <none>
+2025-12-30 05:23:34,741 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3617814844      0/2     Completed   0              24h     192.168.221.77    master-m003   <none>           <none>
+2025-12-30 05:23:34,741 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3634592463      0/2     Completed   0              24h     192.168.221.78    master-m003   <none>           <none>
+2025-12-30 05:23:34,741 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3651370082      0/2     Completed   0              24h     192.168.221.76    master-m003   <none>           <none>
+2025-12-30 05:23:34,741 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3829464063      0/2     Completed   0              24h     192.168.221.80    master-m003   <none>           <none>
+2025-12-30 05:23:34,741 [INFO]   argo          resilience-sim-argo-kzw5c-run-node-simulation-3449613549   0/2     Completed   0              24h     192.168.221.79    master-m003   <none>           <none>
+2025-12-30 05:23:34,741 [INFO]   argo          resilience-sim-argo-kzw5c-run-rack-simulation-2627060560   0/2     Completed   0              24h     192.168.221.81    master-m003   <none>           <none>
+2025-12-30 05:23:34,742 [INFO]   argo          workflow-controller-ccbd949dc-mkc6k                        1/1     Running     0              38h     192.168.15.194    worker-w005   <none>           <none>
+2025-12-30 05:23:34,742 [INFO]   default       resilience-bench-1-101852-6h2tc                            0/1     Completed   0              34m     192.168.221.102   master-m003   <none>           <none>
+2025-12-30 05:23:34,742 [INFO]   default       resilience-bench-2-105043-mqw8r                            1/1     Running     0              2m51s   192.168.221.104   master-m003   <none>           <none>
+2025-12-30 05:23:34,742 [INFO]   kube-system   calico-kube-controllers-7498b9bb4c-f6fsd                   1/1     Running     0              34m     192.168.195.193   worker-w002   <none>           <none>
+2025-12-30 05:23:34,742 [INFO]   kube-system   calico-node-4zhd4                                          1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:23:34,742 [INFO]   kube-system   calico-node-75nx6                                          1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:23:34,742 [INFO]   kube-system   calico-node-7lkdq                                          1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:23:34,742 [INFO]   kube-system   calico-node-85f8c                                          1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:23:34,743 [INFO]   kube-system   calico-node-j8nb9                                          1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:34,743 [INFO]   kube-system   calico-node-lbcb2                                          1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:23:34,743 [INFO]   kube-system   calico-node-wlr5v                                          1/1     Running     0              4d9h    192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:23:34,743 [INFO]   kube-system   calico-node-xnzjw                                          1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:23:34,743 [INFO]   kube-system   calico-node-xsltn                                          1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:23:34,743 [INFO]   kube-system   coredns-668d6bf9bc-f9tlp                                   1/1     Running     0              22h     192.168.191.65    worker-w006   <none>           <none>
+2025-12-30 05:23:34,743 [INFO]   kube-system   coredns-668d6bf9bc-x2gx4                                   1/1     Running     0              31m     192.168.132.130   worker-w001   <none>           <none>
+2025-12-30 05:23:34,744 [INFO]   kube-system   etcd-master-m001                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:34,744 [INFO]   kube-system   kube-apiserver-master-m001                                 1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:34,744 [INFO]   kube-system   kube-controller-manager-master-m001                        1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:34,744 [INFO]   kube-system   kube-proxy-5lzhj                                           1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:23:34,744 [INFO]   kube-system   kube-proxy-7jqkv                                           1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:23:34,744 [INFO]   kube-system   kube-proxy-cv5dt                                           1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:23:34,745 [INFO]   kube-system   kube-proxy-fvpmr                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:34,745 [INFO]   kube-system   kube-proxy-hgs5z                                           1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:23:34,745 [INFO]   kube-system   kube-proxy-kmgqr                                           1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:23:34,745 [INFO]   kube-system   kube-proxy-rdbz5                                           1/1     Running     0              4d9h    192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:23:34,745 [INFO]   kube-system   kube-proxy-w8mnb                                           1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:23:34,745 [INFO]   kube-system   kube-proxy-x9jxr                                           1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:23:34,745 [INFO]   kube-system   kube-scheduler-master-m001                                 1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:34,746 [INFO] 
+Pod distribution by node:
+2025-12-30 05:23:34,952 [INFO]   Node master-m003: 41 pods
+2025-12-30 05:23:34,953 [INFO]   Node worker-w005: 3 pods
+2025-12-30 05:23:34,953 [INFO]   Node worker-w002: 3 pods
+2025-12-30 05:23:34,953 [INFO]   Node worker-w006: 3 pods
+2025-12-30 05:23:34,953 [INFO]   Node worker-w001: 3 pods
+2025-12-30 05:23:34,953 [INFO]   Node master-m002: 2 pods
+2025-12-30 05:23:34,953 [INFO]   Node master-m001: 4 pods
+2025-12-30 05:23:34,954 [INFO]   Node worker-w003: 2 pods
+2025-12-30 05:23:34,954 [INFO]   Node worker-w004: 2 pods
+2025-12-30 05:23:34,954 [INFO]   Node 4d10h: 2 pods
+2025-12-30 05:23:34,954 [INFO] 
+Filtering for simulation services:
+2025-12-30 05:23:35,154 [INFO] Node master-m001 is Ready
+2025-12-30 05:23:35,154 [INFO] Node master-m002 is Ready
+2025-12-30 05:23:35,154 [INFO] Node master-m003 is Ready
+2025-12-30 05:23:35,155 [INFO] Node worker-w001 is Ready
+2025-12-30 05:23:35,155 [INFO] Node worker-w002 is Ready
+2025-12-30 05:23:35,155 [INFO] Node worker-w003 is Ready
+2025-12-30 05:23:35,155 [INFO] Node worker-w004 is Ready
+2025-12-30 05:23:35,155 [INFO] Node worker-w005 is Ready
+2025-12-30 05:23:35,155 [INFO] Node worker-w006 is Ready
+2025-12-30 05:23:35,158 [WARNING] No pods found for etcd-sim
+2025-12-30 05:23:35,160 [WARNING] No pods found for postgres-sim
+2025-12-30 05:23:35,162 [WARNING] No pods found for redis-sim
+2025-12-30 05:23:35,164 [WARNING] No pods found for nginx-sim
+2025-12-30 05:23:35,166 [WARNING] No pods found for auth-sim
+2025-12-30 05:23:35,166 [INFO] Completed full health check
+[2025-12-30 05:23:35] TIMING: NODE_SIMULATION completed in 146 seconds
+
+================================================================
+ STEP 3: INTERIM HEALTH CHECK
+ Time: 2025-12-30 05:23:35
+================================================================
+Log directory created/verified: /app/logs
+File logging configured successfully
+2025-12-30 05:23:36,053 [INFO] Loaded in-cluster Kubernetes config
+2025-12-30 05:23:36,054 [INFO] Running on host: resilience-bench-2-105043-mqw8r
+2025-12-30 05:23:36,054 [INFO] Detected current node: master-m003, zone: R3
+2025-12-30 05:23:36,054 [INFO] Checking if we have permissions to modify nodes...
+2025-12-30 05:23:36,131 [INFO] Testing permissions using node: master-m001
+2025-12-30 05:23:36,138 [INFO] Permission check successful - we can modify nodes
+2025-12-30 05:23:36,138 [INFO] Using real Kubernetes API for node control
+2025-12-30 05:23:36,139 [INFO] Action received: health-check
+2025-12-30 05:23:36,139 [INFO] Stabilization time: 10 seconds
+2025-12-30 05:23:36,139 [INFO] Starting full health check
+2025-12-30 05:23:36,140 [INFO] 
+============ DETAILED NODE STATUS ============
+2025-12-30 05:23:36,140 [INFO] Basic Node Information (kubectl get nodes -o wide):
+2025-12-30 05:23:36,256 [INFO]   NAME          STATUS   ROLES           AGE     VERSION    INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+2025-12-30 05:23:36,257 [INFO]   master-m001   Ready    control-plane   4d10h   v1.32.11   192.168.56.101   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:36,257 [INFO]   master-m002   Ready    control-plane   4d10h   v1.32.11   192.168.56.102   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:36,257 [INFO]   master-m003   Ready    control-plane   4d10h   v1.32.11   192.168.56.103   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:36,257 [INFO]   worker-w001   Ready    <none>          4d10h   v1.32.11   192.168.56.104   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:36,257 [INFO]   worker-w002   Ready    <none>          4d10h   v1.32.11   192.168.56.105   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:36,257 [INFO]   worker-w003   Ready    <none>          4d10h   v1.32.11   192.168.56.106   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:36,257 [INFO]   worker-w004   Ready    <none>          4d9h    v1.32.11   192.168.56.107   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:36,258 [INFO]   worker-w005   Ready    <none>          4d9h    v1.32.11   192.168.56.108   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:36,258 [INFO]   worker-w006   Ready    <none>          4d9h    v1.32.11   192.168.56.109   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:23:36,258 [INFO] 
+Enhanced Node Status (with taint and cordon indicators):
+2025-12-30 05:23:36,258 [INFO]   NAME                STATUS    ROLES           ZONE   CORDONED   TAINTS
+2025-12-30 05:23:36,830 [INFO]   master-m001     Ready  ✓ worker         R1    No       node-role.kubernetes.io/control-plane 
+2025-12-30 05:23:37,131 [INFO]   master-m002     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:23:37,531 [INFO]   master-m003     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:23:37,913 [INFO]   worker-w001     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:23:38,242 [INFO]   worker-w002     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:23:38,624 [INFO]   worker-w003     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:23:38,957 [INFO]   worker-w004     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:23:39,907 [INFO]   worker-w005     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:23:40,248 [INFO]   worker-w006     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:23:40,248 [INFO] 
+Legend:
+2025-12-30 05:23:40,248 [INFO]   ✓ = Node is Ready
+2025-12-30 05:23:40,248 [INFO]   ⚠️ = Warning indicator (NotReady, Cordoned, or has simulated-failure taint)
+2025-12-30 05:23:40,248 [INFO] ============ DETAILED POD INFORMATION ============
+2025-12-30 05:23:40,248 [INFO] Running 'kubectl get pods -o wide' to show detailed pod placement:
+2025-12-30 05:23:40,536 [INFO]   NAMESPACE     NAME                                                       READY   STATUS      RESTARTS       AGE     IP                NODE          NOMINATED NODE   READINESS GATES
+2025-12-30 05:23:40,537 [INFO]   argo          argo-server-5c69cb69db-gdkl6                               1/1     Running     0              39h     192.168.221.65    master-m003   <none>           <none>
+2025-12-30 05:23:40,537 [INFO]   argo          resilience-bench-gzmt6-finalize-metrics-4126634228         0/2     Completed   0              17h     192.168.221.101   master-m003   <none>           <none>
+2025-12-30 05:23:40,537 [INFO]   argo          resilience-bench-gzmt6-initialize-metrics-77741412         0/2     Completed   0              17h     192.168.221.93    master-m003   <none>           <none>
+2025-12-30 05:23:40,537 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4154250290         0/2     Completed   0              17h     192.168.221.98    master-m003   <none>           <none>
+2025-12-30 05:23:40,537 [INFO]   argo          resilience-bench-gzmt6-run-health-check-416242235          0/2     Completed   0              17h     192.168.221.95    master-m003   <none>           <none>
+2025-12-30 05:23:40,538 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4236524422         0/2     Completed   0              17h     192.168.221.100   master-m003   <none>           <none>
+2025-12-30 05:23:40,538 [INFO]   argo          resilience-bench-gzmt6-run-health-check-433019854          0/2     Completed   0              17h     192.168.221.94    master-m003   <none>           <none>
+2025-12-30 05:23:40,538 [INFO]   argo          resilience-bench-gzmt6-run-health-check-449797473          0/2     Completed   0              17h     192.168.221.96    master-m003   <none>           <none>
+2025-12-30 05:23:40,538 [INFO]   argo          resilience-bench-gzmt6-run-node-simulation-801212678       0/2     Completed   0              17h     192.168.221.97    master-m003   <none>           <none>
+2025-12-30 05:23:40,538 [INFO]   argo          resilience-bench-gzmt6-run-rack-simulation-437033535       0/2     Completed   0              17h     192.168.221.99    master-m003   <none>           <none>
+2025-12-30 05:23:40,538 [INFO]   argo          resilience-bench-mrzb2-finalize-metrics-3679752311         0/2     Completed   0              22h     192.168.221.92    master-m003   <none>           <none>
+2025-12-30 05:23:40,539 [INFO]   argo          resilience-bench-mrzb2-initialize-metrics-445472771        0/2     Completed   0              22h     192.168.221.84    master-m003   <none>           <none>
+2025-12-30 05:23:40,539 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2956474392         0/2     Completed   0              22h     192.168.221.85    master-m003   <none>           <none>
+2025-12-30 05:23:40,539 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2990029630         0/2     Completed   0              22h     192.168.221.87    master-m003   <none>           <none>
+2025-12-30 05:23:40,539 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3006807249         0/2     Completed   0              22h     192.168.221.86    master-m003   <none>           <none>
+2025-12-30 05:23:40,539 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3146255069         0/2     Completed   0              22h     192.168.221.91    master-m003   <none>           <none>
+2025-12-30 05:23:40,539 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3987847309         0/2     Completed   0              22h     192.168.221.89    master-m003   <none>           <none>
+2025-12-30 05:23:40,539 [INFO]   argo          resilience-bench-mrzb2-run-node-simulation-1708426071      0/2     Completed   0              22h     192.168.221.88    master-m003   <none>           <none>
+2025-12-30 05:23:40,540 [INFO]   argo          resilience-bench-mrzb2-run-rack-simulation-395353974       0/2     Completed   0              22h     192.168.221.90    master-m003   <none>           <none>
+2025-12-30 05:23:40,540 [INFO]   argo          resilience-sim-argo-5sxnj-finalize-metrics-787649287       0/2     Completed   0              38h     192.168.221.74    master-m003   <none>           <none>
+2025-12-30 05:23:40,540 [INFO]   argo          resilience-sim-argo-5sxnj-initialize-metrics-2680879475    0/2     Completed   0              38h     192.168.221.66    master-m003   <none>           <none>
+2025-12-30 05:23:40,540 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3469088989      0/2     Completed   0              38h     192.168.221.71    master-m003   <none>           <none>
+2025-12-30 05:23:40,540 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3961717576      0/2     Completed   0              38h     192.168.221.69    master-m003   <none>           <none>
+2025-12-30 05:23:40,540 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3995272814      0/2     Completed   0              38h     192.168.221.68    master-m003   <none>           <none>
+2025-12-30 05:23:40,540 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-4012050433      0/2     Completed   0              38h     192.168.221.67    master-m003   <none>           <none>
+2025-12-30 05:23:40,541 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-737247917       0/2     Completed   0              38h     192.168.221.73    master-m003   <none>           <none>
+2025-12-30 05:23:40,541 [INFO]   argo          resilience-sim-argo-5sxnj-run-node-simulation-4063685255   0/2     Completed   0              38h     192.168.221.70    master-m003   <none>           <none>
+2025-12-30 05:23:40,541 [INFO]   argo          resilience-sim-argo-5sxnj-run-rack-simulation-2208326982   0/2     Completed   0              38h     192.168.221.72    master-m003   <none>           <none>
+2025-12-30 05:23:40,541 [INFO]   argo          resilience-sim-argo-kzw5c-finalize-metrics-3389586321      0/2     Completed   0              24h     192.168.221.83    master-m003   <none>           <none>
+2025-12-30 05:23:40,541 [INFO]   argo          resilience-sim-argo-kzw5c-initialize-metrics-3368568425    0/2     Completed   0              24h     192.168.221.75    master-m003   <none>           <none>
+2025-12-30 05:23:40,541 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3147592231      0/2     Completed   0              24h     192.168.221.82    master-m003   <none>           <none>
+2025-12-30 05:23:40,541 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3617814844      0/2     Completed   0              24h     192.168.221.77    master-m003   <none>           <none>
+2025-12-30 05:23:40,542 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3634592463      0/2     Completed   0              24h     192.168.221.78    master-m003   <none>           <none>
+2025-12-30 05:23:40,542 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3651370082      0/2     Completed   0              24h     192.168.221.76    master-m003   <none>           <none>
+2025-12-30 05:23:40,542 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3829464063      0/2     Completed   0              24h     192.168.221.80    master-m003   <none>           <none>
+2025-12-30 05:23:40,542 [INFO]   argo          resilience-sim-argo-kzw5c-run-node-simulation-3449613549   0/2     Completed   0              24h     192.168.221.79    master-m003   <none>           <none>
+2025-12-30 05:23:40,542 [INFO]   argo          resilience-sim-argo-kzw5c-run-rack-simulation-2627060560   0/2     Completed   0              24h     192.168.221.81    master-m003   <none>           <none>
+2025-12-30 05:23:40,542 [INFO]   argo          workflow-controller-ccbd949dc-mkc6k                        1/1     Running     0              38h     192.168.15.194    worker-w005   <none>           <none>
+2025-12-30 05:23:40,542 [INFO]   default       resilience-bench-1-101852-6h2tc                            0/1     Completed   0              34m     192.168.221.102   master-m003   <none>           <none>
+2025-12-30 05:23:40,543 [INFO]   default       resilience-bench-2-105043-mqw8r                            1/1     Running     0              2m57s   192.168.221.104   master-m003   <none>           <none>
+2025-12-30 05:23:40,543 [INFO]   kube-system   calico-kube-controllers-7498b9bb4c-f6fsd                   1/1     Running     0              34m     192.168.195.193   worker-w002   <none>           <none>
+2025-12-30 05:23:40,543 [INFO]   kube-system   calico-node-4zhd4                                          1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:23:40,543 [INFO]   kube-system   calico-node-75nx6                                          1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:23:40,543 [INFO]   kube-system   calico-node-7lkdq                                          1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:23:40,543 [INFO]   kube-system   calico-node-85f8c                                          1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:23:40,543 [INFO]   kube-system   calico-node-j8nb9                                          1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:40,544 [INFO]   kube-system   calico-node-lbcb2                                          1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:23:40,544 [INFO]   kube-system   calico-node-wlr5v                                          1/1     Running     0              4d9h    192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:23:40,544 [INFO]   kube-system   calico-node-xnzjw                                          1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:23:40,544 [INFO]   kube-system   calico-node-xsltn                                          1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:23:40,544 [INFO]   kube-system   coredns-668d6bf9bc-f9tlp                                   1/1     Running     0              22h     192.168.191.65    worker-w006   <none>           <none>
+2025-12-30 05:23:40,544 [INFO]   kube-system   coredns-668d6bf9bc-x2gx4                                   1/1     Running     0              31m     192.168.132.130   worker-w001   <none>           <none>
+2025-12-30 05:23:40,544 [INFO]   kube-system   etcd-master-m001                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:40,544 [INFO]   kube-system   kube-apiserver-master-m001                                 1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:40,545 [INFO]   kube-system   kube-controller-manager-master-m001                        1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:40,545 [INFO]   kube-system   kube-proxy-5lzhj                                           1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:23:40,545 [INFO]   kube-system   kube-proxy-7jqkv                                           1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:23:40,545 [INFO]   kube-system   kube-proxy-cv5dt                                           1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:23:40,545 [INFO]   kube-system   kube-proxy-fvpmr                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:40,545 [INFO]   kube-system   kube-proxy-hgs5z                                           1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:23:40,546 [INFO]   kube-system   kube-proxy-kmgqr                                           1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:23:40,546 [INFO]   kube-system   kube-proxy-rdbz5                                           1/1     Running     0              4d9h    192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:23:40,546 [INFO]   kube-system   kube-proxy-w8mnb                                           1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:23:40,546 [INFO]   kube-system   kube-proxy-x9jxr                                           1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:23:40,546 [INFO]   kube-system   kube-scheduler-master-m001                                 1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:23:40,546 [INFO] 
+Pod distribution by node:
+2025-12-30 05:23:40,739 [INFO]   Node master-m003: 41 pods
+2025-12-30 05:23:40,739 [INFO]   Node worker-w005: 3 pods
+2025-12-30 05:23:40,739 [INFO]   Node worker-w002: 3 pods
+2025-12-30 05:23:40,739 [INFO]   Node worker-w006: 3 pods
+2025-12-30 05:23:40,740 [INFO]   Node worker-w001: 3 pods
+2025-12-30 05:23:40,740 [INFO]   Node master-m002: 2 pods
+2025-12-30 05:23:40,740 [INFO]   Node master-m001: 4 pods
+2025-12-30 05:23:40,740 [INFO]   Node worker-w003: 2 pods
+2025-12-30 05:23:40,740 [INFO]   Node worker-w004: 2 pods
+2025-12-30 05:23:40,740 [INFO]   Node 4d10h: 2 pods
+2025-12-30 05:23:40,741 [INFO] 
+Filtering for simulation services:
+2025-12-30 05:23:40,924 [INFO] Node master-m001 is Ready
+2025-12-30 05:23:40,925 [INFO] Node master-m002 is Ready
+2025-12-30 05:23:40,925 [INFO] Node master-m003 is Ready
+2025-12-30 05:23:40,925 [INFO] Node worker-w001 is Ready
+2025-12-30 05:23:40,925 [INFO] Node worker-w002 is Ready
+2025-12-30 05:23:40,925 [INFO] Node worker-w003 is Ready
+2025-12-30 05:23:40,925 [INFO] Node worker-w004 is Ready
+2025-12-30 05:23:40,925 [INFO] Node worker-w005 is Ready
+2025-12-30 05:23:40,925 [INFO] Node worker-w006 is Ready
+2025-12-30 05:23:40,933 [WARNING] No pods found for etcd-sim
+2025-12-30 05:23:40,938 [WARNING] No pods found for postgres-sim
+2025-12-30 05:23:40,940 [WARNING] No pods found for redis-sim
+2025-12-30 05:23:40,944 [WARNING] No pods found for nginx-sim
+2025-12-30 05:23:41,034 [WARNING] No pods found for auth-sim
+2025-12-30 05:23:41,034 [INFO] Completed full health check
+[2025-12-30 05:23:41] TIMING: INTERIM_HEALTH_CHECK completed in 6 seconds
+
+================================================================
+ STEP 4: RACK FAILURE SIMULATION
+ Time: 2025-12-30 05:23:41
+================================================================
+[2025-12-30 05:23:41] Starting rack failure simulation (stabilization: 120s, downtime: 60s)...
+Log directory created/verified: /app/logs
+File logging configured successfully
+2025-12-30 05:23:41,715 [INFO] Loaded in-cluster Kubernetes config
+2025-12-30 05:23:41,715 [INFO] Running on host: resilience-bench-2-105043-mqw8r
+2025-12-30 05:23:41,715 [INFO] Detected current node: master-m003, zone: R3
+2025-12-30 05:23:41,715 [INFO] Checking if we have permissions to modify nodes...
+2025-12-30 05:23:41,748 [INFO] Testing permissions using node: master-m001
+2025-12-30 05:23:41,755 [INFO] Permission check successful - we can modify nodes
+2025-12-30 05:23:41,755 [INFO] Using real Kubernetes API for node control
+2025-12-30 05:23:41,756 [INFO] Action received: simulate-rack
+2025-12-30 05:23:41,756 [INFO] Stabilization time: 120 seconds
+2025-12-30 05:23:41,756 [INFO] Current node: master-m003 in zone: R3
+2025-12-30 05:23:41,756 [INFO] Safe zones for rack simulation: ['R1', 'R2']
+2025-12-30 05:23:41,756 [INFO] Simulating full rack (zone) failure: R1 with nodes: ['master-m001', 'worker-w001', 'worker-w002']
+2025-12-30 05:23:41,757 [INFO] Simulating node failure for master-m001 using Kubernetes API
+2025-12-30 05:23:41,771 [INFO] Node master-m001 cordoned
+2025-12-30 05:23:41,811 [INFO] Node master-m001 tainted with NoExecute
+2025-12-30 05:23:41,811 [INFO] Node master-m001 powered off (delay 5s)
+2025-12-30 05:23:41,811 [INFO] Node master-m001 powered off (delay 5s)
+2025-12-30 05:23:46,814 [INFO] Simulating node failure for worker-w001 using Kubernetes API
+2025-12-30 05:23:46,831 [INFO] Node worker-w001 cordoned
+2025-12-30 05:23:46,842 [INFO] Node worker-w001 tainted with NoExecute
+2025-12-30 05:23:46,842 [INFO] Node worker-w001 powered off (delay 5s)
+2025-12-30 05:23:46,842 [INFO] Node worker-w001 powered off (delay 5s)
+2025-12-30 05:23:51,843 [INFO] Simulating node failure for worker-w002 using Kubernetes API
+2025-12-30 05:23:51,875 [INFO] Node worker-w002 cordoned
+2025-12-30 05:23:51,898 [INFO] Node worker-w002 tainted with NoExecute
+2025-12-30 05:23:51,898 [INFO] Node worker-w002 powered off (delay 5s)
+2025-12-30 05:23:51,898 [INFO] Node worker-w002 powered off (delay 5s)
+2025-12-30 05:23:56,917 [INFO] Waiting 120 seconds for the cluster to stabilize before health check...
+2025-12-30 05:25:56,949 [INFO] Running health check after rack power off
+2025-12-30 05:25:56,950 [INFO] Starting full health check
+2025-12-30 05:25:56,950 [INFO] 
+============ DETAILED NODE STATUS ============
+2025-12-30 05:25:56,950 [INFO] Basic Node Information (kubectl get nodes -o wide):
+2025-12-30 05:25:57,032 [INFO]   NAME          STATUS                     ROLES           AGE     VERSION    INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+2025-12-30 05:25:57,032 [INFO]   master-m001   Ready,SchedulingDisabled   control-plane   4d10h   v1.32.11   192.168.56.101   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:25:57,032 [INFO]   master-m002   Ready                      control-plane   4d10h   v1.32.11   192.168.56.102   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:25:57,032 [INFO]   master-m003   Ready                      control-plane   4d10h   v1.32.11   192.168.56.103   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:25:57,032 [INFO]   worker-w001   Ready,SchedulingDisabled   <none>          4d10h   v1.32.11   192.168.56.104   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:25:57,032 [INFO]   worker-w002   Ready,SchedulingDisabled   <none>          4d10h   v1.32.11   192.168.56.105   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:25:57,032 [INFO]   worker-w003   Ready                      <none>          4d10h   v1.32.11   192.168.56.106   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:25:57,032 [INFO]   worker-w004   Ready                      <none>          4d9h    v1.32.11   192.168.56.107   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:25:57,032 [INFO]   worker-w005   Ready                      <none>          4d9h    v1.32.11   192.168.56.108   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:25:57,032 [INFO]   worker-w006   Ready                      <none>          4d9h    v1.32.11   192.168.56.109   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:25:57,032 [INFO] 
+Enhanced Node Status (with taint and cordon indicators):
+2025-12-30 05:25:57,032 [INFO]   NAME                STATUS    ROLES           ZONE   CORDONED   TAINTS
+2025-12-30 05:25:57,526 [INFO]   master-m001     Ready  ✓ worker         R1    YES     ⚠️ node-role.kubernetes.io/control-plane, simulated-failure, node.kubernetes.io/unschedulable ⚠️
+2025-12-30 05:25:57,860 [INFO]   master-m002     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:25:58,246 [INFO]   master-m003     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:25:58,637 [INFO]   worker-w001     Ready  ✓ worker         R1    YES     ⚠️ simulated-failure, node.kubernetes.io/unschedulable ⚠️
+2025-12-30 05:25:58,966 [INFO]   worker-w002     Ready  ✓ worker         R1    YES     ⚠️ simulated-failure, node.kubernetes.io/unschedulable ⚠️
+2025-12-30 05:26:00,122 [INFO]   worker-w003     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:26:00,445 [INFO]   worker-w004     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:26:00,821 [INFO]   worker-w005     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:26:01,153 [INFO]   worker-w006     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:26:01,153 [INFO] 
+Legend:
+2025-12-30 05:26:01,153 [INFO]   ✓ = Node is Ready
+2025-12-30 05:26:01,153 [INFO]   ⚠️ = Warning indicator (NotReady, Cordoned, or has simulated-failure taint)
+2025-12-30 05:26:01,153 [INFO] ============ DETAILED POD INFORMATION ============
+2025-12-30 05:26:01,153 [INFO] Running 'kubectl get pods -o wide' to show detailed pod placement:
+2025-12-30 05:26:01,355 [INFO]   NAMESPACE     NAME                                                       READY   STATUS      RESTARTS       AGE     IP                NODE          NOMINATED NODE   READINESS GATES
+2025-12-30 05:26:01,356 [INFO]   argo          argo-server-5c69cb69db-gdkl6                               1/1     Running     0              39h     192.168.221.65    master-m003   <none>           <none>
+2025-12-30 05:26:01,356 [INFO]   argo          resilience-bench-gzmt6-finalize-metrics-4126634228         0/2     Completed   0              17h     192.168.221.101   master-m003   <none>           <none>
+2025-12-30 05:26:01,356 [INFO]   argo          resilience-bench-gzmt6-initialize-metrics-77741412         0/2     Completed   0              17h     192.168.221.93    master-m003   <none>           <none>
+2025-12-30 05:26:01,356 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4154250290         0/2     Completed   0              17h     192.168.221.98    master-m003   <none>           <none>
+2025-12-30 05:26:01,356 [INFO]   argo          resilience-bench-gzmt6-run-health-check-416242235          0/2     Completed   0              17h     192.168.221.95    master-m003   <none>           <none>
+2025-12-30 05:26:01,356 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4236524422         0/2     Completed   0              17h     192.168.221.100   master-m003   <none>           <none>
+2025-12-30 05:26:01,356 [INFO]   argo          resilience-bench-gzmt6-run-health-check-433019854          0/2     Completed   0              17h     192.168.221.94    master-m003   <none>           <none>
+2025-12-30 05:26:01,357 [INFO]   argo          resilience-bench-gzmt6-run-health-check-449797473          0/2     Completed   0              17h     192.168.221.96    master-m003   <none>           <none>
+2025-12-30 05:26:01,357 [INFO]   argo          resilience-bench-gzmt6-run-node-simulation-801212678       0/2     Completed   0              17h     192.168.221.97    master-m003   <none>           <none>
+2025-12-30 05:26:01,413 [INFO]   argo          resilience-bench-gzmt6-run-rack-simulation-437033535       0/2     Completed   0              17h     192.168.221.99    master-m003   <none>           <none>
+2025-12-30 05:26:01,414 [INFO]   argo          resilience-bench-mrzb2-finalize-metrics-3679752311         0/2     Completed   0              22h     192.168.221.92    master-m003   <none>           <none>
+2025-12-30 05:26:01,414 [INFO]   argo          resilience-bench-mrzb2-initialize-metrics-445472771        0/2     Completed   0              22h     192.168.221.84    master-m003   <none>           <none>
+2025-12-30 05:26:01,414 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2956474392         0/2     Completed   0              22h     192.168.221.85    master-m003   <none>           <none>
+2025-12-30 05:26:01,414 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2990029630         0/2     Completed   0              22h     192.168.221.87    master-m003   <none>           <none>
+2025-12-30 05:26:01,414 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3006807249         0/2     Completed   0              22h     192.168.221.86    master-m003   <none>           <none>
+2025-12-30 05:26:01,414 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3146255069         0/2     Completed   0              22h     192.168.221.91    master-m003   <none>           <none>
+2025-12-30 05:26:01,414 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3987847309         0/2     Completed   0              22h     192.168.221.89    master-m003   <none>           <none>
+2025-12-30 05:26:01,414 [INFO]   argo          resilience-bench-mrzb2-run-node-simulation-1708426071      0/2     Completed   0              22h     192.168.221.88    master-m003   <none>           <none>
+2025-12-30 05:26:01,415 [INFO]   argo          resilience-bench-mrzb2-run-rack-simulation-395353974       0/2     Completed   0              22h     192.168.221.90    master-m003   <none>           <none>
+2025-12-30 05:26:01,415 [INFO]   argo          resilience-sim-argo-5sxnj-finalize-metrics-787649287       0/2     Completed   0              38h     192.168.221.74    master-m003   <none>           <none>
+2025-12-30 05:26:01,415 [INFO]   argo          resilience-sim-argo-5sxnj-initialize-metrics-2680879475    0/2     Completed   0              38h     192.168.221.66    master-m003   <none>           <none>
+2025-12-30 05:26:01,415 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3469088989      0/2     Completed   0              38h     192.168.221.71    master-m003   <none>           <none>
+2025-12-30 05:26:01,415 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3961717576      0/2     Completed   0              38h     192.168.221.69    master-m003   <none>           <none>
+2025-12-30 05:26:01,415 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3995272814      0/2     Completed   0              38h     192.168.221.68    master-m003   <none>           <none>
+2025-12-30 05:26:01,415 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-4012050433      0/2     Completed   0              38h     192.168.221.67    master-m003   <none>           <none>
+2025-12-30 05:26:01,416 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-737247917       0/2     Completed   0              38h     192.168.221.73    master-m003   <none>           <none>
+2025-12-30 05:26:01,416 [INFO]   argo          resilience-sim-argo-5sxnj-run-node-simulation-4063685255   0/2     Completed   0              38h     192.168.221.70    master-m003   <none>           <none>
+2025-12-30 05:26:01,416 [INFO]   argo          resilience-sim-argo-5sxnj-run-rack-simulation-2208326982   0/2     Completed   0              38h     192.168.221.72    master-m003   <none>           <none>
+2025-12-30 05:26:01,416 [INFO]   argo          resilience-sim-argo-kzw5c-finalize-metrics-3389586321      0/2     Completed   0              24h     192.168.221.83    master-m003   <none>           <none>
+2025-12-30 05:26:01,416 [INFO]   argo          resilience-sim-argo-kzw5c-initialize-metrics-3368568425    0/2     Completed   0              24h     192.168.221.75    master-m003   <none>           <none>
+2025-12-30 05:26:01,416 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3147592231      0/2     Completed   0              24h     192.168.221.82    master-m003   <none>           <none>
+2025-12-30 05:26:01,416 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3617814844      0/2     Completed   0              24h     192.168.221.77    master-m003   <none>           <none>
+2025-12-30 05:26:01,416 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3634592463      0/2     Completed   0              24h     192.168.221.78    master-m003   <none>           <none>
+2025-12-30 05:26:01,416 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3651370082      0/2     Completed   0              24h     192.168.221.76    master-m003   <none>           <none>
+2025-12-30 05:26:01,417 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3829464063      0/2     Completed   0              24h     192.168.221.80    master-m003   <none>           <none>
+2025-12-30 05:26:01,417 [INFO]   argo          resilience-sim-argo-kzw5c-run-node-simulation-3449613549   0/2     Completed   0              24h     192.168.221.79    master-m003   <none>           <none>
+2025-12-30 05:26:01,417 [INFO]   argo          resilience-sim-argo-kzw5c-run-rack-simulation-2627060560   0/2     Completed   0              24h     192.168.221.81    master-m003   <none>           <none>
+2025-12-30 05:26:01,417 [INFO]   argo          workflow-controller-ccbd949dc-mkc6k                        1/1     Running     0              38h     192.168.15.194    worker-w005   <none>           <none>
+2025-12-30 05:26:01,417 [INFO]   default       resilience-bench-1-101852-6h2tc                            0/1     Completed   0              37m     192.168.221.102   master-m003   <none>           <none>
+2025-12-30 05:26:01,417 [INFO]   default       resilience-bench-2-105043-mqw8r                            1/1     Running     0              5m18s   192.168.221.104   master-m003   <none>           <none>
+2025-12-30 05:26:01,417 [INFO]   kube-system   calico-kube-controllers-7498b9bb4c-m6hww                   1/1     Running     0              2m9s    192.168.227.194   master-m002   <none>           <none>
+2025-12-30 05:26:01,417 [INFO]   kube-system   calico-node-4zhd4                                          1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:26:01,418 [INFO]   kube-system   calico-node-75nx6                                          1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:26:01,418 [INFO]   kube-system   calico-node-7lkdq                                          1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:26:01,418 [INFO]   kube-system   calico-node-85f8c                                          1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:26:01,418 [INFO]   kube-system   calico-node-j8nb9                                          1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:26:01,418 [INFO]   kube-system   calico-node-lbcb2                                          1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:26:01,418 [INFO]   kube-system   calico-node-wlr5v                                          1/1     Running     0              4d9h    192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:26:01,418 [INFO]   kube-system   calico-node-xnzjw                                          1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:26:01,418 [INFO]   kube-system   calico-node-xsltn                                          1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:26:01,418 [INFO]   kube-system   coredns-668d6bf9bc-f9tlp                                   1/1     Running     0              22h     192.168.191.65    worker-w006   <none>           <none>
+2025-12-30 05:26:01,419 [INFO]   kube-system   coredns-668d6bf9bc-pgssx                                   1/1     Running     0              2m15s   192.168.153.195   worker-w004   <none>           <none>
+2025-12-30 05:26:01,419 [INFO]   kube-system   etcd-master-m001                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:26:01,419 [INFO]   kube-system   kube-apiserver-master-m001                                 1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:26:01,419 [INFO]   kube-system   kube-controller-manager-master-m001                        1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:26:01,419 [INFO]   kube-system   kube-proxy-5lzhj                                           1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:26:01,419 [INFO]   kube-system   kube-proxy-7jqkv                                           1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:26:01,419 [INFO]   kube-system   kube-proxy-cv5dt                                           1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:26:01,419 [INFO]   kube-system   kube-proxy-fvpmr                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:26:01,420 [INFO]   kube-system   kube-proxy-hgs5z                                           1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:26:01,420 [INFO]   kube-system   kube-proxy-kmgqr                                           1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:26:01,420 [INFO]   kube-system   kube-proxy-rdbz5                                           1/1     Running     0              4d9h    192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:26:01,420 [INFO]   kube-system   kube-proxy-w8mnb                                           1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:26:01,420 [INFO]   kube-system   kube-proxy-x9jxr                                           1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:26:01,420 [INFO]   kube-system   kube-scheduler-master-m001                                 1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:26:01,420 [INFO] 
+Pod distribution by node:
+2025-12-30 05:26:01,618 [INFO]   Node master-m003: 41 pods
+2025-12-30 05:26:01,618 [INFO]   Node worker-w005: 3 pods
+2025-12-30 05:26:01,619 [INFO]   Node master-m002: 3 pods
+2025-12-30 05:26:01,619 [INFO]   Node worker-w002: 2 pods
+2025-12-30 05:26:01,619 [INFO]   Node worker-w006: 3 pods
+2025-12-30 05:26:01,619 [INFO]   Node worker-w001: 2 pods
+2025-12-30 05:26:01,619 [INFO]   Node master-m001: 4 pods
+2025-12-30 05:26:01,619 [INFO]   Node worker-w003: 2 pods
+2025-12-30 05:26:01,619 [INFO]   Node worker-w004: 3 pods
+2025-12-30 05:26:01,619 [INFO]   Node 4d10h: 2 pods
+2025-12-30 05:26:01,619 [INFO] 
+Filtering for simulation services:
+2025-12-30 05:26:01,764 [INFO] Node master-m001 is Ready
+2025-12-30 05:26:01,765 [INFO] Node master-m002 is Ready
+2025-12-30 05:26:01,765 [INFO] Node master-m003 is Ready
+2025-12-30 05:26:01,765 [INFO] Node worker-w001 is Ready
+2025-12-30 05:26:01,765 [INFO] Node worker-w002 is Ready
+2025-12-30 05:26:01,766 [INFO] Node worker-w003 is Ready
+2025-12-30 05:26:01,766 [INFO] Node worker-w004 is Ready
+2025-12-30 05:26:01,766 [INFO] Node worker-w005 is Ready
+2025-12-30 05:26:01,766 [INFO] Node worker-w006 is Ready
+2025-12-30 05:26:01,769 [WARNING] No pods found for etcd-sim
+2025-12-30 05:26:01,771 [WARNING] No pods found for postgres-sim
+2025-12-30 05:26:01,773 [WARNING] No pods found for redis-sim
+2025-12-30 05:26:01,820 [WARNING] No pods found for nginx-sim
+2025-12-30 05:26:01,822 [WARNING] No pods found for auth-sim
+2025-12-30 05:26:01,822 [INFO] Completed full health check
+2025-12-30 05:26:01,822 [INFO] Zone R1 remains down for 60 seconds
+2025-12-30 05:27:01,881 [INFO] Running health check before rack power on
+2025-12-30 05:27:01,881 [INFO] Starting full health check
+2025-12-30 05:27:01,881 [INFO] 
+============ DETAILED NODE STATUS ============
+2025-12-30 05:27:01,881 [INFO] Basic Node Information (kubectl get nodes -o wide):
+2025-12-30 05:27:01,939 [INFO]   NAME          STATUS                     ROLES           AGE     VERSION    INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+2025-12-30 05:27:01,940 [INFO]   master-m001   Ready,SchedulingDisabled   control-plane   4d10h   v1.32.11   192.168.56.101   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:27:01,940 [INFO]   master-m002   Ready                      control-plane   4d10h   v1.32.11   192.168.56.102   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:27:01,940 [INFO]   master-m003   Ready                      control-plane   4d10h   v1.32.11   192.168.56.103   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:27:01,940 [INFO]   worker-w001   Ready,SchedulingDisabled   <none>          4d10h   v1.32.11   192.168.56.104   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:27:01,940 [INFO]   worker-w002   Ready,SchedulingDisabled   <none>          4d10h   v1.32.11   192.168.56.105   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:27:01,940 [INFO]   worker-w003   Ready                      <none>          4d10h   v1.32.11   192.168.56.106   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:27:01,941 [INFO]   worker-w004   Ready                      <none>          4d10h   v1.32.11   192.168.56.107   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:27:01,941 [INFO]   worker-w005   Ready                      <none>          4d9h    v1.32.11   192.168.56.108   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:27:01,941 [INFO]   worker-w006   Ready                      <none>          4d9h    v1.32.11   192.168.56.109   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:27:01,941 [INFO] 
+Enhanced Node Status (with taint and cordon indicators):
+2025-12-30 05:27:01,941 [INFO]   NAME                STATUS    ROLES           ZONE   CORDONED   TAINTS
+2025-12-30 05:27:02,459 [INFO]   master-m001     Ready  ✓ worker         R1    YES     ⚠️ node-role.kubernetes.io/control-plane, simulated-failure, node.kubernetes.io/unschedulable ⚠️
+2025-12-30 05:27:02,837 [INFO]   master-m002     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:27:03,235 [INFO]   master-m003     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:27:03,561 [INFO]   worker-w001     Ready  ✓ worker         R1    YES     ⚠️ simulated-failure, node.kubernetes.io/unschedulable ⚠️
+2025-12-30 05:27:03,944 [INFO]   worker-w002     Ready  ✓ worker         R1    YES     ⚠️ simulated-failure, node.kubernetes.io/unschedulable ⚠️
+2025-12-30 05:27:04,334 [INFO]   worker-w003     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:27:04,647 [INFO]   worker-w004     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:27:05,029 [INFO]   worker-w005     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:27:05,421 [INFO]   worker-w006     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:27:05,421 [INFO] 
+Legend:
+2025-12-30 05:27:05,422 [INFO]   ✓ = Node is Ready
+2025-12-30 05:27:05,422 [INFO]   ⚠️ = Warning indicator (NotReady, Cordoned, or has simulated-failure taint)
+2025-12-30 05:27:05,422 [INFO] ============ DETAILED POD INFORMATION ============
+2025-12-30 05:27:05,422 [INFO] Running 'kubectl get pods -o wide' to show detailed pod placement:
+2025-12-30 05:27:05,625 [INFO]   NAMESPACE     NAME                                                       READY   STATUS      RESTARTS       AGE     IP                NODE          NOMINATED NODE   READINESS GATES
+2025-12-30 05:27:05,626 [INFO]   argo          argo-server-5c69cb69db-gdkl6                               1/1     Running     0              39h     192.168.221.65    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-gzmt6-finalize-metrics-4126634228         0/2     Completed   0              17h     192.168.221.101   master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-gzmt6-initialize-metrics-77741412         0/2     Completed   0              17h     192.168.221.93    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4154250290         0/2     Completed   0              17h     192.168.221.98    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-gzmt6-run-health-check-416242235          0/2     Completed   0              17h     192.168.221.95    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4236524422         0/2     Completed   0              17h     192.168.221.100   master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-gzmt6-run-health-check-433019854          0/2     Completed   0              17h     192.168.221.94    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-gzmt6-run-health-check-449797473          0/2     Completed   0              17h     192.168.221.96    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-gzmt6-run-node-simulation-801212678       0/2     Completed   0              17h     192.168.221.97    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-gzmt6-run-rack-simulation-437033535       0/2     Completed   0              17h     192.168.221.99    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-mrzb2-finalize-metrics-3679752311         0/2     Completed   0              22h     192.168.221.92    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-mrzb2-initialize-metrics-445472771        0/2     Completed   0              22h     192.168.221.84    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2956474392         0/2     Completed   0              22h     192.168.221.85    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2990029630         0/2     Completed   0              22h     192.168.221.87    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3006807249         0/2     Completed   0              22h     192.168.221.86    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3146255069         0/2     Completed   0              22h     192.168.221.91    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3987847309         0/2     Completed   0              22h     192.168.221.89    master-m003   <none>           <none>
+2025-12-30 05:27:05,626 [INFO]   argo          resilience-bench-mrzb2-run-node-simulation-1708426071      0/2     Completed   0              22h     192.168.221.88    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-bench-mrzb2-run-rack-simulation-395353974       0/2     Completed   0              22h     192.168.221.90    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-5sxnj-finalize-metrics-787649287       0/2     Completed   0              38h     192.168.221.74    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-5sxnj-initialize-metrics-2680879475    0/2     Completed   0              39h     192.168.221.66    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3469088989      0/2     Completed   0              38h     192.168.221.71    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3961717576      0/2     Completed   0              38h     192.168.221.69    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3995272814      0/2     Completed   0              38h     192.168.221.68    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-4012050433      0/2     Completed   0              38h     192.168.221.67    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-737247917       0/2     Completed   0              38h     192.168.221.73    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-5sxnj-run-node-simulation-4063685255   0/2     Completed   0              38h     192.168.221.70    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-5sxnj-run-rack-simulation-2208326982   0/2     Completed   0              38h     192.168.221.72    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-kzw5c-finalize-metrics-3389586321      0/2     Completed   0              24h     192.168.221.83    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-kzw5c-initialize-metrics-3368568425    0/2     Completed   0              24h     192.168.221.75    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3147592231      0/2     Completed   0              24h     192.168.221.82    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3617814844      0/2     Completed   0              24h     192.168.221.77    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3634592463      0/2     Completed   0              24h     192.168.221.78    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3651370082      0/2     Completed   0              24h     192.168.221.76    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3829464063      0/2     Completed   0              24h     192.168.221.80    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-kzw5c-run-node-simulation-3449613549   0/2     Completed   0              24h     192.168.221.79    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          resilience-sim-argo-kzw5c-run-rack-simulation-2627060560   0/2     Completed   0              24h     192.168.221.81    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   argo          workflow-controller-ccbd949dc-mkc6k                        1/1     Running     0              38h     192.168.15.194    worker-w005   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   default       resilience-bench-1-101852-6h2tc                            0/1     Completed   0              38m     192.168.221.102   master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   default       resilience-bench-2-105043-mqw8r                            1/1     Running     0              6m22s   192.168.221.104   master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   kube-system   calico-kube-controllers-7498b9bb4c-m6hww                   1/1     Running     0              3m13s   192.168.227.194   master-m002   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   kube-system   calico-node-4zhd4                                          1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   kube-system   calico-node-75nx6                                          1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   kube-system   calico-node-7lkdq                                          1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   kube-system   calico-node-85f8c                                          1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   kube-system   calico-node-j8nb9                                          1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   kube-system   calico-node-lbcb2                                          1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   kube-system   calico-node-wlr5v                                          1/1     Running     0              4d10h   192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   kube-system   calico-node-xnzjw                                          1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   kube-system   calico-node-xsltn                                          1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:27:05,627 [INFO]   kube-system   coredns-668d6bf9bc-f9tlp                                   1/1     Running     0              22h     192.168.191.65    worker-w006   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   coredns-668d6bf9bc-pgssx                                   1/1     Running     0              3m19s   192.168.153.195   worker-w004   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   etcd-master-m001                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-apiserver-master-m001                                 1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-controller-manager-master-m001                        1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-proxy-5lzhj                                           1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-proxy-7jqkv                                           1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-proxy-cv5dt                                           1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-proxy-fvpmr                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-proxy-hgs5z                                           1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-proxy-kmgqr                                           1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-proxy-rdbz5                                           1/1     Running     0              4d10h   192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-proxy-w8mnb                                           1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-proxy-x9jxr                                           1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:27:05,628 [INFO]   kube-system   kube-scheduler-master-m001                                 1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:27:05,628 [INFO] 
+Pod distribution by node:
+2025-12-30 05:27:05,824 [INFO]   Node master-m003: 41 pods
+2025-12-30 05:27:05,825 [INFO]   Node worker-w005: 3 pods
+2025-12-30 05:27:05,825 [INFO]   Node master-m002: 3 pods
+2025-12-30 05:27:05,825 [INFO]   Node worker-w002: 2 pods
+2025-12-30 05:27:05,825 [INFO]   Node worker-w006: 3 pods
+2025-12-30 05:27:05,825 [INFO]   Node worker-w001: 2 pods
+2025-12-30 05:27:05,825 [INFO]   Node master-m001: 4 pods
+2025-12-30 05:27:05,825 [INFO]   Node worker-w003: 2 pods
+2025-12-30 05:27:05,825 [INFO]   Node worker-w004: 3 pods
+2025-12-30 05:27:05,825 [INFO]   Node 4d10h: 2 pods
+2025-12-30 05:27:05,825 [INFO] 
+Filtering for simulation services:
+2025-12-30 05:27:06,021 [INFO] Node master-m001 is Ready
+2025-12-30 05:27:06,021 [INFO] Node master-m002 is Ready
+2025-12-30 05:27:06,021 [INFO] Node master-m003 is Ready
+2025-12-30 05:27:06,021 [INFO] Node worker-w001 is Ready
+2025-12-30 05:27:06,021 [INFO] Node worker-w002 is Ready
+2025-12-30 05:27:06,022 [INFO] Node worker-w003 is Ready
+2025-12-30 05:27:06,022 [INFO] Node worker-w004 is Ready
+2025-12-30 05:27:06,022 [INFO] Node worker-w005 is Ready
+2025-12-30 05:27:06,022 [INFO] Node worker-w006 is Ready
+2025-12-30 05:27:06,025 [WARNING] No pods found for etcd-sim
+2025-12-30 05:27:06,027 [WARNING] No pods found for postgres-sim
+2025-12-30 05:27:06,029 [WARNING] No pods found for redis-sim
+2025-12-30 05:27:06,031 [WARNING] No pods found for nginx-sim
+2025-12-30 05:27:06,033 [WARNING] No pods found for auth-sim
+2025-12-30 05:27:06,033 [INFO] Completed full health check
+2025-12-30 05:27:06,033 [INFO] Simulating node recovery for master-m001 using Kubernetes API
+2025-12-30 05:27:06,049 [INFO] Removed simulated-failure taint from node master-m001
+2025-12-30 05:27:06,062 [INFO] Node master-m001 uncordoned and ready
+2025-12-30 05:27:06,062 [INFO] Node master-m001 powered on (delay 5s)
+2025-12-30 05:27:11,117 [INFO] Simulating node recovery for worker-w001 using Kubernetes API
+2025-12-30 05:27:11,133 [INFO] Removed simulated-failure taint from node worker-w001
+2025-12-30 05:27:11,146 [INFO] Node worker-w001 uncordoned and ready
+2025-12-30 05:27:11,146 [INFO] Node worker-w001 powered on (delay 5s)
+2025-12-30 05:27:16,149 [INFO] Simulating node recovery for worker-w002 using Kubernetes API
+2025-12-30 05:27:16,166 [INFO] Removed simulated-failure taint from node worker-w002
+2025-12-30 05:27:16,233 [INFO] Node worker-w002 uncordoned and ready
+2025-12-30 05:27:16,235 [INFO] Node worker-w002 powered on (delay 5s)
+2025-12-30 05:27:21,241 [INFO] Waiting 120 seconds for the cluster to stabilize after recovery...
+2025-12-30 05:29:21,337 [INFO] Running final health check
+2025-12-30 05:29:21,337 [INFO] Starting full health check
+2025-12-30 05:29:21,338 [INFO] 
+============ DETAILED NODE STATUS ============
+2025-12-30 05:29:21,338 [INFO] Basic Node Information (kubectl get nodes -o wide):
+2025-12-30 05:29:21,474 [INFO]   NAME          STATUS   ROLES           AGE     VERSION    INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+2025-12-30 05:29:21,474 [INFO]   master-m001   Ready    control-plane   4d10h   v1.32.11   192.168.56.101   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:21,474 [INFO]   master-m002   Ready    control-plane   4d10h   v1.32.11   192.168.56.102   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:21,474 [INFO]   master-m003   Ready    control-plane   4d10h   v1.32.11   192.168.56.103   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:21,474 [INFO]   worker-w001   Ready    <none>          4d10h   v1.32.11   192.168.56.104   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:21,474 [INFO]   worker-w002   Ready    <none>          4d10h   v1.32.11   192.168.56.105   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:21,474 [INFO]   worker-w003   Ready    <none>          4d10h   v1.32.11   192.168.56.106   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:21,474 [INFO]   worker-w004   Ready    <none>          4d10h   v1.32.11   192.168.56.107   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:21,474 [INFO]   worker-w005   Ready    <none>          4d9h    v1.32.11   192.168.56.108   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:21,474 [INFO]   worker-w006   Ready    <none>          4d9h    v1.32.11   192.168.56.109   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:21,474 [INFO] 
+Enhanced Node Status (with taint and cordon indicators):
+2025-12-30 05:29:21,474 [INFO]   NAME                STATUS    ROLES           ZONE   CORDONED   TAINTS
+2025-12-30 05:29:21,948 [INFO]   master-m001     Ready  ✓ worker         R1    No       node-role.kubernetes.io/control-plane 
+2025-12-30 05:29:22,329 [INFO]   master-m002     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:29:22,664 [INFO]   master-m003     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:29:23,047 [INFO]   worker-w001     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:29:23,348 [INFO]   worker-w002     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:29:23,746 [INFO]   worker-w003     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:29:24,171 [INFO]   worker-w004     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:29:24,532 [INFO]   worker-w005     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:29:24,937 [INFO]   worker-w006     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:29:24,937 [INFO] 
+Legend:
+2025-12-30 05:29:24,937 [INFO]   ✓ = Node is Ready
+2025-12-30 05:29:24,937 [INFO]   ⚠️ = Warning indicator (NotReady, Cordoned, or has simulated-failure taint)
+2025-12-30 05:29:24,938 [INFO] ============ DETAILED POD INFORMATION ============
+2025-12-30 05:29:24,938 [INFO] Running 'kubectl get pods -o wide' to show detailed pod placement:
+2025-12-30 05:29:25,137 [INFO]   NAMESPACE     NAME                                                       READY   STATUS      RESTARTS       AGE     IP                NODE          NOMINATED NODE   READINESS GATES
+2025-12-30 05:29:25,138 [INFO]   argo          argo-server-5c69cb69db-gdkl6                               1/1     Running     0              39h     192.168.221.65    master-m003   <none>           <none>
+2025-12-30 05:29:25,138 [INFO]   argo          resilience-bench-gzmt6-finalize-metrics-4126634228         0/2     Completed   0              17h     192.168.221.101   master-m003   <none>           <none>
+2025-12-30 05:29:25,138 [INFO]   argo          resilience-bench-gzmt6-initialize-metrics-77741412         0/2     Completed   0              17h     192.168.221.93    master-m003   <none>           <none>
+2025-12-30 05:29:25,138 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4154250290         0/2     Completed   0              17h     192.168.221.98    master-m003   <none>           <none>
+2025-12-30 05:29:25,138 [INFO]   argo          resilience-bench-gzmt6-run-health-check-416242235          0/2     Completed   0              17h     192.168.221.95    master-m003   <none>           <none>
+2025-12-30 05:29:25,138 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4236524422         0/2     Completed   0              17h     192.168.221.100   master-m003   <none>           <none>
+2025-12-30 05:29:25,138 [INFO]   argo          resilience-bench-gzmt6-run-health-check-433019854          0/2     Completed   0              17h     192.168.221.94    master-m003   <none>           <none>
+2025-12-30 05:29:25,139 [INFO]   argo          resilience-bench-gzmt6-run-health-check-449797473          0/2     Completed   0              17h     192.168.221.96    master-m003   <none>           <none>
+2025-12-30 05:29:25,139 [INFO]   argo          resilience-bench-gzmt6-run-node-simulation-801212678       0/2     Completed   0              17h     192.168.221.97    master-m003   <none>           <none>
+2025-12-30 05:29:25,139 [INFO]   argo          resilience-bench-gzmt6-run-rack-simulation-437033535       0/2     Completed   0              17h     192.168.221.99    master-m003   <none>           <none>
+2025-12-30 05:29:25,139 [INFO]   argo          resilience-bench-mrzb2-finalize-metrics-3679752311         0/2     Completed   0              22h     192.168.221.92    master-m003   <none>           <none>
+2025-12-30 05:29:25,139 [INFO]   argo          resilience-bench-mrzb2-initialize-metrics-445472771        0/2     Completed   0              22h     192.168.221.84    master-m003   <none>           <none>
+2025-12-30 05:29:25,139 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2956474392         0/2     Completed   0              22h     192.168.221.85    master-m003   <none>           <none>
+2025-12-30 05:29:25,139 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2990029630         0/2     Completed   0              22h     192.168.221.87    master-m003   <none>           <none>
+2025-12-30 05:29:25,140 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3006807249         0/2     Completed   0              22h     192.168.221.86    master-m003   <none>           <none>
+2025-12-30 05:29:25,140 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3146255069         0/2     Completed   0              22h     192.168.221.91    master-m003   <none>           <none>
+2025-12-30 05:29:25,140 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3987847309         0/2     Completed   0              22h     192.168.221.89    master-m003   <none>           <none>
+2025-12-30 05:29:25,140 [INFO]   argo          resilience-bench-mrzb2-run-node-simulation-1708426071      0/2     Completed   0              22h     192.168.221.88    master-m003   <none>           <none>
+2025-12-30 05:29:25,140 [INFO]   argo          resilience-bench-mrzb2-run-rack-simulation-395353974       0/2     Completed   0              22h     192.168.221.90    master-m003   <none>           <none>
+2025-12-30 05:29:25,140 [INFO]   argo          resilience-sim-argo-5sxnj-finalize-metrics-787649287       0/2     Completed   0              38h     192.168.221.74    master-m003   <none>           <none>
+2025-12-30 05:29:25,141 [INFO]   argo          resilience-sim-argo-5sxnj-initialize-metrics-2680879475    0/2     Completed   0              39h     192.168.221.66    master-m003   <none>           <none>
+2025-12-30 05:29:25,141 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3469088989      0/2     Completed   0              38h     192.168.221.71    master-m003   <none>           <none>
+2025-12-30 05:29:25,141 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3961717576      0/2     Completed   0              39h     192.168.221.69    master-m003   <none>           <none>
+2025-12-30 05:29:25,141 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3995272814      0/2     Completed   0              39h     192.168.221.68    master-m003   <none>           <none>
+2025-12-30 05:29:25,141 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-4012050433      0/2     Completed   0              39h     192.168.221.67    master-m003   <none>           <none>
+2025-12-30 05:29:25,141 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-737247917       0/2     Completed   0              38h     192.168.221.73    master-m003   <none>           <none>
+2025-12-30 05:29:25,141 [INFO]   argo          resilience-sim-argo-5sxnj-run-node-simulation-4063685255   0/2     Completed   0              39h     192.168.221.70    master-m003   <none>           <none>
+2025-12-30 05:29:25,142 [INFO]   argo          resilience-sim-argo-5sxnj-run-rack-simulation-2208326982   0/2     Completed   0              38h     192.168.221.72    master-m003   <none>           <none>
+2025-12-30 05:29:25,142 [INFO]   argo          resilience-sim-argo-kzw5c-finalize-metrics-3389586321      0/2     Completed   0              24h     192.168.221.83    master-m003   <none>           <none>
+2025-12-30 05:29:25,142 [INFO]   argo          resilience-sim-argo-kzw5c-initialize-metrics-3368568425    0/2     Completed   0              24h     192.168.221.75    master-m003   <none>           <none>
+2025-12-30 05:29:25,142 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3147592231      0/2     Completed   0              24h     192.168.221.82    master-m003   <none>           <none>
+2025-12-30 05:29:25,142 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3617814844      0/2     Completed   0              24h     192.168.221.77    master-m003   <none>           <none>
+2025-12-30 05:29:25,142 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3634592463      0/2     Completed   0              24h     192.168.221.78    master-m003   <none>           <none>
+2025-12-30 05:29:25,142 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3651370082      0/2     Completed   0              24h     192.168.221.76    master-m003   <none>           <none>
+2025-12-30 05:29:25,143 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3829464063      0/2     Completed   0              24h     192.168.221.80    master-m003   <none>           <none>
+2025-12-30 05:29:25,143 [INFO]   argo          resilience-sim-argo-kzw5c-run-node-simulation-3449613549   0/2     Completed   0              24h     192.168.221.79    master-m003   <none>           <none>
+2025-12-30 05:29:25,143 [INFO]   argo          resilience-sim-argo-kzw5c-run-rack-simulation-2627060560   0/2     Completed   0              24h     192.168.221.81    master-m003   <none>           <none>
+2025-12-30 05:29:25,143 [INFO]   argo          workflow-controller-ccbd949dc-mkc6k                        1/1     Running     0              39h     192.168.15.194    worker-w005   <none>           <none>
+2025-12-30 05:29:25,143 [INFO]   default       resilience-bench-1-101852-6h2tc                            0/1     Completed   0              40m     192.168.221.102   master-m003   <none>           <none>
+2025-12-30 05:29:25,143 [INFO]   default       resilience-bench-2-105043-mqw8r                            1/1     Running     0              8m42s   192.168.221.104   master-m003   <none>           <none>
+2025-12-30 05:29:25,143 [INFO]   kube-system   calico-kube-controllers-7498b9bb4c-m6hww                   1/1     Running     0              5m33s   192.168.227.194   master-m002   <none>           <none>
+2025-12-30 05:29:25,144 [INFO]   kube-system   calico-node-4zhd4                                          1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:29:25,144 [INFO]   kube-system   calico-node-75nx6                                          1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:29:25,144 [INFO]   kube-system   calico-node-7lkdq                                          1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:29:25,144 [INFO]   kube-system   calico-node-85f8c                                          1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:29:25,144 [INFO]   kube-system   calico-node-j8nb9                                          1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:25,144 [INFO]   kube-system   calico-node-lbcb2                                          1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:29:25,144 [INFO]   kube-system   calico-node-wlr5v                                          1/1     Running     0              4d10h   192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:29:25,145 [INFO]   kube-system   calico-node-xnzjw                                          1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:29:25,145 [INFO]   kube-system   calico-node-xsltn                                          1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:29:25,145 [INFO]   kube-system   coredns-668d6bf9bc-f9tlp                                   1/1     Running     0              22h     192.168.191.65    worker-w006   <none>           <none>
+2025-12-30 05:29:25,145 [INFO]   kube-system   coredns-668d6bf9bc-pgssx                                   1/1     Running     0              5m39s   192.168.153.195   worker-w004   <none>           <none>
+2025-12-30 05:29:25,145 [INFO]   kube-system   etcd-master-m001                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:25,145 [INFO]   kube-system   kube-apiserver-master-m001                                 1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:25,145 [INFO]   kube-system   kube-controller-manager-master-m001                        1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:25,146 [INFO]   kube-system   kube-proxy-5lzhj                                           1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:29:25,146 [INFO]   kube-system   kube-proxy-7jqkv                                           1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:29:25,146 [INFO]   kube-system   kube-proxy-cv5dt                                           1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:29:25,146 [INFO]   kube-system   kube-proxy-fvpmr                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:25,146 [INFO]   kube-system   kube-proxy-hgs5z                                           1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:29:25,146 [INFO]   kube-system   kube-proxy-kmgqr                                           1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:29:25,146 [INFO]   kube-system   kube-proxy-rdbz5                                           1/1     Running     0              4d10h   192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:29:25,147 [INFO]   kube-system   kube-proxy-w8mnb                                           1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:29:25,147 [INFO]   kube-system   kube-proxy-x9jxr                                           1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:29:25,147 [INFO]   kube-system   kube-scheduler-master-m001                                 1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:25,147 [INFO] 
+Pod distribution by node:
+2025-12-30 05:29:25,349 [INFO]   Node master-m003: 41 pods
+2025-12-30 05:29:25,349 [INFO]   Node worker-w005: 3 pods
+2025-12-30 05:29:25,349 [INFO]   Node master-m002: 3 pods
+2025-12-30 05:29:25,350 [INFO]   Node worker-w002: 2 pods
+2025-12-30 05:29:25,350 [INFO]   Node worker-w006: 3 pods
+2025-12-30 05:29:25,350 [INFO]   Node worker-w001: 2 pods
+2025-12-30 05:29:25,350 [INFO]   Node master-m001: 4 pods
+2025-12-30 05:29:25,350 [INFO]   Node worker-w003: 2 pods
+2025-12-30 05:29:25,350 [INFO]   Node worker-w004: 3 pods
+2025-12-30 05:29:25,351 [INFO]   Node 4d10h: 2 pods
+2025-12-30 05:29:25,351 [INFO] 
+Filtering for simulation services:
+2025-12-30 05:29:25,553 [INFO] Node master-m001 is Ready
+2025-12-30 05:29:25,554 [INFO] Node master-m002 is Ready
+2025-12-30 05:29:25,554 [INFO] Node master-m003 is Ready
+2025-12-30 05:29:25,554 [INFO] Node worker-w001 is Ready
+2025-12-30 05:29:25,554 [INFO] Node worker-w002 is Ready
+2025-12-30 05:29:25,554 [INFO] Node worker-w003 is Ready
+2025-12-30 05:29:25,555 [INFO] Node worker-w004 is Ready
+2025-12-30 05:29:25,555 [INFO] Node worker-w005 is Ready
+2025-12-30 05:29:25,555 [INFO] Node worker-w006 is Ready
+2025-12-30 05:29:25,558 [WARNING] No pods found for etcd-sim
+2025-12-30 05:29:25,560 [WARNING] No pods found for postgres-sim
+2025-12-30 05:29:25,562 [WARNING] No pods found for redis-sim
+2025-12-30 05:29:25,564 [WARNING] No pods found for nginx-sim
+2025-12-30 05:29:25,566 [WARNING] No pods found for auth-sim
+2025-12-30 05:29:25,566 [INFO] Completed full health check
+2025-12-30 05:29:25,566 [INFO] Rack R1 has been fully restored
+[2025-12-30 05:29:25] TIMING: RACK_SIMULATION completed in 344 seconds
+
+================================================================
+ STEP 5: FINAL HEALTH CHECK
+ Time: 2025-12-30 05:29:25
+================================================================
+Log directory created/verified: /app/logs
+File logging configured successfully
+2025-12-30 05:29:26,434 [INFO] Loaded in-cluster Kubernetes config
+2025-12-30 05:29:26,434 [INFO] Running on host: resilience-bench-2-105043-mqw8r
+2025-12-30 05:29:26,434 [INFO] Detected current node: master-m003, zone: R3
+2025-12-30 05:29:26,434 [INFO] Checking if we have permissions to modify nodes...
+2025-12-30 05:29:26,466 [INFO] Testing permissions using node: master-m001
+2025-12-30 05:29:26,521 [INFO] Permission check successful - we can modify nodes
+2025-12-30 05:29:26,521 [INFO] Using real Kubernetes API for node control
+2025-12-30 05:29:26,522 [INFO] Action received: health-check
+2025-12-30 05:29:26,522 [INFO] Stabilization time: 10 seconds
+2025-12-30 05:29:26,522 [INFO] Starting full health check
+2025-12-30 05:29:26,522 [INFO] 
+============ DETAILED NODE STATUS ============
+2025-12-30 05:29:26,522 [INFO] Basic Node Information (kubectl get nodes -o wide):
+2025-12-30 05:29:26,648 [INFO]   NAME          STATUS   ROLES           AGE     VERSION    INTERNAL-IP      EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION      CONTAINER-RUNTIME
+2025-12-30 05:29:26,648 [INFO]   master-m001   Ready    control-plane   4d10h   v1.32.11   192.168.56.101   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:26,648 [INFO]   master-m002   Ready    control-plane   4d10h   v1.32.11   192.168.56.102   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:26,649 [INFO]   master-m003   Ready    control-plane   4d10h   v1.32.11   192.168.56.103   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:26,649 [INFO]   worker-w001   Ready    <none>          4d10h   v1.32.11   192.168.56.104   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:26,649 [INFO]   worker-w002   Ready    <none>          4d10h   v1.32.11   192.168.56.105   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:26,649 [INFO]   worker-w003   Ready    <none>          4d10h   v1.32.11   192.168.56.106   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:26,649 [INFO]   worker-w004   Ready    <none>          4d10h   v1.32.11   192.168.56.107   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:26,649 [INFO]   worker-w005   Ready    <none>          4d9h    v1.32.11   192.168.56.108   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:26,649 [INFO]   worker-w006   Ready    <none>          4d9h    v1.32.11   192.168.56.109   <none>        Ubuntu 20.04.6 LTS   5.4.0-216-generic   containerd://1.7.24
+2025-12-30 05:29:26,649 [INFO] 
+Enhanced Node Status (with taint and cordon indicators):
+2025-12-30 05:29:26,649 [INFO]   NAME                STATUS    ROLES           ZONE   CORDONED   TAINTS
+2025-12-30 05:29:27,205 [INFO]   master-m001     Ready  ✓ worker         R1    No       node-role.kubernetes.io/control-plane 
+2025-12-30 05:29:27,759 [INFO]   master-m002     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:29:28,161 [INFO]   master-m003     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:29:28,566 [INFO]   worker-w001     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:29:29,017 [INFO]   worker-w002     Ready  ✓ worker         R1    No       None 
+2025-12-30 05:29:29,686 [INFO]   worker-w003     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:29:30,026 [INFO]   worker-w004     Ready  ✓ worker         R2    No       None 
+2025-12-30 05:29:30,350 [INFO]   worker-w005     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:29:30,714 [INFO]   worker-w006     Ready  ✓ worker         R3    No       None 
+2025-12-30 05:29:30,714 [INFO] 
+Legend:
+2025-12-30 05:29:30,714 [INFO]   ✓ = Node is Ready
+2025-12-30 05:29:30,715 [INFO]   ⚠️ = Warning indicator (NotReady, Cordoned, or has simulated-failure taint)
+2025-12-30 05:29:30,715 [INFO] ============ DETAILED POD INFORMATION ============
+2025-12-30 05:29:30,715 [INFO] Running 'kubectl get pods -o wide' to show detailed pod placement:
+2025-12-30 05:29:30,843 [INFO]   NAMESPACE     NAME                                                       READY   STATUS      RESTARTS       AGE     IP                NODE          NOMINATED NODE   READINESS GATES
+2025-12-30 05:29:30,843 [INFO]   argo          argo-server-5c69cb69db-gdkl6                               1/1     Running     0              39h     192.168.221.65    master-m003   <none>           <none>
+2025-12-30 05:29:30,843 [INFO]   argo          resilience-bench-gzmt6-finalize-metrics-4126634228         0/2     Completed   0              17h     192.168.221.101   master-m003   <none>           <none>
+2025-12-30 05:29:30,844 [INFO]   argo          resilience-bench-gzmt6-initialize-metrics-77741412         0/2     Completed   0              17h     192.168.221.93    master-m003   <none>           <none>
+2025-12-30 05:29:30,844 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4154250290         0/2     Completed   0              17h     192.168.221.98    master-m003   <none>           <none>
+2025-12-30 05:29:30,844 [INFO]   argo          resilience-bench-gzmt6-run-health-check-416242235          0/2     Completed   0              17h     192.168.221.95    master-m003   <none>           <none>
+2025-12-30 05:29:30,844 [INFO]   argo          resilience-bench-gzmt6-run-health-check-4236524422         0/2     Completed   0              17h     192.168.221.100   master-m003   <none>           <none>
+2025-12-30 05:29:30,844 [INFO]   argo          resilience-bench-gzmt6-run-health-check-433019854          0/2     Completed   0              17h     192.168.221.94    master-m003   <none>           <none>
+2025-12-30 05:29:30,844 [INFO]   argo          resilience-bench-gzmt6-run-health-check-449797473          0/2     Completed   0              17h     192.168.221.96    master-m003   <none>           <none>
+2025-12-30 05:29:30,845 [INFO]   argo          resilience-bench-gzmt6-run-node-simulation-801212678       0/2     Completed   0              17h     192.168.221.97    master-m003   <none>           <none>
+2025-12-30 05:29:30,845 [INFO]   argo          resilience-bench-gzmt6-run-rack-simulation-437033535       0/2     Completed   0              17h     192.168.221.99    master-m003   <none>           <none>
+2025-12-30 05:29:30,845 [INFO]   argo          resilience-bench-mrzb2-finalize-metrics-3679752311         0/2     Completed   0              22h     192.168.221.92    master-m003   <none>           <none>
+2025-12-30 05:29:30,845 [INFO]   argo          resilience-bench-mrzb2-initialize-metrics-445472771        0/2     Completed   0              22h     192.168.221.84    master-m003   <none>           <none>
+2025-12-30 05:29:30,845 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2956474392         0/2     Completed   0              22h     192.168.221.85    master-m003   <none>           <none>
+2025-12-30 05:29:30,845 [INFO]   argo          resilience-bench-mrzb2-run-health-check-2990029630         0/2     Completed   0              22h     192.168.221.87    master-m003   <none>           <none>
+2025-12-30 05:29:30,846 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3006807249         0/2     Completed   0              22h     192.168.221.86    master-m003   <none>           <none>
+2025-12-30 05:29:30,846 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3146255069         0/2     Completed   0              22h     192.168.221.91    master-m003   <none>           <none>
+2025-12-30 05:29:30,846 [INFO]   argo          resilience-bench-mrzb2-run-health-check-3987847309         0/2     Completed   0              22h     192.168.221.89    master-m003   <none>           <none>
+2025-12-30 05:29:30,846 [INFO]   argo          resilience-bench-mrzb2-run-node-simulation-1708426071      0/2     Completed   0              22h     192.168.221.88    master-m003   <none>           <none>
+2025-12-30 05:29:30,846 [INFO]   argo          resilience-bench-mrzb2-run-rack-simulation-395353974       0/2     Completed   0              22h     192.168.221.90    master-m003   <none>           <none>
+2025-12-30 05:29:30,846 [INFO]   argo          resilience-sim-argo-5sxnj-finalize-metrics-787649287       0/2     Completed   0              38h     192.168.221.74    master-m003   <none>           <none>
+2025-12-30 05:29:30,846 [INFO]   argo          resilience-sim-argo-5sxnj-initialize-metrics-2680879475    0/2     Completed   0              39h     192.168.221.66    master-m003   <none>           <none>
+2025-12-30 05:29:30,847 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3469088989      0/2     Completed   0              38h     192.168.221.71    master-m003   <none>           <none>
+2025-12-30 05:29:30,847 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3961717576      0/2     Completed   0              39h     192.168.221.69    master-m003   <none>           <none>
+2025-12-30 05:29:30,847 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-3995272814      0/2     Completed   0              39h     192.168.221.68    master-m003   <none>           <none>
+2025-12-30 05:29:30,847 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-4012050433      0/2     Completed   0              39h     192.168.221.67    master-m003   <none>           <none>
+2025-12-30 05:29:30,847 [INFO]   argo          resilience-sim-argo-5sxnj-run-health-check-737247917       0/2     Completed   0              38h     192.168.221.73    master-m003   <none>           <none>
+2025-12-30 05:29:30,847 [INFO]   argo          resilience-sim-argo-5sxnj-run-node-simulation-4063685255   0/2     Completed   0              39h     192.168.221.70    master-m003   <none>           <none>
+2025-12-30 05:29:30,848 [INFO]   argo          resilience-sim-argo-5sxnj-run-rack-simulation-2208326982   0/2     Completed   0              38h     192.168.221.72    master-m003   <none>           <none>
+2025-12-30 05:29:30,848 [INFO]   argo          resilience-sim-argo-kzw5c-finalize-metrics-3389586321      0/2     Completed   0              24h     192.168.221.83    master-m003   <none>           <none>
+2025-12-30 05:29:30,848 [INFO]   argo          resilience-sim-argo-kzw5c-initialize-metrics-3368568425    0/2     Completed   0              24h     192.168.221.75    master-m003   <none>           <none>
+2025-12-30 05:29:30,848 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3147592231      0/2     Completed   0              24h     192.168.221.82    master-m003   <none>           <none>
+2025-12-30 05:29:30,848 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3617814844      0/2     Completed   0              24h     192.168.221.77    master-m003   <none>           <none>
+2025-12-30 05:29:30,848 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3634592463      0/2     Completed   0              24h     192.168.221.78    master-m003   <none>           <none>
+2025-12-30 05:29:30,848 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3651370082      0/2     Completed   0              24h     192.168.221.76    master-m003   <none>           <none>
+2025-12-30 05:29:30,849 [INFO]   argo          resilience-sim-argo-kzw5c-run-health-check-3829464063      0/2     Completed   0              24h     192.168.221.80    master-m003   <none>           <none>
+2025-12-30 05:29:30,849 [INFO]   argo          resilience-sim-argo-kzw5c-run-node-simulation-3449613549   0/2     Completed   0              24h     192.168.221.79    master-m003   <none>           <none>
+2025-12-30 05:29:30,849 [INFO]   argo          resilience-sim-argo-kzw5c-run-rack-simulation-2627060560   0/2     Completed   0              24h     192.168.221.81    master-m003   <none>           <none>
+2025-12-30 05:29:30,849 [INFO]   argo          workflow-controller-ccbd949dc-mkc6k                        1/1     Running     0              39h     192.168.15.194    worker-w005   <none>           <none>
+2025-12-30 05:29:30,849 [INFO]   default       resilience-bench-1-101852-6h2tc                            0/1     Completed   0              40m     192.168.221.102   master-m003   <none>           <none>
+2025-12-30 05:29:30,849 [INFO]   default       resilience-bench-2-105043-mqw8r                            1/1     Running     0              8m47s   192.168.221.104   master-m003   <none>           <none>
+2025-12-30 05:29:30,850 [INFO]   kube-system   calico-kube-controllers-7498b9bb4c-m6hww                   1/1     Running     0              5m38s   192.168.227.194   master-m002   <none>           <none>
+2025-12-30 05:29:30,850 [INFO]   kube-system   calico-node-4zhd4                                          1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:29:30,850 [INFO]   kube-system   calico-node-75nx6                                          1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:29:30,850 [INFO]   kube-system   calico-node-7lkdq                                          1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:29:30,850 [INFO]   kube-system   calico-node-85f8c                                          1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:29:30,850 [INFO]   kube-system   calico-node-j8nb9                                          1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:30,851 [INFO]   kube-system   calico-node-lbcb2                                          1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:29:30,851 [INFO]   kube-system   calico-node-wlr5v                                          1/1     Running     0              4d10h   192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:29:30,851 [INFO]   kube-system   calico-node-xnzjw                                          1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:29:30,851 [INFO]   kube-system   calico-node-xsltn                                          1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:29:30,851 [INFO]   kube-system   coredns-668d6bf9bc-f9tlp                                   1/1     Running     0              22h     192.168.191.65    worker-w006   <none>           <none>
+2025-12-30 05:29:30,851 [INFO]   kube-system   coredns-668d6bf9bc-pgssx                                   1/1     Running     0              5m44s   192.168.153.195   worker-w004   <none>           <none>
+2025-12-30 05:29:30,851 [INFO]   kube-system   etcd-master-m001                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:30,852 [INFO]   kube-system   kube-apiserver-master-m001                                 1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:30,852 [INFO]   kube-system   kube-controller-manager-master-m001                        1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:30,852 [INFO]   kube-system   kube-proxy-5lzhj                                           1/1     Running     0              4d10h   192.168.56.102    master-m002   <none>           <none>
+2025-12-30 05:29:30,852 [INFO]   kube-system   kube-proxy-7jqkv                                           1/1     Running     0              4d9h    192.168.56.109    worker-w006   <none>           <none>
+2025-12-30 05:29:30,852 [INFO]   kube-system   kube-proxy-cv5dt                                           1/1     Running     0              4d9h    192.168.56.108    worker-w005   <none>           <none>
+2025-12-30 05:29:30,852 [INFO]   kube-system   kube-proxy-fvpmr                                           1/1     Running     0              4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:30,853 [INFO]   kube-system   kube-proxy-hgs5z                                           1/1     Running     0              4d10h   192.168.56.106    worker-w003   <none>           <none>
+2025-12-30 05:29:30,853 [INFO]   kube-system   kube-proxy-kmgqr                                           1/1     Running     0              4d10h   192.168.56.105    worker-w002   <none>           <none>
+2025-12-30 05:29:30,853 [INFO]   kube-system   kube-proxy-rdbz5                                           1/1     Running     0              4d10h   192.168.56.107    worker-w004   <none>           <none>
+2025-12-30 05:29:30,853 [INFO]   kube-system   kube-proxy-w8mnb                                           1/1     Running     0              4d10h   192.168.56.103    master-m003   <none>           <none>
+2025-12-30 05:29:30,853 [INFO]   kube-system   kube-proxy-x9jxr                                           1/1     Running     0              4d10h   192.168.56.104    worker-w001   <none>           <none>
+2025-12-30 05:29:30,853 [INFO]   kube-system   kube-scheduler-master-m001                                 1/1     Running     5 (4d9h ago)   4d10h   192.168.56.101    master-m001   <none>           <none>
+2025-12-30 05:29:30,853 [INFO] 
+Pod distribution by node:
+2025-12-30 05:29:31,056 [INFO]   Node master-m003: 41 pods
+2025-12-30 05:29:31,057 [INFO]   Node worker-w005: 3 pods
+2025-12-30 05:29:31,057 [INFO]   Node master-m002: 3 pods
+2025-12-30 05:29:31,057 [INFO]   Node worker-w002: 2 pods
+2025-12-30 05:29:31,057 [INFO]   Node worker-w006: 3 pods
+2025-12-30 05:29:31,057 [INFO]   Node worker-w001: 2 pods
+2025-12-30 05:29:31,058 [INFO]   Node master-m001: 4 pods
+2025-12-30 05:29:31,058 [INFO]   Node worker-w003: 2 pods
+2025-12-30 05:29:31,058 [INFO]   Node worker-w004: 3 pods
+2025-12-30 05:29:31,058 [INFO]   Node 4d10h: 2 pods
+2025-12-30 05:29:31,058 [INFO] 
+Filtering for simulation services:
+2025-12-30 05:29:31,252 [INFO] Node master-m001 is Ready
+2025-12-30 05:29:31,252 [INFO] Node master-m002 is Ready
+2025-12-30 05:29:31,252 [INFO] Node master-m003 is Ready
+2025-12-30 05:29:31,252 [INFO] Node worker-w001 is Ready
+2025-12-30 05:29:31,252 [INFO] Node worker-w002 is Ready
+2025-12-30 05:29:31,253 [INFO] Node worker-w003 is Ready
+2025-12-30 05:29:31,253 [INFO] Node worker-w004 is Ready
+2025-12-30 05:29:31,253 [INFO] Node worker-w005 is Ready
+2025-12-30 05:29:31,253 [INFO] Node worker-w006 is Ready
+2025-12-30 05:29:31,256 [WARNING] No pods found for etcd-sim
+2025-12-30 05:29:31,258 [WARNING] No pods found for postgres-sim
+2025-12-30 05:29:31,260 [WARNING] No pods found for redis-sim
+2025-12-30 05:29:31,262 [WARNING] No pods found for nginx-sim
+2025-12-30 05:29:31,264 [WARNING] No pods found for auth-sim
+2025-12-30 05:29:31,264 [INFO] Completed full health check
+[2025-12-30 05:29:31] TIMING: FINAL_HEALTH_CHECK completed in 6 seconds
+
+================================================================
+ WORKFLOW COMPLETE
+ Time: 2025-12-30 05:29:31
+================================================================
+[2025-12-30 05:29:31] Total Duration: 523 seconds
+[2025-12-30 05:29:31] Log files saved to: /app/logs/native-20251230-052047-mqw8r
+[2025-12-30 05:29:31] 
+[2025-12-30 05:29:31] ===== TIMING SUMMARY =====
+step,start_epoch,end_epoch,duration_seconds
+HEALTH_CHECKS_PARALLEL,1767072048,1767072069,21
+NODE_SIMULATION,1767072069,1767072215,146
+INTERIM_HEALTH_CHECK,1767072215,1767072221,6
+RACK_SIMULATION,1767072221,1767072565,344
+FINAL_HEALTH_CHECK,1767072565,1767072571,6
+[2025-12-30 05:29:31] 
+[2025-12-30 05:29:31] ===== METRICS SUMMARY =====
+# Resilience Simulation Metrics - Native Kubernetes Job
+# Generated: 2025-12-30 05:20:48
+
+PLATFORM=Native_Kubernetes
+RUN_ID=native-20251230-052047-mqw8r
+NODE_NAME=master-m003
+POD_NAME=resilience-bench-2-105043-mqw8r
+WORKFLOW_START_EPOCH=1767072048
+WORKFLOW_START_ISO=2025-12-30T05:20:48+0000
+HEALTH_CHECK_START_EPOCH=1767072048
+HEALTH_CHECK_END_EPOCH=1767072069
+HEALTH_CHECK_DURATION_SECONDS=21
+HEALTH_CHECK_1_STATUS=SUCCESS
+HEALTH_CHECK_2_STATUS=SUCCESS
+HEALTH_CHECK_3_STATUS=SUCCESS
+NODE_SIM_START_EPOCH=1767072069
+NODE_SIM_END_EPOCH=1767072215
+NODE_SIM_DURATION_SECONDS=146
+NODE_SIM_STATUS=SUCCESS
+INTERIM_HC_START_EPOCH=1767072215
+INTERIM_HC_END_EPOCH=1767072221
+INTERIM_HC_DURATION_SECONDS=6
+RACK_SIM_START_EPOCH=1767072221
+RACK_SIM_END_EPOCH=1767072565
+RACK_SIM_DURATION_SECONDS=344
+RACK_SIM_STATUS=SUCCESS
+FINAL_HC_START_EPOCH=1767072565
+FINAL_HC_END_EPOCH=1767072571
+FINAL_HC_DURATION_SECONDS=6
+
+# Final Summary
+WORKFLOW_END_EPOCH=1767072571
+WORKFLOW_END_ISO=2025-12-30T05:29:31+0000
+TOTAL_DURATION_SECONDS=523
+TOTAL_DURATION_FORMATTED=00:08:43
+[2025-12-30 05:29:31] Native Kubernetes Job completed successfully!
