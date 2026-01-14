@@ -1,0 +1,310 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: resilience-scaled-heft-
+  namespace: argo
+  labels:
+    app: resilience-simulation
+    scale: double
+    scheduler: heft
+spec:
+  entrypoint: scaled-heft-resilience-dag
+  serviceAccountName: argo-workflow
+  
+  arguments:
+    parameters:
+    - name: stabilization-time
+      value: "60"
+
+  volumes:
+  - name: logs-volume
+    hostPath:
+      path: /home/vagrant/scaled-heft-argo-logs
+      type: DirectoryOrCreate
+  
+  templates:
+  # ==========================================================================
+  # MAIN DAG - SCALED (2x) HEFT-Optimized Resilience Simulation
+  # ==========================================================================
+  - name: scaled-heft-resilience-dag
+    dag:
+      tasks:
+      # Step 0: HEFT Initialization
+      - name: heft-init
+        template: heft-initialize
+        
+      # Phase 1: 6 Parallel Health Checks
+      - name: health-check-1
+        template: health-check
+        dependencies: [heft-init]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "1"
+      - name: health-check-2
+        template: health-check
+        dependencies: [heft-init]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "2"
+      - name: health-check-3
+        template: health-check
+        dependencies: [heft-init]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "3"
+      - name: health-check-4
+        template: health-check
+        dependencies: [heft-init]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "4"
+      - name: health-check-5
+        template: health-check
+        dependencies: [heft-init]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "5"
+      - name: health-check-6
+        template: health-check
+        dependencies: [heft-init]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "6"
+      
+      # Phase 2: 2 Node Failure Simulations with HEFT exclusion
+      - name: node-simulation-1
+        template: node-failure-sim
+        dependencies: [health-check-1, health-check-2, health-check-3, health-check-4, health-check-5, health-check-6]
+        arguments:
+          parameters:
+          - name: sim-id
+            value: "1"
+          - name: exclude-node
+            value: "{{tasks.heft-init.outputs.parameters.heft-exclude-node}}"
+          - name: exclude-zone
+            value: "{{tasks.heft-init.outputs.parameters.heft-exclude-zone}}"
+      
+      - name: node-simulation-2
+        template: node-failure-sim
+        dependencies: [node-simulation-1]
+        arguments:
+          parameters:
+          - name: sim-id
+            value: "2"
+          - name: exclude-node
+            value: "{{tasks.heft-init.outputs.parameters.heft-exclude-node}}"
+          - name: exclude-zone
+            value: "{{tasks.heft-init.outputs.parameters.heft-exclude-zone}}"
+      
+      # Phase 3: 2 Interim Health Checks
+      - name: interim-health-check-1
+        template: health-check
+        dependencies: [node-simulation-2]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "interim-1"
+      
+      - name: interim-health-check-2
+        template: health-check
+        dependencies: [interim-health-check-1]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "interim-2"
+      
+      # Phase 4: 2 Rack Failure Simulations with HEFT exclusion
+      - name: rack-simulation-1
+        template: rack-failure-sim
+        dependencies: [interim-health-check-2]
+        arguments:
+          parameters:
+          - name: sim-id
+            value: "1"
+          - name: exclude-node
+            value: "{{tasks.heft-init.outputs.parameters.heft-exclude-node}}"
+          - name: exclude-zone
+            value: "{{tasks.heft-init.outputs.parameters.heft-exclude-zone}}"
+      
+      - name: rack-simulation-2
+        template: rack-failure-sim
+        dependencies: [rack-simulation-1]
+        arguments:
+          parameters:
+          - name: sim-id
+            value: "2"
+          - name: exclude-node
+            value: "{{tasks.heft-init.outputs.parameters.heft-exclude-node}}"
+          - name: exclude-zone
+            value: "{{tasks.heft-init.outputs.parameters.heft-exclude-zone}}"
+      
+      # Phase 5: 2 Final Health Checks
+      - name: final-health-check-1
+        template: health-check
+        dependencies: [rack-simulation-2]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "final-1"
+      
+      - name: final-health-check-2
+        template: health-check
+        dependencies: [final-health-check-1]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "final-2"
+      
+      # Finalize
+      - name: finalize
+        template: finalize-metrics
+        dependencies: [final-health-check-2]
+
+  # ==========================================================================
+  # HEFT INITIALIZATION TEMPLATE
+  # ==========================================================================
+  - name: heft-initialize
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    outputs:
+      parameters:
+      - name: heft-exclude-node
+        valueFrom:
+          path: /tmp/heft-exclude-node
+      - name: heft-exclude-zone
+        valueFrom:
+          path: /tmp/heft-exclude-zone
+    container:
+      image: python:3.9-slim
+      command: ["/bin/bash", "-c"]
+      args:
+      - |
+        echo "================================================"
+        echo "HEFT SCHEDULER INITIALIZATION (Scaled 2x)"
+        echo "================================================"
+        
+        EXCLUDE_NODE="worker-w005"
+        EXCLUDE_ZONE="R3"
+        
+        echo -n "${EXCLUDE_NODE}" > /tmp/heft-exclude-node
+        echo -n "${EXCLUDE_ZONE}" > /tmp/heft-exclude-zone
+        
+        echo "HEFT Exclusions: Node=${EXCLUDE_NODE}, Zone=${EXCLUDE_ZONE}"
+
+  # ==========================================================================
+  # HEALTH CHECK TEMPLATE
+  # ==========================================================================
+  - name: health-check
+    inputs:
+      parameters:
+      - name: check-id
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    container:
+      image: kushsahni1/chaos-sim:latest
+      command: ["python3", "/app/rack_resiliency_to_host.py", "health-check"]
+      args:
+      - "--stabilization-time=10"
+      env:
+      - name: CHECK_ID
+        value: "{{inputs.parameters.check-id}}"
+      - name: HEFT_ENABLED
+        value: "true"
+      - name: SCALE
+        value: "2x"
+      volumeMounts:
+      - name: logs-volume
+        mountPath: /app/logs
+
+  # ==========================================================================
+  # NODE FAILURE SIMULATION TEMPLATE (HEFT-aware)
+  # ==========================================================================
+  - name: node-failure-sim
+    inputs:
+      parameters:
+      - name: sim-id
+      - name: exclude-node
+      - name: exclude-zone
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    container:
+      image: kushsahni1/chaos-sim:latest
+      command: ["python3", "/app/rack_resiliency_to_host.py", "simulate-node"]
+      args:
+      - "--stabilization-time={{workflow.parameters.stabilization-time}}"
+      env:
+      - name: SIM_ID
+        value: "{{inputs.parameters.sim-id}}"
+      - name: HEFT_ENABLED
+        value: "true"
+      - name: HEFT_EXCLUDE_NODE
+        value: "{{inputs.parameters.exclude-node}}"
+      - name: HEFT_EXCLUDE_ZONE
+        value: "{{inputs.parameters.exclude-zone}}"
+      - name: SCALE
+        value: "2x"
+      volumeMounts:
+      - name: logs-volume
+        mountPath: /app/logs
+
+  # ==========================================================================
+  # RACK FAILURE SIMULATION TEMPLATE (HEFT-aware)
+  # ==========================================================================
+  - name: rack-failure-sim
+    inputs:
+      parameters:
+      - name: sim-id
+      - name: exclude-node
+      - name: exclude-zone
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    container:
+      image: kushsahni1/chaos-sim:latest
+      command: ["python3", "/app/rack_resiliency_to_host.py", "simulate-rack"]
+      args:
+      - "--stabilization-time={{workflow.parameters.stabilization-time}}"
+      env:
+      - name: SIM_ID
+        value: "{{inputs.parameters.sim-id}}"
+      - name: HEFT_ENABLED
+        value: "true"
+      - name: HEFT_EXCLUDE_NODE
+        value: "{{inputs.parameters.exclude-node}}"
+      - name: HEFT_EXCLUDE_ZONE
+        value: "{{inputs.parameters.exclude-zone}}"
+      - name: SCALE
+        value: "2x"
+      volumeMounts:
+      - name: logs-volume
+        mountPath: /app/logs
+
+  # ==========================================================================
+  # FINALIZE METRICS TEMPLATE
+  # ==========================================================================
+  - name: finalize-metrics
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    container:
+      image: python:3.9-slim
+      command: ["/bin/bash", "-c"]
+      args:
+      - |
+        echo "============================================"
+        echo "SCALED (2x) HEFT SIMULATION COMPLETE"
+        echo "============================================"
+        echo "Scale: 2x (Double nodes)"
+        echo "Scheduler: HEFT"
+        echo "  - 6 Health Checks"
+        echo "  - 2 Node Simulations (HEFT-aware)"
+        echo "  - 2 Interim Health Checks"
+        echo "  - 2 Rack Simulations (HEFT-aware)"
+        echo "  - 2 Final Health Checks"
+      volumeMounts:
+      - name: logs-volume
+        mountPath: /app/logs

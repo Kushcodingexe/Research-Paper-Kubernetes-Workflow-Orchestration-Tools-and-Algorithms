@@ -1,0 +1,1001 @@
+{
+    "metadata": {
+        "name": "resilience-scaled-dngvg",
+        "generateName": "resilience-scaled-",
+        "namespace": "argo",
+        "uid": "f68050b5-6052-4422-909d-ce7ec141c6d7",
+        "resourceVersion": "2656358",
+        "generation": 27,
+        "creationTimestamp": "2026-01-07T19:43:15Z",
+        "labels": {
+            "app": "resilience-simulation",
+            "scale": "double",
+            "workflows.argoproj.io/completed": "true",
+            "workflows.argoproj.io/creator": "kubernetes-admin",
+            "workflows.argoproj.io/phase": "Succeeded"
+        },
+        "annotations": {
+            "workflows.argoproj.io/pod-name-format": "v2"
+        },
+        "managedFields": [
+            {
+                "manager": "argo",
+                "operation": "Update",
+                "apiVersion": "argoproj.io/v1alpha1",
+                "time": "2026-01-07T19:43:15Z",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:generateName": {},
+                        "f:labels": {
+                            ".": {},
+                            "f:app": {},
+                            "f:scale": {},
+                            "f:workflows.argoproj.io/creator": {}
+                        }
+                    },
+                    "f:spec": {}
+                }
+            },
+            {
+                "manager": "workflow-controller",
+                "operation": "Update",
+                "apiVersion": "argoproj.io/v1alpha1",
+                "time": "2026-01-07T19:59:13Z",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:annotations": {
+                            ".": {},
+                            "f:workflows.argoproj.io/pod-name-format": {}
+                        },
+                        "f:labels": {
+                            "f:workflows.argoproj.io/completed": {},
+                            "f:workflows.argoproj.io/phase": {}
+                        }
+                    },
+                    "f:status": {}
+                }
+            }
+        ]
+    },
+    "spec": {
+        "templates": [
+            {
+                "name": "scaled-resilience-dag",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "dag": {
+                    "tasks": [
+                        {
+                            "name": "health-check-1",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "1"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-2",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "2"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-3",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "3"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-4",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "4"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-5",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "5"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-6",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "6"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "node-simulation-1",
+                            "template": "node-failure-sim",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "sim-id",
+                                        "value": "1"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "health-check-1",
+                                "health-check-2",
+                                "health-check-3",
+                                "health-check-4",
+                                "health-check-5",
+                                "health-check-6"
+                            ]
+                        },
+                        {
+                            "name": "node-simulation-2",
+                            "template": "node-failure-sim",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "sim-id",
+                                        "value": "2"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "node-simulation-1"
+                            ]
+                        },
+                        {
+                            "name": "interim-health-check-1",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "interim-1"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "node-simulation-2"
+                            ]
+                        },
+                        {
+                            "name": "interim-health-check-2",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "interim-2"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "interim-health-check-1"
+                            ]
+                        },
+                        {
+                            "name": "rack-simulation-1",
+                            "template": "rack-failure-sim",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "sim-id",
+                                        "value": "1"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "interim-health-check-2"
+                            ]
+                        },
+                        {
+                            "name": "rack-simulation-2",
+                            "template": "rack-failure-sim",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "sim-id",
+                                        "value": "2"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "rack-simulation-1"
+                            ]
+                        },
+                        {
+                            "name": "final-health-check-1",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "final-1"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "rack-simulation-2"
+                            ]
+                        },
+                        {
+                            "name": "final-health-check-2",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "final-2"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "final-health-check-1"
+                            ]
+                        },
+                        {
+                            "name": "finalize",
+                            "template": "finalize-metrics",
+                            "arguments": {},
+                            "dependencies": [
+                                "final-health-check-2"
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "health-check",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "kushsahni1/chaos-sim:latest",
+                    "command": [
+                        "python3",
+                        "/app/rack_resiliency_to_host.py",
+                        "health-check"
+                    ],
+                    "args": [
+                        "--stabilization-time=10"
+                    ],
+                    "env": [
+                        {
+                            "name": "CHECK_ID",
+                            "value": "{{inputs.parameters.check-id}}"
+                        },
+                        {
+                            "name": "SCALE",
+                            "value": "2x"
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "logs-volume",
+                            "mountPath": "/app/logs"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "node-failure-sim",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "sim-id"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "kushsahni1/chaos-sim:latest",
+                    "command": [
+                        "python3",
+                        "/app/rack_resiliency_to_host.py",
+                        "simulate-node"
+                    ],
+                    "args": [
+                        "--stabilization-time={{workflow.parameters.stabilization-time}}"
+                    ],
+                    "env": [
+                        {
+                            "name": "SIM_ID",
+                            "value": "{{inputs.parameters.sim-id}}"
+                        },
+                        {
+                            "name": "SCALE",
+                            "value": "2x"
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "logs-volume",
+                            "mountPath": "/app/logs"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "rack-failure-sim",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "sim-id"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "kushsahni1/chaos-sim:latest",
+                    "command": [
+                        "python3",
+                        "/app/rack_resiliency_to_host.py",
+                        "simulate-rack"
+                    ],
+                    "args": [
+                        "--stabilization-time={{workflow.parameters.stabilization-time}}"
+                    ],
+                    "env": [
+                        {
+                            "name": "SIM_ID",
+                            "value": "{{inputs.parameters.sim-id}}"
+                        },
+                        {
+                            "name": "SCALE",
+                            "value": "2x"
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "logs-volume",
+                            "mountPath": "/app/logs"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "finalize-metrics",
+                "inputs": {},
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "python:3.9-slim",
+                    "command": [
+                        "/bin/bash",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"============================================\"\necho \"SCALED (2x) RESILIENCE SIMULATION COMPLETE\"\necho \"============================================\"\necho \"Scale: 2x (Double nodes)\"\necho \"  - 6 Health Checks\"\necho \"  - 2 Node Simulations\"\necho \"  - 2 Interim Health Checks\"\necho \"  - 2 Rack Simulations\"\necho \"  - 2 Final Health Checks\"\necho \"============================================\"\n"
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "logs-volume",
+                            "mountPath": "/app/logs"
+                        }
+                    ]
+                }
+            }
+        ],
+        "entrypoint": "scaled-resilience-dag",
+        "arguments": {
+            "parameters": [
+                {
+                    "name": "stabilization-time",
+                    "value": "60"
+                }
+            ]
+        },
+        "serviceAccountName": "argo-workflow",
+        "volumes": [
+            {
+                "name": "logs-volume",
+                "hostPath": {
+                    "path": "/home/vagrant/scaled-argo-logs",
+                    "type": "DirectoryOrCreate"
+                }
+            }
+        ]
+    },
+    "status": {
+        "phase": "Succeeded",
+        "startedAt": "2026-01-07T19:43:15Z",
+        "finishedAt": "2026-01-07T19:59:13Z",
+        "progress": "15/15",
+        "nodes": {
+            "resilience-scaled-dngvg": {
+                "id": "resilience-scaled-dngvg",
+                "name": "resilience-scaled-dngvg",
+                "displayName": "resilience-scaled-dngvg",
+                "type": "DAG",
+                "templateName": "scaled-resilience-dag",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "startedAt": "2026-01-07T19:43:15Z",
+                "finishedAt": "2026-01-07T19:59:13Z",
+                "progress": "15/15",
+                "resourcesDuration": {
+                    "cpu": 190,
+                    "memory": 2067
+                },
+                "children": [
+                    "resilience-scaled-dngvg-1117958016",
+                    "resilience-scaled-dngvg-1134735635",
+                    "resilience-scaled-dngvg-1151513254",
+                    "resilience-scaled-dngvg-1201846111",
+                    "resilience-scaled-dngvg-1218623730",
+                    "resilience-scaled-dngvg-1235401349"
+                ],
+                "outboundNodes": [
+                    "resilience-scaled-dngvg-2891038920"
+                ]
+            },
+            "resilience-scaled-dngvg-1117958016": {
+                "id": "resilience-scaled-dngvg-1117958016",
+                "name": "resilience-scaled-dngvg.health-check-4",
+                "displayName": "health-check-4",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:43:15Z",
+                "finishedAt": "2026-01-07T19:44:47Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 11,
+                    "memory": 120
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "4"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-12728700"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-1134735635": {
+                "id": "resilience-scaled-dngvg-1134735635",
+                "name": "resilience-scaled-dngvg.health-check-5",
+                "displayName": "health-check-5",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:43:15Z",
+                "finishedAt": "2026-01-07T19:44:47Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 11,
+                    "memory": 118
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "5"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-12728700"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-1151513254": {
+                "id": "resilience-scaled-dngvg-1151513254",
+                "name": "resilience-scaled-dngvg.health-check-6",
+                "displayName": "health-check-6",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:43:15Z",
+                "finishedAt": "2026-01-07T19:44:47Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 12,
+                    "memory": 126
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "6"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-12728700"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-1201846111": {
+                "id": "resilience-scaled-dngvg-1201846111",
+                "name": "resilience-scaled-dngvg.health-check-1",
+                "displayName": "health-check-1",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:43:15Z",
+                "finishedAt": "2026-01-07T19:44:47Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 10,
+                    "memory": 122
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "1"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-12728700"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-1218623730": {
+                "id": "resilience-scaled-dngvg-1218623730",
+                "name": "resilience-scaled-dngvg.health-check-2",
+                "displayName": "health-check-2",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:43:15Z",
+                "finishedAt": "2026-01-07T19:44:47Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 11,
+                    "memory": 118
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "2"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-12728700"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-1235401349": {
+                "id": "resilience-scaled-dngvg-1235401349",
+                "name": "resilience-scaled-dngvg.health-check-3",
+                "displayName": "health-check-3",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:43:15Z",
+                "finishedAt": "2026-01-07T19:44:47Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 10,
+                    "memory": 119
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "3"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-12728700"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-12728700": {
+                "id": "resilience-scaled-dngvg-12728700",
+                "name": "resilience-scaled-dngvg.node-simulation-1",
+                "displayName": "node-simulation-1",
+                "type": "Pod",
+                "templateName": "node-failure-sim",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:45:21Z",
+                "finishedAt": "2026-01-07T19:48:15Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 28,
+                    "memory": 300
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "sim-id",
+                            "value": "1"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-63061557"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-1470082132": {
+                "id": "resilience-scaled-dngvg-1470082132",
+                "name": "resilience-scaled-dngvg.final-health-check-1",
+                "displayName": "final-health-check-1",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:58:11Z",
+                "finishedAt": "2026-01-07T19:58:26Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 1,
+                    "memory": 14
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "final-1"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-1520414989"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-1520414989": {
+                "id": "resilience-scaled-dngvg-1520414989",
+                "name": "resilience-scaled-dngvg.final-health-check-2",
+                "displayName": "final-health-check-2",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:58:31Z",
+                "finishedAt": "2026-01-07T19:58:45Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 15
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "final-2"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-2891038920"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-2891038920": {
+                "id": "resilience-scaled-dngvg-2891038920",
+                "name": "resilience-scaled-dngvg.finalize",
+                "displayName": "finalize",
+                "type": "Pod",
+                "templateName": "finalize-metrics",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:59:03Z",
+                "finishedAt": "2026-01-07T19:59:09Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 5
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-3056148640": {
+                "id": "resilience-scaled-dngvg-3056148640",
+                "name": "resilience-scaled-dngvg.interim-health-check-1",
+                "displayName": "interim-health-check-1",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:51:06Z",
+                "finishedAt": "2026-01-07T19:51:19Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 12
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "interim-1"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-3106481497"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-3106481497": {
+                "id": "resilience-scaled-dngvg-3106481497",
+                "name": "resilience-scaled-dngvg.interim-health-check-2",
+                "displayName": "interim-health-check-2",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:51:26Z",
+                "finishedAt": "2026-01-07T19:51:37Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 11
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "interim-2"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-3413573553"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-3363240696": {
+                "id": "resilience-scaled-dngvg-3363240696",
+                "name": "resilience-scaled-dngvg.rack-simulation-2",
+                "displayName": "rack-simulation-2",
+                "type": "Pod",
+                "templateName": "rack-failure-sim",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:54:58Z",
+                "finishedAt": "2026-01-07T19:58:01Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 34,
+                    "memory": 348
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "sim-id",
+                            "value": "2"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-1470082132"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-3413573553": {
+                "id": "resilience-scaled-dngvg-3413573553",
+                "name": "resilience-scaled-dngvg.rack-simulation-1",
+                "displayName": "rack-simulation-1",
+                "type": "Pod",
+                "templateName": "rack-failure-sim",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:51:47Z",
+                "finishedAt": "2026-01-07T19:54:49Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 34,
+                    "memory": 350
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "sim-id",
+                            "value": "1"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-3363240696"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-scaled-dngvg-63061557": {
+                "id": "resilience-scaled-dngvg-63061557",
+                "name": "resilience-scaled-dngvg.node-simulation-2",
+                "displayName": "node-simulation-2",
+                "type": "Pod",
+                "templateName": "node-failure-sim",
+                "templateScope": "local/resilience-scaled-dngvg",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-scaled-dngvg",
+                "startedAt": "2026-01-07T19:48:25Z",
+                "finishedAt": "2026-01-07T19:50:56Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 28,
+                    "memory": 289
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "sim-id",
+                            "value": "2"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-scaled-dngvg-3056148640"
+                ],
+                "hostNodeName": "master-m003"
+            }
+        },
+        "conditions": [
+            {
+                "type": "PodRunning",
+                "status": "False"
+            },
+            {
+                "type": "Completed",
+                "status": "True"
+            }
+        ],
+        "resourcesDuration": {
+            "cpu": 190,
+            "memory": 2067
+        },
+        "artifactRepositoryRef": {
+            "default": true,
+            "artifactRepository": {}
+        },
+        "artifactGCStatus": {
+            "notSpecified": true
+        },
+        "taskResultsCompletionStatus": {
+            "resilience-scaled-dngvg-1117958016": true,
+            "resilience-scaled-dngvg-1134735635": true,
+            "resilience-scaled-dngvg-1151513254": true,
+            "resilience-scaled-dngvg-1201846111": true,
+            "resilience-scaled-dngvg-1218623730": true,
+            "resilience-scaled-dngvg-1235401349": true,
+            "resilience-scaled-dngvg-12728700": true,
+            "resilience-scaled-dngvg-1470082132": true,
+            "resilience-scaled-dngvg-1520414989": true,
+            "resilience-scaled-dngvg-2891038920": true,
+            "resilience-scaled-dngvg-3056148640": true,
+            "resilience-scaled-dngvg-3106481497": true,
+            "resilience-scaled-dngvg-3363240696": true,
+            "resilience-scaled-dngvg-3413573553": true,
+            "resilience-scaled-dngvg-63061557": true
+        }
+    }
+}

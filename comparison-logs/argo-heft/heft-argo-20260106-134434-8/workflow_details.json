@@ -1,0 +1,789 @@
+{
+    "metadata": {
+        "name": "resilience-heft-g97l7",
+        "generateName": "resilience-heft-",
+        "namespace": "argo",
+        "uid": "c66c132b-bf0a-4698-a155-4c0bf235169c",
+        "resourceVersion": "2346492",
+        "generation": 16,
+        "creationTimestamp": "2026-01-06T08:14:34Z",
+        "labels": {
+            "app": "resilience-simulation",
+            "scheduler": "heft",
+            "workflows.argoproj.io/completed": "true",
+            "workflows.argoproj.io/creator": "kubernetes-admin",
+            "workflows.argoproj.io/phase": "Succeeded"
+        },
+        "annotations": {
+            "workflows.argoproj.io/pod-name-format": "v2"
+        },
+        "managedFields": [
+            {
+                "manager": "argo",
+                "operation": "Update",
+                "apiVersion": "argoproj.io/v1alpha1",
+                "time": "2026-01-06T08:14:34Z",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:generateName": {},
+                        "f:labels": {
+                            ".": {},
+                            "f:app": {},
+                            "f:scheduler": {},
+                            "f:workflows.argoproj.io/creator": {}
+                        }
+                    },
+                    "f:spec": {}
+                }
+            },
+            {
+                "manager": "workflow-controller",
+                "operation": "Update",
+                "apiVersion": "argoproj.io/v1alpha1",
+                "time": "2026-01-06T08:22:00Z",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:annotations": {
+                            ".": {},
+                            "f:workflows.argoproj.io/pod-name-format": {}
+                        },
+                        "f:labels": {
+                            "f:workflows.argoproj.io/completed": {},
+                            "f:workflows.argoproj.io/phase": {}
+                        }
+                    },
+                    "f:status": {}
+                }
+            }
+        ]
+    },
+    "spec": {
+        "templates": [
+            {
+                "name": "heft-resilience-dag",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "dag": {
+                    "tasks": [
+                        {
+                            "name": "heft-init",
+                            "template": "heft-initialize",
+                            "arguments": {}
+                        },
+                        {
+                            "name": "health-check-1",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "1"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "heft-init"
+                            ]
+                        },
+                        {
+                            "name": "health-check-2",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "2"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "heft-init"
+                            ]
+                        },
+                        {
+                            "name": "health-check-3",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "3"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "heft-init"
+                            ]
+                        },
+                        {
+                            "name": "node-simulation",
+                            "template": "node-failure-sim",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "exclude-node",
+                                        "value": "{{tasks.heft-init.outputs.parameters.heft-exclude-node}}"
+                                    },
+                                    {
+                                        "name": "exclude-zone",
+                                        "value": "{{tasks.heft-init.outputs.parameters.heft-exclude-zone}}"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "health-check-1",
+                                "health-check-2",
+                                "health-check-3"
+                            ]
+                        },
+                        {
+                            "name": "interim-health-check",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "interim"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "node-simulation"
+                            ]
+                        },
+                        {
+                            "name": "rack-simulation",
+                            "template": "rack-failure-sim",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "exclude-node",
+                                        "value": "{{tasks.heft-init.outputs.parameters.heft-exclude-node}}"
+                                    },
+                                    {
+                                        "name": "exclude-zone",
+                                        "value": "{{tasks.heft-init.outputs.parameters.heft-exclude-zone}}"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "interim-health-check"
+                            ]
+                        },
+                        {
+                            "name": "final-health-check",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "final"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "rack-simulation"
+                            ]
+                        },
+                        {
+                            "name": "finalize",
+                            "template": "finalize-metrics",
+                            "arguments": {},
+                            "dependencies": [
+                                "final-health-check"
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "heft-initialize",
+                "inputs": {},
+                "outputs": {
+                    "parameters": [
+                        {
+                            "name": "heft-exclude-node",
+                            "valueFrom": {
+                                "path": "/tmp/heft-exclude-node"
+                            }
+                        },
+                        {
+                            "name": "heft-exclude-zone",
+                            "valueFrom": {
+                                "path": "/tmp/heft-exclude-zone"
+                            }
+                        }
+                    ]
+                },
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "python:3.9-slim",
+                    "command": [
+                        "/bin/bash",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"================================================\"\necho \"HEFT SCHEDULER INITIALIZATION\"\necho \"================================================\"\n\n# HEFT scheduling decision:\n# We run on master-m003 (zone R3)\n# To prevent conflict, exclude R3 nodes from failure simulation\n\nEXECUTION_NODE=\"master-m003\"\nEXECUTION_ZONE=\"R3\"\n\n# Exclude a worker from the execution zone\nEXCLUDE_NODE=\"worker-w005\"  # R3 worker node\nEXCLUDE_ZONE=\"R3\"\n\necho \"HEFT Decision:\"\necho \"  Execution Node: ${EXECUTION_NODE}\"\necho \"  Execution Zone: ${EXECUTION_ZONE}\"\necho \"  Exclude Node from simulation: ${EXCLUDE_NODE}\"\necho \"  Exclude Zone from rack sim: ${EXCLUDE_ZONE}\"\n\n# Write outputs for other steps\necho -n \"${EXCLUDE_NODE}\" \u003e /tmp/heft-exclude-node\necho -n \"${EXCLUDE_ZONE}\" \u003e /tmp/heft-exclude-zone\n\necho \"HEFT initialization complete\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "health-check",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "kushsahni1/chaos-sim:latest",
+                    "command": [
+                        "python3",
+                        "/app/rack_resiliency_to_host.py",
+                        "health-check"
+                    ],
+                    "args": [
+                        "--stabilization-time=10"
+                    ],
+                    "env": [
+                        {
+                            "name": "CHECK_ID",
+                            "value": "{{inputs.parameters.check-id}}"
+                        },
+                        {
+                            "name": "HEFT_ENABLED",
+                            "value": "true"
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "logs-volume",
+                            "mountPath": "/app/logs"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "node-failure-sim",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "exclude-node"
+                        },
+                        {
+                            "name": "exclude-zone"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "kushsahni1/chaos-sim:latest",
+                    "command": [
+                        "python3",
+                        "/app/rack_resiliency_to_host.py",
+                        "simulate-node"
+                    ],
+                    "args": [
+                        "--stabilization-time={{workflow.parameters.stabilization-time}}"
+                    ],
+                    "env": [
+                        {
+                            "name": "HEFT_ENABLED",
+                            "value": "true"
+                        },
+                        {
+                            "name": "HEFT_EXCLUDE_NODE",
+                            "value": "{{inputs.parameters.exclude-node}}"
+                        },
+                        {
+                            "name": "HEFT_EXCLUDE_ZONE",
+                            "value": "{{inputs.parameters.exclude-zone}}"
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "logs-volume",
+                            "mountPath": "/app/logs"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "rack-failure-sim",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "exclude-node"
+                        },
+                        {
+                            "name": "exclude-zone"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "kushsahni1/chaos-sim:latest",
+                    "command": [
+                        "python3",
+                        "/app/rack_resiliency_to_host.py",
+                        "simulate-rack"
+                    ],
+                    "args": [
+                        "--stabilization-time={{workflow.parameters.stabilization-time}}"
+                    ],
+                    "env": [
+                        {
+                            "name": "HEFT_ENABLED",
+                            "value": "true"
+                        },
+                        {
+                            "name": "HEFT_EXCLUDE_NODE",
+                            "value": "{{inputs.parameters.exclude-node}}"
+                        },
+                        {
+                            "name": "HEFT_EXCLUDE_ZONE",
+                            "value": "{{inputs.parameters.exclude-zone}}"
+                        }
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "logs-volume",
+                            "mountPath": "/app/logs"
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "finalize-metrics",
+                "inputs": {},
+                "outputs": {},
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "python:3.9-slim",
+                    "command": [
+                        "/bin/bash",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"============================================\"\necho \"HEFT-OPTIMIZED RESILIENCE SIMULATION COMPLETE\"\necho \"============================================\"\necho \"Workflow: resilience-heft\"\necho \"Scheduler: HEFT\"\necho \"Logs: /home/vagrant/heft-argo-logs\"\nls -la /app/logs/ 2\u003e/dev/null || echo \"Logs directory accessed\"\necho \"HEFT simulation completed successfully\"\n"
+                    ],
+                    "resources": {},
+                    "volumeMounts": [
+                        {
+                            "name": "logs-volume",
+                            "mountPath": "/app/logs"
+                        }
+                    ]
+                }
+            }
+        ],
+        "entrypoint": "heft-resilience-dag",
+        "arguments": {
+            "parameters": [
+                {
+                    "name": "stabilization-time",
+                    "value": "60"
+                }
+            ]
+        },
+        "serviceAccountName": "argo-workflow",
+        "volumes": [
+            {
+                "name": "logs-volume",
+                "hostPath": {
+                    "path": "/home/vagrant/heft-argo-logs",
+                    "type": "DirectoryOrCreate"
+                }
+            }
+        ]
+    },
+    "status": {
+        "phase": "Succeeded",
+        "startedAt": "2026-01-06T08:14:34Z",
+        "finishedAt": "2026-01-06T08:22:00Z",
+        "progress": "9/9",
+        "nodes": {
+            "resilience-heft-g97l7": {
+                "id": "resilience-heft-g97l7",
+                "name": "resilience-heft-g97l7",
+                "displayName": "resilience-heft-g97l7",
+                "type": "DAG",
+                "templateName": "heft-resilience-dag",
+                "templateScope": "local/resilience-heft-g97l7",
+                "phase": "Succeeded",
+                "startedAt": "2026-01-06T08:14:34Z",
+                "finishedAt": "2026-01-06T08:22:00Z",
+                "progress": "9/9",
+                "resourcesDuration": {
+                    "cpu": 65,
+                    "memory": 729
+                },
+                "children": [
+                    "resilience-heft-g97l7-3333313111"
+                ],
+                "outboundNodes": [
+                    "resilience-heft-g97l7-3466068289"
+                ]
+            },
+            "resilience-heft-g97l7-2122744064": {
+                "id": "resilience-heft-g97l7-2122744064",
+                "name": "resilience-heft-g97l7.rack-simulation",
+                "displayName": "rack-simulation",
+                "type": "Pod",
+                "templateName": "rack-failure-sim",
+                "templateScope": "local/resilience-heft-g97l7",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-heft-g97l7",
+                "startedAt": "2026-01-06T08:18:22Z",
+                "finishedAt": "2026-01-06T08:21:20Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 34,
+                    "memory": 343
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "exclude-node",
+                            "value": "worker-w005"
+                        },
+                        {
+                            "name": "exclude-zone",
+                            "value": "R3"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-heft-g97l7-3092421655"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-heft-g97l7-2238415500": {
+                "id": "resilience-heft-g97l7-2238415500",
+                "name": "resilience-heft-g97l7.health-check-3",
+                "displayName": "health-check-3",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-heft-g97l7",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-heft-g97l7",
+                "startedAt": "2026-01-06T08:14:44Z",
+                "finishedAt": "2026-01-06T08:15:14Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 1,
+                    "memory": 29
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "3"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-heft-g97l7-3279630205"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-heft-g97l7-2255193119": {
+                "id": "resilience-heft-g97l7-2255193119",
+                "name": "resilience-heft-g97l7.health-check-2",
+                "displayName": "health-check-2",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-heft-g97l7",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-heft-g97l7",
+                "startedAt": "2026-01-06T08:14:44Z",
+                "finishedAt": "2026-01-06T08:15:16Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 2,
+                    "memory": 29
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "2"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-heft-g97l7-3279630205"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-heft-g97l7-2271970738": {
+                "id": "resilience-heft-g97l7-2271970738",
+                "name": "resilience-heft-g97l7.health-check-1",
+                "displayName": "health-check-1",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-heft-g97l7",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-heft-g97l7",
+                "startedAt": "2026-01-06T08:14:44Z",
+                "finishedAt": "2026-01-06T08:15:06Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 1,
+                    "memory": 17
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "1"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-heft-g97l7-3279630205"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-heft-g97l7-3092421655": {
+                "id": "resilience-heft-g97l7-3092421655",
+                "name": "resilience-heft-g97l7.final-health-check",
+                "displayName": "final-health-check",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-heft-g97l7",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-heft-g97l7",
+                "startedAt": "2026-01-06T08:21:30Z",
+                "finishedAt": "2026-01-06T08:21:43Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 10
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "final"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-heft-g97l7-3466068289"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-heft-g97l7-3279630205": {
+                "id": "resilience-heft-g97l7-3279630205",
+                "name": "resilience-heft-g97l7.node-simulation",
+                "displayName": "node-simulation",
+                "type": "Pod",
+                "templateName": "node-failure-sim",
+                "templateScope": "local/resilience-heft-g97l7",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-heft-g97l7",
+                "startedAt": "2026-01-06T08:15:25Z",
+                "finishedAt": "2026-01-06T08:17:52Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 27,
+                    "memory": 281
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "exclude-node",
+                            "value": "worker-w005"
+                        },
+                        {
+                            "name": "exclude-zone",
+                            "value": "R3"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-heft-g97l7-357294639"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-heft-g97l7-3333313111": {
+                "id": "resilience-heft-g97l7-3333313111",
+                "name": "resilience-heft-g97l7.heft-init",
+                "displayName": "heft-init",
+                "type": "Pod",
+                "templateName": "heft-initialize",
+                "templateScope": "local/resilience-heft-g97l7",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-heft-g97l7",
+                "startedAt": "2026-01-06T08:14:34Z",
+                "finishedAt": "2026-01-06T08:14:41Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 5
+                },
+                "outputs": {
+                    "parameters": [
+                        {
+                            "name": "heft-exclude-node",
+                            "value": "worker-w005",
+                            "valueFrom": {
+                                "path": "/tmp/heft-exclude-node"
+                            }
+                        },
+                        {
+                            "name": "heft-exclude-zone",
+                            "value": "R3",
+                            "valueFrom": {
+                                "path": "/tmp/heft-exclude-zone"
+                            }
+                        }
+                    ],
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-heft-g97l7-2271970738",
+                    "resilience-heft-g97l7-2255193119",
+                    "resilience-heft-g97l7-2238415500"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "resilience-heft-g97l7-3466068289": {
+                "id": "resilience-heft-g97l7-3466068289",
+                "name": "resilience-heft-g97l7.finalize",
+                "displayName": "finalize",
+                "type": "Pod",
+                "templateName": "finalize-metrics",
+                "templateScope": "local/resilience-heft-g97l7",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-heft-g97l7",
+                "startedAt": "2026-01-06T08:21:50Z",
+                "finishedAt": "2026-01-06T08:21:57Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 5
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "hostNodeName": "master-m003"
+            },
+            "resilience-heft-g97l7-357294639": {
+                "id": "resilience-heft-g97l7-357294639",
+                "name": "resilience-heft-g97l7.interim-health-check",
+                "displayName": "interim-health-check",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/resilience-heft-g97l7",
+                "phase": "Succeeded",
+                "boundaryID": "resilience-heft-g97l7",
+                "startedAt": "2026-01-06T08:18:02Z",
+                "finishedAt": "2026-01-06T08:18:14Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 10
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "interim"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "resilience-heft-g97l7-2122744064"
+                ],
+                "hostNodeName": "master-m003"
+            }
+        },
+        "conditions": [
+            {
+                "type": "PodRunning",
+                "status": "False"
+            },
+            {
+                "type": "Completed",
+                "status": "True"
+            }
+        ],
+        "resourcesDuration": {
+            "cpu": 65,
+            "memory": 729
+        },
+        "artifactRepositoryRef": {
+            "default": true,
+            "artifactRepository": {}
+        },
+        "artifactGCStatus": {
+            "notSpecified": true
+        },
+        "taskResultsCompletionStatus": {
+            "resilience-heft-g97l7-2122744064": true,
+            "resilience-heft-g97l7-2238415500": true,
+            "resilience-heft-g97l7-2255193119": true,
+            "resilience-heft-g97l7-2271970738": true,
+            "resilience-heft-g97l7-3092421655": true,
+            "resilience-heft-g97l7-3279630205": true,
+            "resilience-heft-g97l7-3333313111": true,
+            "resilience-heft-g97l7-3466068289": true,
+            "resilience-heft-g97l7-357294639": true
+        }
+    }
+}

@@ -1,0 +1,120 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "creationTimestamp": "2026-01-06T07:09:35Z",
+        "generation": 1,
+        "labels": {
+            "app": "resilience-simulation",
+            "scheduler": "heft"
+        },
+        "name": "resilience-heft-9-123935",
+        "namespace": "default",
+        "resourceVersion": "2333900",
+        "uid": "66895b08-3a42-4aa7-b52b-a703e34575cd"
+    },
+    "spec": {
+        "backoffLimit": 2,
+        "completionMode": "NonIndexed",
+        "completions": 1,
+        "manualSelector": false,
+        "parallelism": 1,
+        "podReplacementPolicy": "TerminatingOrFailed",
+        "selector": {
+            "matchLabels": {
+                "batch.kubernetes.io/controller-uid": "66895b08-3a42-4aa7-b52b-a703e34575cd"
+            }
+        },
+        "suspend": false,
+        "template": {
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "resilience-simulation",
+                    "batch.kubernetes.io/controller-uid": "66895b08-3a42-4aa7-b52b-a703e34575cd",
+                    "batch.kubernetes.io/job-name": "resilience-heft-9-123935",
+                    "controller-uid": "66895b08-3a42-4aa7-b52b-a703e34575cd",
+                    "job-name": "resilience-heft-9-123935",
+                    "scheduler": "heft"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "set -e\n\necho \"================================================================\"\necho \" HEFT-OPTIMIZED NATIVE KUBERNETES RESILIENCE SIMULATION\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\n# HEFT Configuration\n# We run on master-m003 (zone R3), so exclude R3 from failures\nexport HEFT_ENABLED=\"true\"\nexport HEFT_EXCLUDE_NODE=\"worker-w005\"  # R3 worker\nexport HEFT_EXCLUDE_ZONE=\"R3\"\n\nRUN_ID=\"heft-native-$(date +%Y%m%d-%H%M%S)\"\nLOG_DIR=\"/app/logs/${RUN_ID}\"\nmkdir -p $LOG_DIR\n\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] Run ID: ${RUN_ID}\"\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] Platform: Native Kubernetes (HEFT-Optimized)\"\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] HEFT Exclusion Node: ${HEFT_EXCLUDE_NODE}\"\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] HEFT Exclusion Zone: ${HEFT_EXCLUDE_ZONE}\"\n\n# Record start time\nWORKFLOW_START=$(date +%s)\n\n# ================================================================\n# STEP 1: PARALLEL HEALTH CHECKS\n# ================================================================\necho \"\"\necho \"================================================================\"\necho \" STEP 1: PARALLEL HEALTH CHECKS (3x)\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nHC_START=$(date +%s)\n\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 \u0026\nPID1=$!\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 \u0026\nPID2=$!\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 \u0026\nPID3=$!\n\nwait $PID1 $PID2 $PID3\n\nHC_END=$(date +%s)\nHC_DURATION=$((HC_END - HC_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: HEALTH_CHECKS_PARALLEL completed in ${HC_DURATION} seconds\"\n\n# ================================================================\n# STEP 2: NODE FAILURE SIMULATION (with HEFT exclusion)\n# ================================================================\necho \"\"\necho \"================================================================\"\necho \" STEP 2: NODE FAILURE SIMULATION (HEFT-Aware)\"\necho \" Excluding node: ${HEFT_EXCLUDE_NODE}, zone: ${HEFT_EXCLUDE_ZONE}\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nNODE_START=$(date +%s)\n\npython3 /app/rack_resiliency_to_host.py simulate-node --stabilization-time=60\n\nNODE_END=$(date +%s)\nNODE_DURATION=$((NODE_END - NODE_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: NODE_SIMULATION completed in ${NODE_DURATION} seconds\"\n\n# ================================================================\n# STEP 3: INTERIM HEALTH CHECK\n# ================================================================\necho \"\"\necho \"================================================================\"\necho \" STEP 3: INTERIM HEALTH CHECK\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nINTERIM_START=$(date +%s)\n\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10\n\nINTERIM_END=$(date +%s)\nINTERIM_DURATION=$((INTERIM_END - INTERIM_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: INTERIM_HEALTH_CHECK completed in ${INTERIM_DURATION} seconds\"\n\n# ================================================================\n# STEP 4: RACK FAILURE SIMULATION (with HEFT zone exclusion)\n# ================================================================\necho \"\"\necho \"================================================================\"\necho \" STEP 4: RACK FAILURE SIMULATION (HEFT-Aware)\"\necho \" Excluding zone: ${HEFT_EXCLUDE_ZONE}\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nRACK_START=$(date +%s)\n\npython3 /app/rack_resiliency_to_host.py simulate-rack --stabilization-time=60\n\nRACK_END=$(date +%s)\nRACK_DURATION=$((RACK_END - RACK_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: RACK_SIMULATION completed in ${RACK_DURATION} seconds\"\n\n# ================================================================\n# STEP 5: FINAL HEALTH CHECK\n# ================================================================\necho \"\"\necho \"================================================================\"\necho \" STEP 5: FINAL HEALTH CHECK\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nFINAL_START=$(date +%s)\n\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10\n\nFINAL_END=$(date +%s)\nFINAL_DURATION=$((FINAL_END - FINAL_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: FINAL_HEALTH_CHECK completed in ${FINAL_DURATION} seconds\"\n\n# ================================================================\n# FINALIZE\n# ================================================================\nWORKFLOW_END=$(date +%s)\nTOTAL_DURATION=$((WORKFLOW_END - WORKFLOW_START))\n\necho \"\"\necho \"================================================================\"\necho \" HEFT-OPTIMIZED SIMULATION COMPLETE\"\necho \"================================================================\"\necho \"Run ID: ${RUN_ID}\"\necho \"Total Duration: ${TOTAL_DURATION} seconds\"\necho \"HEFT Exclusions Applied:\"\necho \"  - Node Exclusion: ${HEFT_EXCLUDE_NODE}\"\necho \"  - Zone Exclusion: ${HEFT_EXCLUDE_ZONE}\"\n\n# Save metrics\ncat \u003e ${LOG_DIR}/metrics.txt \u003c\u003c METRICS\n# HEFT-Optimized Native Kubernetes Resilience Metrics\n# Generated: $(date)\n\nPLATFORM=Native_Kubernetes_HEFT\nRUN_ID=${RUN_ID}\nSCHEDULER=HEFT\nHEFT_EXCLUDE_NODE=${HEFT_EXCLUDE_NODE}\nHEFT_EXCLUDE_ZONE=${HEFT_EXCLUDE_ZONE}\nWORKFLOW_START_EPOCH=${WORKFLOW_START}\nWORKFLOW_END_EPOCH=${WORKFLOW_END}\nTOTAL_DURATION_SECONDS=${TOTAL_DURATION}\nHEALTH_CHECKS_PARALLEL_DURATION=${HC_DURATION}\nNODE_SIMULATION_DURATION=${NODE_DURATION}\nINTERIM_HEALTH_CHECK_DURATION=${INTERIM_DURATION}\nRACK_SIMULATION_DURATION=${RACK_DURATION}\nFINAL_HEALTH_CHECK_DURATION=${FINAL_DURATION}\nSTATUS=SUCCESS\nMETRICS\n\n# Save timing CSV\ncat \u003e ${LOG_DIR}/timing.csv \u003c\u003c TIMING\nstep,start_epoch,end_epoch,duration_seconds,status\nHEALTH_CHECKS_PARALLEL,${HC_START},${HC_END},${HC_DURATION},SUCCESS\nNODE_SIMULATION,${NODE_START},${NODE_END},${NODE_DURATION},SUCCESS\nINTERIM_HEALTH_CHECK,${INTERIM_START},${INTERIM_END},${INTERIM_DURATION},SUCCESS\nRACK_SIMULATION,${RACK_START},${RACK_END},${RACK_DURATION},SUCCESS\nFINAL_HEALTH_CHECK,${FINAL_START},${FINAL_END},${FINAL_DURATION},SUCCESS\nTIMING\n\necho \"Metrics saved to: ${LOG_DIR}/metrics.txt\"\necho \"Timing saved to: ${LOG_DIR}/timing.csv\"\n"
+                        ],
+                        "command": [
+                            "/bin/bash",
+                            "-c"
+                        ],
+                        "env": [
+                            {
+                                "name": "PYTHONUNBUFFERED",
+                                "value": "1"
+                            }
+                        ],
+                        "image": "kushsahni1/chaos-sim:latest",
+                        "imagePullPolicy": "Always",
+                        "name": "heft-resilience-sim",
+                        "resources": {},
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/app/logs",
+                                "name": "logs"
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "chaos-admin",
+                "serviceAccountName": "chaos-admin",
+                "terminationGracePeriodSeconds": 30,
+                "volumes": [
+                    {
+                        "hostPath": {
+                            "path": "/home/vagrant/heft-native-logs",
+                            "type": "DirectoryOrCreate"
+                        },
+                        "name": "logs"
+                    }
+                ]
+            }
+        },
+        "ttlSecondsAfterFinished": 3600
+    },
+    "status": {
+        "completionTime": "2026-01-06T07:14:56Z",
+        "conditions": [
+            {
+                "lastProbeTime": "2026-01-06T07:14:56Z",
+                "lastTransitionTime": "2026-01-06T07:14:56Z",
+                "message": "Reached expected number of succeeded pods",
+                "reason": "CompletionsReached",
+                "status": "True",
+                "type": "SuccessCriteriaMet"
+            },
+            {
+                "lastProbeTime": "2026-01-06T07:14:56Z",
+                "lastTransitionTime": "2026-01-06T07:14:56Z",
+                "message": "Reached expected number of succeeded pods",
+                "reason": "CompletionsReached",
+                "status": "True",
+                "type": "Complete"
+            }
+        ],
+        "ready": 0,
+        "startTime": "2026-01-06T07:09:35Z",
+        "succeeded": 1,
+        "terminating": 0,
+        "uncountedTerminatedPods": {}
+    }
+}

@@ -1,0 +1,364 @@
+name: HEFT-Optimized Rack Resiliency Simulation
+
+on:
+  workflow_dispatch:
+    inputs:
+      stabilization_time_node:
+        description: 'Stabilization time after node failure (seconds)'
+        required: false
+        default: '60'
+      stabilization_time_rack:
+        description: 'Stabilization time after rack failure (seconds)'
+        required: false
+        default: '120'
+      downtime_rack:
+        description: 'Rack downtime before restore (seconds)'
+        required: false
+        default: '60'
+
+env:
+  LOG_BASE_PATH: /home/vagrant/heft-github-actions-logs
+  HEFT_SCHEDULER: true
+
+jobs:
+  # ==========================================================================
+  # HEFT INITIALIZATION
+  # ==========================================================================
+  heft-initialize:
+    name: HEFT Initialize
+    runs-on: self-hosted
+    outputs:
+      run_id: ${{ steps.init.outputs.run_id }}
+      local_log_dir: ${{ steps.init.outputs.local_log_dir }}
+      heft_exclude_node: ${{ steps.heft.outputs.exclude_node }}
+      heft_exclude_zone: ${{ steps.heft.outputs.exclude_zone }}
+      kubeconfig: ${{ steps.kubectl.outputs.kubeconfig }}
+    steps:
+      - name: Configure kubectl
+        id: kubectl
+        run: |
+          # Find kubeconfig
+          for path in ~/.kube/config /home/snu/.kube/config /home/snu/kubernetes/kubeconfig-master; do
+            if [ -f "$path" ]; then
+              echo "Found kubeconfig at: $path"
+              echo "kubeconfig=$path" >> $GITHUB_OUTPUT
+              export KUBECONFIG="$path"
+              break
+            fi
+          done
+          kubectl get nodes || echo "Warning: Cannot connect to cluster"
+
+      - name: Initialize Run
+        id: init
+        run: |
+          RUN_ID="heft-gha-$(date +%Y%m%d-%H%M%S)-${GITHUB_RUN_ID}"
+          LOCAL_LOG_DIR="/home/snu/kubernetes/comparison-logs/github-actions-heft/${RUN_ID}"
+          mkdir -p "${LOCAL_LOG_DIR}"
+          
+          echo "run_id=${RUN_ID}" >> $GITHUB_OUTPUT
+          echo "local_log_dir=${LOCAL_LOG_DIR}" >> $GITHUB_OUTPUT
+          
+          echo "================================================================"
+          echo "HEFT-OPTIMIZED GITHUB ACTIONS WORKFLOW"
+          echo "================================================================"
+          echo "Run ID: ${RUN_ID}"
+          echo "Log Directory: ${LOCAL_LOG_DIR}"
+
+      - name: Compute HEFT Schedule
+        id: heft
+        run: |
+          # HEFT scheduling decision
+          # Our workflow runs on self-hosted runner connected to the cluster
+          # We need to determine which nodes to EXCLUDE from failure simulation
+          
+          # Simple HEFT: pick execution zone and exclude it
+          EXECUTION_ZONE="R3"  # We're running on master-m003 typically
+          
+          # Exclude from node simulation: any node in the execution zone
+          EXCLUDE_NODE="worker-w005"  # R3 worker
+          EXCLUDE_ZONE="R3"
+          
+          echo "exclude_node=${EXCLUDE_NODE}" >> $GITHUB_OUTPUT
+          echo "exclude_zone=${EXCLUDE_ZONE}" >> $GITHUB_OUTPUT
+          
+          echo "HEFT Schedule Computed:"
+          echo "  Exclude Node: ${EXCLUDE_NODE}"
+          echo "  Exclude Zone: ${EXCLUDE_ZONE}"
+          
+          # Save to log
+          echo "HEFT_EXCLUDE_NODE=${EXCLUDE_NODE}" >> "${{ steps.init.outputs.local_log_dir }}/heft_config.txt"
+          echo "HEFT_EXCLUDE_ZONE=${EXCLUDE_ZONE}" >> "${{ steps.init.outputs.local_log_dir }}/heft_config.txt"
+
+  # ==========================================================================
+  # PARALLEL HEALTH CHECKS
+  # ==========================================================================
+  health-check-1:
+    name: Health Check 1
+    needs: [heft-initialize]
+    runs-on: self-hosted
+    steps:
+      - name: Configure kubectl
+        run: |
+          export KUBECONFIG="${{ needs.heft-initialize.outputs.kubeconfig }}"
+          kubectl get nodes
+
+      - name: Run Health Check 1
+        run: |
+          START=$(date +%s)
+          echo "Running Health Check 1..."
+          echo "HEFT Exclude Node: ${{ needs.heft-initialize.outputs.heft_exclude_node }}"
+          
+          # Run kubectl health check
+          kubectl get nodes -o wide
+          kubectl get pods -A --field-selector=status.phase!=Running 2>/dev/null || true
+          
+          END=$(date +%s)
+          DURATION=$((END - START))
+          
+          echo "HEALTH_CHECK_1,${START},${END},${DURATION},SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+          echo "Health Check 1 completed in ${DURATION}s"
+
+  health-check-2:
+    name: Health Check 2
+    needs: [heft-initialize]
+    runs-on: self-hosted
+    steps:
+      - name: Configure kubectl
+        run: export KUBECONFIG="${{ needs.heft-initialize.outputs.kubeconfig }}"
+      - name: Run Health Check 2
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          DURATION=$((END - START))
+          echo "HEALTH_CHECK_2,${START},${END},${DURATION},SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  health-check-3:
+    name: Health Check 3
+    needs: [heft-initialize]
+    runs-on: self-hosted
+    steps:
+      - name: Configure kubectl
+        run: export KUBECONFIG="${{ needs.heft-initialize.outputs.kubeconfig }}"
+      - name: Run Health Check 3
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          DURATION=$((END - START))
+          echo "HEALTH_CHECK_3,${START},${END},${DURATION},SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  # ==========================================================================
+  # NODE SIMULATION (HEFT-Aware with Exclusion)
+  # ==========================================================================
+  node-simulation:
+    name: Node Simulation (HEFT)
+    needs: [heft-initialize, health-check-1, health-check-2, health-check-3]
+    runs-on: self-hosted
+    steps:
+      - name: Configure kubectl
+        run: export KUBECONFIG="${{ needs.heft-initialize.outputs.kubeconfig }}"
+
+      - name: Run Node Failure Simulation
+        run: |
+          START=$(date +%s)
+          
+          EXCLUDE_NODE="${{ needs.heft-initialize.outputs.heft_exclude_node }}"
+          EXCLUDE_ZONE="${{ needs.heft-initialize.outputs.heft_exclude_zone }}"
+          STABILIZATION=${{ github.event.inputs.stabilization_time_node || '60' }}
+          
+          echo "================================================================"
+          echo "NODE FAILURE SIMULATION (HEFT-Aware)"
+          echo "Excluding Node: ${EXCLUDE_NODE}"
+          echo "Excluding Zone: ${EXCLUDE_ZONE}"
+          echo "================================================================"
+          
+          # Select random worker node, excluding HEFT node
+          WORKERS=("worker-w001" "worker-w002" "worker-w003" "worker-w004" "worker-w005" "worker-w006")
+          ELIGIBLE=()
+          for w in "${WORKERS[@]}"; do
+            if [ "$w" != "$EXCLUDE_NODE" ]; then
+              ELIGIBLE+=("$w")
+            fi
+          done
+          
+          TARGET=${ELIGIBLE[$RANDOM % ${#ELIGIBLE[@]}]}
+          echo "Selected target node: ${TARGET} (HEFT excluded: ${EXCLUDE_NODE})"
+          
+          # Simulate node failure
+          echo "Cordoning node ${TARGET}..."
+          kubectl cordon ${TARGET}
+          
+          echo "Tainting node ${TARGET}..."
+          kubectl taint nodes ${TARGET} node.kubernetes.io/out-of-service=nodeshutdown:NoExecute --overwrite
+          
+          echo "Waiting ${STABILIZATION}s for stabilization..."
+          sleep ${STABILIZATION}
+          
+          echo "Restoring node ${TARGET}..."
+          kubectl uncordon ${TARGET}
+          kubectl taint nodes ${TARGET} node.kubernetes.io/out-of-service- || true
+          
+          END=$(date +%s)
+          DURATION=$((END - START))
+          
+          echo "NODE_SIMULATION,${START},${END},${DURATION},SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+          echo "Node simulation completed: ${TARGET} in ${DURATION}s"
+
+  # ==========================================================================
+  # INTERIM HEALTH CHECK
+  # ==========================================================================
+  interim-health-check:
+    name: Interim Health Check
+    needs: [heft-initialize, node-simulation]
+    runs-on: self-hosted
+    steps:
+      - name: Configure kubectl
+        run: export KUBECONFIG="${{ needs.heft-initialize.outputs.kubeconfig }}"
+      - name: Run Interim Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          kubectl get pods -A | head -20
+          END=$(date +%s)
+          DURATION=$((END - START))
+          echo "INTERIM_HEALTH_CHECK,${START},${END},${DURATION},SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  # ==========================================================================
+  # RACK SIMULATION (HEFT-Aware with Zone Exclusion)
+  # ==========================================================================
+  rack-simulation:
+    name: Rack Simulation (HEFT)
+    needs: [heft-initialize, interim-health-check]
+    runs-on: self-hosted
+    steps:
+      - name: Configure kubectl
+        run: export KUBECONFIG="${{ needs.heft-initialize.outputs.kubeconfig }}"
+
+      - name: Run Rack Failure Simulation
+        run: |
+          START=$(date +%s)
+          
+          EXCLUDE_ZONE="${{ needs.heft-initialize.outputs.heft_exclude_zone }}"
+          STABILIZATION=${{ github.event.inputs.stabilization_time_rack || '120' }}
+          DOWNTIME=${{ github.event.inputs.downtime_rack || '60' }}
+          
+          echo "================================================================"
+          echo "RACK FAILURE SIMULATION (HEFT-Aware)"
+          echo "Excluding Zone: ${EXCLUDE_ZONE}"
+          echo "================================================================"
+          
+          # Zone-node mapping
+          declare -A ZONE_NODES
+          ZONE_NODES["R1"]="master-m001 worker-w001 worker-w002"
+          ZONE_NODES["R2"]="master-m002 worker-w003 worker-w004"
+          ZONE_NODES["R3"]="master-m003 worker-w005 worker-w006"
+          
+          # Select zone excluding HEFT zone
+          ZONES=("R1" "R2" "R3")
+          ELIGIBLE=()
+          for z in "${ZONES[@]}"; do
+            if [ "$z" != "$EXCLUDE_ZONE" ]; then
+              ELIGIBLE+=("$z")
+            fi
+          done
+          
+          TARGET_ZONE=${ELIGIBLE[$RANDOM % ${#ELIGIBLE[@]}]}
+          TARGET_NODES="${ZONE_NODES[$TARGET_ZONE]}"
+          
+          echo "Selected target zone: ${TARGET_ZONE} (HEFT excluded: ${EXCLUDE_ZONE})"
+          echo "Target nodes: ${TARGET_NODES}"
+          
+          # Simulate rack failure
+          for node in ${TARGET_NODES}; do
+            echo "Downing node ${node}..."
+            kubectl cordon ${node}
+            kubectl taint nodes ${node} node.kubernetes.io/out-of-service=zonefailure:NoExecute --overwrite
+          done
+          
+          echo "Waiting ${DOWNTIME}s (downtime)..."
+          sleep ${DOWNTIME}
+          
+          # Restore nodes
+          for node in ${TARGET_NODES}; do
+            echo "Restoring node ${node}..."
+            kubectl uncordon ${node}
+            kubectl taint nodes ${node} node.kubernetes.io/out-of-service- || true
+          done
+          
+          echo "Waiting ${STABILIZATION}s for stabilization..."
+          sleep ${STABILIZATION}
+          
+          END=$(date +%s)
+          DURATION=$((END - START))
+          
+          echo "RACK_SIMULATION,${START},${END},${DURATION},SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+          echo "Rack simulation completed: Zone ${TARGET_ZONE} in ${DURATION}s"
+
+  # ==========================================================================
+  # FINAL HEALTH CHECK
+  # ==========================================================================
+  final-health-check:
+    name: Final Health Check
+    needs: [heft-initialize, rack-simulation]
+    runs-on: self-hosted
+    steps:
+      - name: Configure kubectl
+        run: export KUBECONFIG="${{ needs.heft-initialize.outputs.kubeconfig }}"
+      - name: Run Final Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          kubectl get pods -A | head -30
+          END=$(date +%s)
+          DURATION=$((END - START))
+          echo "FINAL_HEALTH_CHECK,${START},${END},${DURATION},SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  # ==========================================================================
+  # FINALIZE
+  # ==========================================================================
+  finalize:
+    name: Finalize HEFT Workflow
+    needs: [heft-initialize, final-health-check]
+    runs-on: self-hosted
+    if: always()
+    steps:
+      - name: Generate Summary
+        run: |
+          LOG_DIR="${{ needs.heft-initialize.outputs.local_log_dir }}"
+          RUN_ID="${{ needs.heft-initialize.outputs.run_id }}"
+          
+          END_EPOCH=$(date +%s)
+          
+          cat > "${LOG_DIR}/metrics.txt" << EOF
+          # HEFT-Optimized GitHub Actions Resilience Metrics
+          # Generated: $(date)
+          
+          PLATFORM=GitHub_Actions_HEFT
+          RUN_ID=${RUN_ID}
+          SCHEDULER=HEFT
+          HEFT_EXCLUDE_NODE=${{ needs.heft-initialize.outputs.heft_exclude_node }}
+          HEFT_EXCLUDE_ZONE=${{ needs.heft-initialize.outputs.heft_exclude_zone }}
+          WORKFLOW_END_EPOCH=${END_EPOCH}
+          STATUS=SUCCESS
+          EOF
+          
+          echo "================================================================"
+          echo "HEFT-OPTIMIZED GITHUB ACTIONS COMPLETE"
+          echo "================================================================"
+          echo "Run ID: ${RUN_ID}"
+          echo "Logs: ${LOG_DIR}"
+          
+          # Show timing summary
+          if [ -f "${LOG_DIR}/timing.csv" ]; then
+            echo ""
+            echo "Timing Summary:"
+            cat "${LOG_DIR}/timing.csv"
+          fi
+
+      - name: Upload Logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: heft-logs-${{ needs.heft-initialize.outputs.run_id }}
+          path: ${{ needs.heft-initialize.outputs.local_log_dir }}

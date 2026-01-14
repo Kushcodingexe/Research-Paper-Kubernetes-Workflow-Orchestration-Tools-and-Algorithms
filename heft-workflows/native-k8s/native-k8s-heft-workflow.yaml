@@ -1,0 +1,210 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: resilience-heft-native
+  labels:
+    app: resilience-simulation
+    scheduler: heft
+spec:
+  backoffLimit: 2
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata:
+      labels:
+        app: resilience-simulation
+        scheduler: heft
+    spec:
+      serviceAccountName: chaos-admin
+      restartPolicy: Never
+      
+      # HEFT: Run on master-m003
+      nodeSelector:
+        kubernetes.io/hostname: master-m003
+      
+      volumes:
+      - name: logs
+        hostPath:
+          path: /home/vagrant/heft-native-logs
+          type: DirectoryOrCreate
+
+      containers:
+      - name: heft-resilience-sim
+        image: kushsahni1/chaos-sim:latest
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          set -e
+          
+          echo "================================================================"
+          echo " HEFT-OPTIMIZED NATIVE KUBERNETES RESILIENCE SIMULATION"
+          echo " Time: $(date)"
+          echo "================================================================"
+          
+          # HEFT Configuration
+          # We run on master-m003 (zone R3), so exclude R3 from failures
+          export HEFT_ENABLED="true"
+          export HEFT_EXCLUDE_NODE="worker-w005"  # R3 worker
+          export HEFT_EXCLUDE_ZONE="R3"
+          
+          RUN_ID="heft-native-$(date +%Y%m%d-%H%M%S)"
+          LOG_DIR="/app/logs/${RUN_ID}"
+          mkdir -p $LOG_DIR
+          
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] Run ID: ${RUN_ID}"
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] Platform: Native Kubernetes (HEFT-Optimized)"
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] HEFT Exclusion Node: ${HEFT_EXCLUDE_NODE}"
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] HEFT Exclusion Zone: ${HEFT_EXCLUDE_ZONE}"
+          
+          # Record start time
+          WORKFLOW_START=$(date +%s)
+          
+          # ================================================================
+          # STEP 1: PARALLEL HEALTH CHECKS
+          # ================================================================
+          echo ""
+          echo "================================================================"
+          echo " STEP 1: PARALLEL HEALTH CHECKS (3x)"
+          echo " Time: $(date)"
+          echo "================================================================"
+          
+          HC_START=$(date +%s)
+          
+          python3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 &
+          PID1=$!
+          python3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 &
+          PID2=$!
+          python3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 &
+          PID3=$!
+          
+          wait $PID1 $PID2 $PID3
+          
+          HC_END=$(date +%s)
+          HC_DURATION=$((HC_END - HC_START))
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: HEALTH_CHECKS_PARALLEL completed in ${HC_DURATION} seconds"
+          
+          # ================================================================
+          # STEP 2: NODE FAILURE SIMULATION (with HEFT exclusion)
+          # ================================================================
+          echo ""
+          echo "================================================================"
+          echo " STEP 2: NODE FAILURE SIMULATION (HEFT-Aware)"
+          echo " Excluding node: ${HEFT_EXCLUDE_NODE}, zone: ${HEFT_EXCLUDE_ZONE}"
+          echo " Time: $(date)"
+          echo "================================================================"
+          
+          NODE_START=$(date +%s)
+          
+          python3 /app/rack_resiliency_to_host.py simulate-node --stabilization-time=60
+          
+          NODE_END=$(date +%s)
+          NODE_DURATION=$((NODE_END - NODE_START))
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: NODE_SIMULATION completed in ${NODE_DURATION} seconds"
+          
+          # ================================================================
+          # STEP 3: INTERIM HEALTH CHECK
+          # ================================================================
+          echo ""
+          echo "================================================================"
+          echo " STEP 3: INTERIM HEALTH CHECK"
+          echo " Time: $(date)"
+          echo "================================================================"
+          
+          INTERIM_START=$(date +%s)
+          
+          python3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10
+          
+          INTERIM_END=$(date +%s)
+          INTERIM_DURATION=$((INTERIM_END - INTERIM_START))
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: INTERIM_HEALTH_CHECK completed in ${INTERIM_DURATION} seconds"
+          
+          # ================================================================
+          # STEP 4: RACK FAILURE SIMULATION (with HEFT zone exclusion)
+          # ================================================================
+          echo ""
+          echo "================================================================"
+          echo " STEP 4: RACK FAILURE SIMULATION (HEFT-Aware)"
+          echo " Excluding zone: ${HEFT_EXCLUDE_ZONE}"
+          echo " Time: $(date)"
+          echo "================================================================"
+          
+          RACK_START=$(date +%s)
+          
+          python3 /app/rack_resiliency_to_host.py simulate-rack --stabilization-time=60
+          
+          RACK_END=$(date +%s)
+          RACK_DURATION=$((RACK_END - RACK_START))
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: RACK_SIMULATION completed in ${RACK_DURATION} seconds"
+          
+          # ================================================================
+          # STEP 5: FINAL HEALTH CHECK
+          # ================================================================
+          echo ""
+          echo "================================================================"
+          echo " STEP 5: FINAL HEALTH CHECK"
+          echo " Time: $(date)"
+          echo "================================================================"
+          
+          FINAL_START=$(date +%s)
+          
+          python3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10
+          
+          FINAL_END=$(date +%s)
+          FINAL_DURATION=$((FINAL_END - FINAL_START))
+          echo "[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: FINAL_HEALTH_CHECK completed in ${FINAL_DURATION} seconds"
+          
+          # ================================================================
+          # FINALIZE
+          # ================================================================
+          WORKFLOW_END=$(date +%s)
+          TOTAL_DURATION=$((WORKFLOW_END - WORKFLOW_START))
+          
+          echo ""
+          echo "================================================================"
+          echo " HEFT-OPTIMIZED SIMULATION COMPLETE"
+          echo "================================================================"
+          echo "Run ID: ${RUN_ID}"
+          echo "Total Duration: ${TOTAL_DURATION} seconds"
+          echo "HEFT Exclusions Applied:"
+          echo "  - Node Exclusion: ${HEFT_EXCLUDE_NODE}"
+          echo "  - Zone Exclusion: ${HEFT_EXCLUDE_ZONE}"
+          
+          # Save metrics
+          cat > ${LOG_DIR}/metrics.txt << METRICS
+          # HEFT-Optimized Native Kubernetes Resilience Metrics
+          # Generated: $(date)
+          
+          PLATFORM=Native_Kubernetes_HEFT
+          RUN_ID=${RUN_ID}
+          SCHEDULER=HEFT
+          HEFT_EXCLUDE_NODE=${HEFT_EXCLUDE_NODE}
+          HEFT_EXCLUDE_ZONE=${HEFT_EXCLUDE_ZONE}
+          WORKFLOW_START_EPOCH=${WORKFLOW_START}
+          WORKFLOW_END_EPOCH=${WORKFLOW_END}
+          TOTAL_DURATION_SECONDS=${TOTAL_DURATION}
+          HEALTH_CHECKS_PARALLEL_DURATION=${HC_DURATION}
+          NODE_SIMULATION_DURATION=${NODE_DURATION}
+          INTERIM_HEALTH_CHECK_DURATION=${INTERIM_DURATION}
+          RACK_SIMULATION_DURATION=${RACK_DURATION}
+          FINAL_HEALTH_CHECK_DURATION=${FINAL_DURATION}
+          STATUS=SUCCESS
+          METRICS
+          
+          # Save timing CSV
+          cat > ${LOG_DIR}/timing.csv << TIMING
+          step,start_epoch,end_epoch,duration_seconds,status
+          HEALTH_CHECKS_PARALLEL,${HC_START},${HC_END},${HC_DURATION},SUCCESS
+          NODE_SIMULATION,${NODE_START},${NODE_END},${NODE_DURATION},SUCCESS
+          INTERIM_HEALTH_CHECK,${INTERIM_START},${INTERIM_END},${INTERIM_DURATION},SUCCESS
+          RACK_SIMULATION,${RACK_START},${RACK_END},${RACK_DURATION},SUCCESS
+          FINAL_HEALTH_CHECK,${FINAL_START},${FINAL_END},${FINAL_DURATION},SUCCESS
+          TIMING
+          
+          echo "Metrics saved to: ${LOG_DIR}/metrics.txt"
+          echo "Timing saved to: ${LOG_DIR}/timing.csv"
+          
+        volumeMounts:
+        - name: logs
+          mountPath: /app/logs
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"

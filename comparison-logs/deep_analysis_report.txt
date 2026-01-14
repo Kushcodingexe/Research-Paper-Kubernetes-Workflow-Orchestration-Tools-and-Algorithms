@@ -1,0 +1,113 @@
+================================================================================
+DEEP BENCHMARK ANALYSIS REPORT
+Generated: 2026-01-13 13:19:36
+================================================================================
+
+================================================================================
+SUMMARY TABLE
+================================================================================
+
+Platform                  Runs   Mean       Median     StdDev     Outliers  
+--------------------------------------------------------------------------------
+Argo_1x                   103    743.0      692.0      119.4      19 (18%)
+Argo_1x_HEFT              12     459.4      452.5      13.5       3 (25%)
+Argo_2x                   20     939.6      932.0      37.9       0 (0%)
+Argo_2x_HEFT              20     1065.9     977.0      250.1      3 (15%)
+GitHubActions_1x          106    750.2      747.0      60.4       7 (7%)
+GitHubActions_1x_HEFT     27     148.4      13.0       181.0      0 (0%)
+GitHubActions_2x          25     449.2      563.0      221.7      5 (20%)
+GitHubActions_2x_HEFT     45     260.0      18.0       274.6      0 (0%)
+NativeK8s_1x              106    545.1      545.0      1.3        6 (6%)
+NativeK8s_1x_HEFT         12     333.1      333.0      0.3        1 (8%)
+NativeK8s_2x              20     668.7      666.0      9.7        2 (10%)
+NativeK8s_2x_HEFT         20     666.1      666.0      0.8        7 (35%)
+
+================================================================================
+PLATFORM COMPARISON (Clean Data - Outliers Removed)
+================================================================================
+
+Argo:
+  1x: Mean=691.9s, Median=691.0s (n=84)
+  1x_HEFT: Mean=452.0s, Median=452.0s (n=9)
+  2x: Mean=939.6s, Median=932.0s (n=20)
+  2x_HEFT: Mean=974.9s, Median=936.0s (n=17)
+
+NativeK8s:
+  1x: Mean=544.8s, Median=545.0s (n=100)
+  1x_HEFT: Mean=333.0s, Median=333.0s (n=11)
+  2x: Mean=665.6s, Median=666.0s (n=18)
+  2x_HEFT: Mean=666.0s, Median=666.0s (n=13)
+
+GitHubActions:
+  1x: Mean=736.2s, Median=746.0s (n=99)
+  1x_HEFT: Mean=148.4s, Median=13.0s (n=27)
+  2x: Mean=557.2s, Median=563.0s (n=20)
+  2x_HEFT: Mean=260.0s, Median=18.0s (n=45)
+
+================================================================================
+SCALING ANALYSIS (1x vs 2x)
+================================================================================
+
+Argo:
+  1x Clean Mean: 691.9s
+  2x Clean Mean: 939.6s
+  Scaling Factor: 1.36x
+  Assessment: 🟢 Excellent scaling (<1.5x)
+
+NativeK8s:
+  1x Clean Mean: 544.8s
+  2x Clean Mean: 665.6s
+  Scaling Factor: 1.22x
+  Assessment: 🟢 Excellent scaling (<1.5x)
+
+GitHubActions:
+  1x Clean Mean: 736.2s
+  2x Clean Mean: 557.2s
+  Scaling Factor: 0.76x
+  Assessment: 🟢 Excellent scaling (<1.5x)
+
+================================================================================
+HEFT IMPACT ANALYSIS
+================================================================================
+
+Argo (1x):
+  Baseline: 691.9s
+  HEFT: 452.0s
+  HEFT Impact: 🟢 34.7% faster
+
+Argo (2x):
+  Baseline: 939.6s
+  HEFT: 974.9s
+  HEFT Impact: ➖ Similar performance
+
+NativeK8s (1x):
+  Baseline: 544.8s
+  HEFT: 333.0s
+  HEFT Impact: 🟢 38.9% faster
+
+NativeK8s (2x):
+  Baseline: 665.6s
+  HEFT: 666.0s
+  HEFT Impact: ➖ Similar performance
+
+GitHubActions (1x):
+  Baseline: 736.2s
+  HEFT: 148.4s
+  HEFT Impact: 🟢 79.8% faster
+
+GitHubActions (2x):
+  Baseline: 557.2s
+  HEFT: 260.0s
+  HEFT Impact: 🟢 53.3% faster
+
+================================================================================
+DATA QUALITY ASSESSMENT
+================================================================================
+
+⚠️  Argo_1x_HEFT: High outlier rate
+
+⚠️  GitHubActions_1x_HEFT: High variability
+
+⚠️  GitHubActions_2x_HEFT: High variability
+
+⚠️  NativeK8s_2x_HEFT: High outlier rate

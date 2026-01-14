@@ -1,0 +1,380 @@
+name: Scaled (2x) HEFT-Optimized Rack Resiliency Simulation
+
+on:
+  workflow_dispatch:
+    inputs:
+      stabilization_time_node:
+        description: 'Stabilization time after node failure (seconds)'
+        required: false
+        default: '60'
+      stabilization_time_rack:
+        description: 'Stabilization time after rack failure (seconds)'
+        required: false
+        default: '60'
+
+env:
+  LOG_BASE_PATH: /home/snu/kubernetes/comparison-logs/github-actions-scaled-heft
+  SCALE: '2x'
+  HEFT_ENABLED: 'true'
+
+jobs:
+  # ==========================================================================
+  # HEFT INITIALIZATION
+  # ==========================================================================
+  heft-initialize:
+    name: HEFT Initialize (Scaled)
+    runs-on: self-hosted
+    outputs:
+      run_id: ${{ steps.init.outputs.run_id }}
+      local_log_dir: ${{ steps.init.outputs.local_log_dir }}
+      heft_exclude_node: ${{ steps.heft.outputs.exclude_node }}
+      heft_exclude_zone: ${{ steps.heft.outputs.exclude_zone }}
+    steps:
+      - name: Configure kubectl
+        run: |
+          for path in ~/.kube/config /home/snu/.kube/config /home/snu/kubernetes/kubeconfig-master; do
+            if [ -f "$path" ]; then
+              export KUBECONFIG="$path"
+              break
+            fi
+          done
+          kubectl get nodes
+
+      - name: Initialize Run
+        id: init
+        run: |
+          RUN_ID="scaled-heft-gha-$(date +%Y%m%d-%H%M%S)-${GITHUB_RUN_ID}"
+          LOCAL_LOG_DIR="${LOG_BASE_PATH}/${RUN_ID}"
+          mkdir -p "${LOCAL_LOG_DIR}"
+          
+          echo "run_id=${RUN_ID}" >> $GITHUB_OUTPUT
+          echo "local_log_dir=${LOCAL_LOG_DIR}" >> $GITHUB_OUTPUT
+          
+          echo "================================================================"
+          echo "SCALED (2x) HEFT GITHUB ACTIONS WORKFLOW"
+          echo "Scale: 6 HC, 2 Node Sim, 2 Interim HC, 2 Rack Sim, 2 Final HC"
+          echo "================================================================"
+
+      - name: Compute HEFT Schedule
+        id: heft
+        run: |
+          EXCLUDE_NODE="worker-w005"
+          EXCLUDE_ZONE="R3"
+          
+          echo "exclude_node=${EXCLUDE_NODE}" >> $GITHUB_OUTPUT
+          echo "exclude_zone=${EXCLUDE_ZONE}" >> $GITHUB_OUTPUT
+          
+          echo "HEFT Exclusions: Node=${EXCLUDE_NODE}, Zone=${EXCLUDE_ZONE}"
+
+  # ==========================================================================
+  # PHASE 1: 6 PARALLEL HEALTH CHECKS
+  # ==========================================================================
+  health-check-1:
+    name: Health Check 1/6
+    needs: [heft-initialize]
+    runs-on: self-hosted
+    steps:
+      - name: Run Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          echo "HEALTH_CHECK_1,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  health-check-2:
+    name: Health Check 2/6
+    needs: [heft-initialize]
+    runs-on: self-hosted
+    steps:
+      - name: Run Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          echo "HEALTH_CHECK_2,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  health-check-3:
+    name: Health Check 3/6
+    needs: [heft-initialize]
+    runs-on: self-hosted
+    steps:
+      - name: Run Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          echo "HEALTH_CHECK_3,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  health-check-4:
+    name: Health Check 4/6
+    needs: [heft-initialize]
+    runs-on: self-hosted
+    steps:
+      - name: Run Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          echo "HEALTH_CHECK_4,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  health-check-5:
+    name: Health Check 5/6
+    needs: [heft-initialize]
+    runs-on: self-hosted
+    steps:
+      - name: Run Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          echo "HEALTH_CHECK_5,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  health-check-6:
+    name: Health Check 6/6
+    needs: [heft-initialize]
+    runs-on: self-hosted
+    steps:
+      - name: Run Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          echo "HEALTH_CHECK_6,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  # ==========================================================================
+  # PHASE 2: 2 NODE SIMULATIONS (HEFT-aware)
+  # ==========================================================================
+  node-simulation-1:
+    name: Node Simulation 1/2 (HEFT)
+    needs: [heft-initialize, health-check-1, health-check-2, health-check-3, health-check-4, health-check-5, health-check-6]
+    runs-on: self-hosted
+    steps:
+      - name: Run Node Failure Simulation 1
+        run: |
+          START=$(date +%s)
+          STABILIZATION=${{ github.event.inputs.stabilization_time_node || '60' }}
+          EXCLUDE_NODE="${{ needs.heft-initialize.outputs.heft_exclude_node }}"
+          
+          WORKERS=("worker-w001" "worker-w002" "worker-w003" "worker-w004" "worker-w005" "worker-w006")
+          ELIGIBLE=()
+          for w in "${WORKERS[@]}"; do
+            [ "$w" != "$EXCLUDE_NODE" ] && ELIGIBLE+=("$w")
+          done
+          TARGET=${ELIGIBLE[$RANDOM % ${#ELIGIBLE[@]}]}
+          
+          echo "Node Sim 1: Target ${TARGET} (HEFT excludes ${EXCLUDE_NODE})"
+          kubectl cordon ${TARGET}
+          kubectl taint nodes ${TARGET} node.kubernetes.io/out-of-service=nodeshutdown:NoExecute --overwrite
+          sleep ${STABILIZATION}
+          kubectl uncordon ${TARGET}
+          kubectl taint nodes ${TARGET} node.kubernetes.io/out-of-service- || true
+          
+          END=$(date +%s)
+          echo "NODE_SIMULATION_1,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  node-simulation-2:
+    name: Node Simulation 2/2 (HEFT)
+    needs: [heft-initialize, node-simulation-1]
+    runs-on: self-hosted
+    steps:
+      - name: Run Node Failure Simulation 2
+        run: |
+          START=$(date +%s)
+          STABILIZATION=${{ github.event.inputs.stabilization_time_node || '60' }}
+          EXCLUDE_NODE="${{ needs.heft-initialize.outputs.heft_exclude_node }}"
+          
+          WORKERS=("worker-w001" "worker-w002" "worker-w003" "worker-w004" "worker-w005" "worker-w006")
+          ELIGIBLE=()
+          for w in "${WORKERS[@]}"; do
+            [ "$w" != "$EXCLUDE_NODE" ] && ELIGIBLE+=("$w")
+          done
+          TARGET=${ELIGIBLE[$RANDOM % ${#ELIGIBLE[@]}]}
+          
+          echo "Node Sim 2: Target ${TARGET} (HEFT excludes ${EXCLUDE_NODE})"
+          kubectl cordon ${TARGET}
+          kubectl taint nodes ${TARGET} node.kubernetes.io/out-of-service=nodeshutdown:NoExecute --overwrite
+          sleep ${STABILIZATION}
+          kubectl uncordon ${TARGET}
+          kubectl taint nodes ${TARGET} node.kubernetes.io/out-of-service- || true
+          
+          END=$(date +%s)
+          echo "NODE_SIMULATION_2,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  # ==========================================================================
+  # PHASE 3: 2 INTERIM HEALTH CHECKS
+  # ==========================================================================
+  interim-health-check-1:
+    name: Interim Health Check 1/2
+    needs: [heft-initialize, node-simulation-2]
+    runs-on: self-hosted
+    steps:
+      - name: Run Interim Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          echo "INTERIM_HEALTH_CHECK_1,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  interim-health-check-2:
+    name: Interim Health Check 2/2
+    needs: [heft-initialize, interim-health-check-1]
+    runs-on: self-hosted
+    steps:
+      - name: Run Interim Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          echo "INTERIM_HEALTH_CHECK_2,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  # ==========================================================================
+  # PHASE 4: 2 RACK SIMULATIONS (HEFT-aware)
+  # ==========================================================================
+  rack-simulation-1:
+    name: Rack Simulation 1/2 (HEFT)
+    needs: [heft-initialize, interim-health-check-2]
+    runs-on: self-hosted
+    steps:
+      - name: Run Rack Failure Simulation 1
+        run: |
+          START=$(date +%s)
+          STABILIZATION=${{ github.event.inputs.stabilization_time_rack || '60' }}
+          EXCLUDE_ZONE="${{ needs.heft-initialize.outputs.heft_exclude_zone }}"
+          
+          declare -A ZONE_NODES
+          ZONE_NODES["R1"]="master-m001 worker-w001 worker-w002"
+          ZONE_NODES["R2"]="master-m002 worker-w003 worker-w004"
+          ZONE_NODES["R3"]="master-m003 worker-w005 worker-w006"
+          
+          ZONES=("R1" "R2" "R3")
+          ELIGIBLE=()
+          for z in "${ZONES[@]}"; do
+            [ "$z" != "$EXCLUDE_ZONE" ] && ELIGIBLE+=("$z")
+          done
+          TARGET_ZONE=${ELIGIBLE[$RANDOM % ${#ELIGIBLE[@]}]}
+          TARGET_NODES="${ZONE_NODES[$TARGET_ZONE]}"
+          
+          echo "Rack Sim 1: Zone ${TARGET_ZONE} (HEFT excludes ${EXCLUDE_ZONE})"
+          for node in ${TARGET_NODES}; do
+            kubectl cordon ${node}
+            kubectl taint nodes ${node} node.kubernetes.io/out-of-service=zonefailure:NoExecute --overwrite
+          done
+          
+          sleep 30
+          
+          for node in ${TARGET_NODES}; do
+            kubectl uncordon ${node}
+            kubectl taint nodes ${node} node.kubernetes.io/out-of-service- || true
+          done
+          
+          sleep ${STABILIZATION}
+          
+          END=$(date +%s)
+          echo "RACK_SIMULATION_1,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  rack-simulation-2:
+    name: Rack Simulation 2/2 (HEFT)
+    needs: [heft-initialize, rack-simulation-1]
+    runs-on: self-hosted
+    steps:
+      - name: Run Rack Failure Simulation 2
+        run: |
+          START=$(date +%s)
+          STABILIZATION=${{ github.event.inputs.stabilization_time_rack || '60' }}
+          EXCLUDE_ZONE="${{ needs.heft-initialize.outputs.heft_exclude_zone }}"
+          
+          declare -A ZONE_NODES
+          ZONE_NODES["R1"]="master-m001 worker-w001 worker-w002"
+          ZONE_NODES["R2"]="master-m002 worker-w003 worker-w004"
+          ZONE_NODES["R3"]="master-m003 worker-w005 worker-w006"
+          
+          ZONES=("R1" "R2" "R3")
+          ELIGIBLE=()
+          for z in "${ZONES[@]}"; do
+            [ "$z" != "$EXCLUDE_ZONE" ] && ELIGIBLE+=("$z")
+          done
+          TARGET_ZONE=${ELIGIBLE[$RANDOM % ${#ELIGIBLE[@]}]}
+          TARGET_NODES="${ZONE_NODES[$TARGET_ZONE]}"
+          
+          echo "Rack Sim 2: Zone ${TARGET_ZONE} (HEFT excludes ${EXCLUDE_ZONE})"
+          for node in ${TARGET_NODES}; do
+            kubectl cordon ${node}
+            kubectl taint nodes ${node} node.kubernetes.io/out-of-service=zonefailure:NoExecute --overwrite
+          done
+          
+          sleep 30
+          
+          for node in ${TARGET_NODES}; do
+            kubectl uncordon ${node}
+            kubectl taint nodes ${node} node.kubernetes.io/out-of-service- || true
+          done
+          
+          sleep ${STABILIZATION}
+          
+          END=$(date +%s)
+          echo "RACK_SIMULATION_2,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  # ==========================================================================
+  # PHASE 5: 2 FINAL HEALTH CHECKS
+  # ==========================================================================
+  final-health-check-1:
+    name: Final Health Check 1/2
+    needs: [heft-initialize, rack-simulation-2]
+    runs-on: self-hosted
+    steps:
+      - name: Run Final Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          echo "FINAL_HEALTH_CHECK_1,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  final-health-check-2:
+    name: Final Health Check 2/2
+    needs: [heft-initialize, final-health-check-1]
+    runs-on: self-hosted
+    steps:
+      - name: Run Final Health Check
+        run: |
+          START=$(date +%s)
+          kubectl get nodes -o wide
+          END=$(date +%s)
+          echo "FINAL_HEALTH_CHECK_2,${START},${END},$((END-START)),SUCCESS" >> "${{ needs.heft-initialize.outputs.local_log_dir }}/timing.csv"
+
+  # ==========================================================================
+  # FINALIZE
+  # ==========================================================================
+  finalize:
+    name: Finalize Scaled HEFT Workflow
+    needs: [heft-initialize, final-health-check-2]
+    runs-on: self-hosted
+    if: always()
+    steps:
+      - name: Generate Summary
+        run: |
+          LOG_DIR="${{ needs.heft-initialize.outputs.local_log_dir }}"
+          RUN_ID="${{ needs.heft-initialize.outputs.run_id }}"
+          
+          cat > "${LOG_DIR}/metrics.txt" << EOF
+          # Scaled (2x) HEFT GitHub Actions Metrics
+          # Generated: $(date)
+          
+          PLATFORM=GitHub_Actions_Scaled_HEFT
+          SCALE=2x
+          SCHEDULER=HEFT
+          RUN_ID=${RUN_ID}
+          HEFT_EXCLUDE_NODE=${{ needs.heft-initialize.outputs.heft_exclude_node }}
+          HEFT_EXCLUDE_ZONE=${{ needs.heft-initialize.outputs.heft_exclude_zone }}
+          STATUS=SUCCESS
+          EOF
+          
+          echo "================================================================"
+          echo "SCALED (2x) HEFT GITHUB ACTIONS COMPLETE"
+          echo "================================================================"
+
+      - name: Upload Logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: scaled-heft-logs-${{ needs.heft-initialize.outputs.run_id }}
+          path: ${{ needs.heft-initialize.outputs.local_log_dir }}

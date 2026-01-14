@@ -1,0 +1,235 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: resilience-scaled-
+  namespace: argo
+  labels:
+    app: resilience-simulation
+    scale: double
+spec:
+  entrypoint: scaled-resilience-dag
+  serviceAccountName: argo-workflow
+  
+  arguments:
+    parameters:
+    - name: stabilization-time
+      value: "60"
+
+  volumes:
+  - name: logs-volume
+    hostPath:
+      path: /home/vagrant/scaled-argo-logs
+      type: DirectoryOrCreate
+  
+  templates:
+  # ==========================================================================
+  # MAIN DAG - SCALED (2x) Resilience Simulation
+  # 6 Health Checks, 2 Node Sims, 2 Interim HC, 2 Rack Sims, 2 Final HC
+  # ==========================================================================
+  - name: scaled-resilience-dag
+    dag:
+      tasks:
+      # Phase 1: 6 Parallel Health Checks
+      - name: health-check-1
+        template: health-check
+        arguments:
+          parameters:
+          - name: check-id
+            value: "1"
+      - name: health-check-2
+        template: health-check
+        arguments:
+          parameters:
+          - name: check-id
+            value: "2"
+      - name: health-check-3
+        template: health-check
+        arguments:
+          parameters:
+          - name: check-id
+            value: "3"
+      - name: health-check-4
+        template: health-check
+        arguments:
+          parameters:
+          - name: check-id
+            value: "4"
+      - name: health-check-5
+        template: health-check
+        arguments:
+          parameters:
+          - name: check-id
+            value: "5"
+      - name: health-check-6
+        template: health-check
+        arguments:
+          parameters:
+          - name: check-id
+            value: "6"
+      
+      # Phase 2: 2 Node Failure Simulations (sequential)
+      - name: node-simulation-1
+        template: node-failure-sim
+        dependencies: [health-check-1, health-check-2, health-check-3, health-check-4, health-check-5, health-check-6]
+        arguments:
+          parameters:
+          - name: sim-id
+            value: "1"
+      
+      - name: node-simulation-2
+        template: node-failure-sim
+        dependencies: [node-simulation-1]
+        arguments:
+          parameters:
+          - name: sim-id
+            value: "2"
+      
+      # Phase 3: 2 Interim Health Checks
+      - name: interim-health-check-1
+        template: health-check
+        dependencies: [node-simulation-2]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "interim-1"
+      
+      - name: interim-health-check-2
+        template: health-check
+        dependencies: [interim-health-check-1]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "interim-2"
+      
+      # Phase 4: 2 Rack Failure Simulations (sequential)
+      - name: rack-simulation-1
+        template: rack-failure-sim
+        dependencies: [interim-health-check-2]
+        arguments:
+          parameters:
+          - name: sim-id
+            value: "1"
+      
+      - name: rack-simulation-2
+        template: rack-failure-sim
+        dependencies: [rack-simulation-1]
+        arguments:
+          parameters:
+          - name: sim-id
+            value: "2"
+      
+      # Phase 5: 2 Final Health Checks
+      - name: final-health-check-1
+        template: health-check
+        dependencies: [rack-simulation-2]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "final-1"
+      
+      - name: final-health-check-2
+        template: health-check
+        dependencies: [final-health-check-1]
+        arguments:
+          parameters:
+          - name: check-id
+            value: "final-2"
+      
+      # Finalize
+      - name: finalize
+        template: finalize-metrics
+        dependencies: [final-health-check-2]
+
+  # ==========================================================================
+  # HEALTH CHECK TEMPLATE
+  # ==========================================================================
+  - name: health-check
+    inputs:
+      parameters:
+      - name: check-id
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    container:
+      image: kushsahni1/chaos-sim:latest
+      command: ["python3", "/app/rack_resiliency_to_host.py", "health-check"]
+      args:
+      - "--stabilization-time=10"
+      env:
+      - name: CHECK_ID
+        value: "{{inputs.parameters.check-id}}"
+      - name: SCALE
+        value: "2x"
+      volumeMounts:
+      - name: logs-volume
+        mountPath: /app/logs
+
+  # ==========================================================================
+  # NODE FAILURE SIMULATION TEMPLATE
+  # ==========================================================================
+  - name: node-failure-sim
+    inputs:
+      parameters:
+      - name: sim-id
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    container:
+      image: kushsahni1/chaos-sim:latest
+      command: ["python3", "/app/rack_resiliency_to_host.py", "simulate-node"]
+      args:
+      - "--stabilization-time={{workflow.parameters.stabilization-time}}"
+      env:
+      - name: SIM_ID
+        value: "{{inputs.parameters.sim-id}}"
+      - name: SCALE
+        value: "2x"
+      volumeMounts:
+      - name: logs-volume
+        mountPath: /app/logs
+
+  # ==========================================================================
+  # RACK FAILURE SIMULATION TEMPLATE
+  # ==========================================================================
+  - name: rack-failure-sim
+    inputs:
+      parameters:
+      - name: sim-id
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    container:
+      image: kushsahni1/chaos-sim:latest
+      command: ["python3", "/app/rack_resiliency_to_host.py", "simulate-rack"]
+      args:
+      - "--stabilization-time={{workflow.parameters.stabilization-time}}"
+      env:
+      - name: SIM_ID
+        value: "{{inputs.parameters.sim-id}}"
+      - name: SCALE
+        value: "2x"
+      volumeMounts:
+      - name: logs-volume
+        mountPath: /app/logs
+
+  # ==========================================================================
+  # FINALIZE METRICS TEMPLATE
+  # ==========================================================================
+  - name: finalize-metrics
+    nodeSelector:
+      kubernetes.io/hostname: master-m003
+    container:
+      image: python:3.9-slim
+      command: ["/bin/bash", "-c"]
+      args:
+      - |
+        echo "============================================"
+        echo "SCALED (2x) RESILIENCE SIMULATION COMPLETE"
+        echo "============================================"
+        echo "Scale: 2x (Double nodes)"
+        echo "  - 6 Health Checks"
+        echo "  - 2 Node Simulations"
+        echo "  - 2 Interim Health Checks"
+        echo "  - 2 Rack Simulations"
+        echo "  - 2 Final Health Checks"
+        echo "============================================"
+      volumeMounts:
+      - name: logs-volume
+        mountPath: /app/logs

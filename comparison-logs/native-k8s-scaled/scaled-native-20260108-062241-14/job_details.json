@@ -1,0 +1,120 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "creationTimestamp": "2026-01-08T00:52:41Z",
+        "generation": 1,
+        "labels": {
+            "app": "resilience-simulation",
+            "scale": "double"
+        },
+        "name": "resilience-scaled-14-062241",
+        "namespace": "default",
+        "resourceVersion": "2707868",
+        "uid": "b2f9635e-ba5c-4351-a1ea-e70b32c2c65f"
+    },
+    "spec": {
+        "backoffLimit": 2,
+        "completionMode": "NonIndexed",
+        "completions": 1,
+        "manualSelector": false,
+        "parallelism": 1,
+        "podReplacementPolicy": "TerminatingOrFailed",
+        "selector": {
+            "matchLabels": {
+                "batch.kubernetes.io/controller-uid": "b2f9635e-ba5c-4351-a1ea-e70b32c2c65f"
+            }
+        },
+        "suspend": false,
+        "template": {
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "resilience-simulation",
+                    "batch.kubernetes.io/controller-uid": "b2f9635e-ba5c-4351-a1ea-e70b32c2c65f",
+                    "batch.kubernetes.io/job-name": "resilience-scaled-14-062241",
+                    "controller-uid": "b2f9635e-ba5c-4351-a1ea-e70b32c2c65f",
+                    "job-name": "resilience-scaled-14-062241",
+                    "scale": "double"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "args": [
+                            "set -e\n\necho \"================================================================\"\necho \" SCALED (2x) NATIVE KUBERNETES RESILIENCE SIMULATION\"\necho \" Time: $(date)\"\necho \" Scale: 6 HC, 2 Node Sim, 2 Interim HC, 2 Rack Sim, 2 Final HC\"\necho \"================================================================\"\n\nRUN_ID=\"scaled-native-$(date +%Y%m%d-%H%M%S)\"\nLOG_DIR=\"/app/logs/${RUN_ID}\"\nmkdir -p $LOG_DIR\n\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] Run ID: ${RUN_ID}\"\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] Platform: Native Kubernetes (Scaled 2x)\"\n\nWORKFLOW_START=$(date +%s)\n\n# ================================================================\n# PHASE 1: 6 PARALLEL HEALTH CHECKS\n# ================================================================\necho \"\"\necho \"================================================================\"\necho \" PHASE 1: 6 PARALLEL HEALTH CHECKS\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nHC_START=$(date +%s)\n\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 \u0026\nPID1=$!\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 \u0026\nPID2=$!\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 \u0026\nPID3=$!\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 \u0026\nPID4=$!\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 \u0026\nPID5=$!\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10 \u0026\nPID6=$!\n\nwait $PID1 $PID2 $PID3 $PID4 $PID5 $PID6\n\nHC_END=$(date +%s)\nHC_DURATION=$((HC_END - HC_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: HEALTH_CHECKS_PARALLEL_6x completed in ${HC_DURATION} seconds\"\n\n# ================================================================\n# PHASE 2: 2 NODE FAILURE SIMULATIONS\n# ================================================================\necho \"\"\necho \"================================================================\"\necho \" PHASE 2: NODE FAILURE SIMULATION 1/2\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nNODE1_START=$(date +%s)\npython3 /app/rack_resiliency_to_host.py simulate-node --stabilization-time=60\nNODE1_END=$(date +%s)\nNODE1_DURATION=$((NODE1_END - NODE1_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: NODE_SIMULATION_1 completed in ${NODE1_DURATION} seconds\"\n\necho \"\"\necho \"================================================================\"\necho \" PHASE 2: NODE FAILURE SIMULATION 2/2\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nNODE2_START=$(date +%s)\npython3 /app/rack_resiliency_to_host.py simulate-node --stabilization-time=60\nNODE2_END=$(date +%s)\nNODE2_DURATION=$((NODE2_END - NODE2_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: NODE_SIMULATION_2 completed in ${NODE2_DURATION} seconds\"\n\n# ================================================================\n# PHASE 3: 2 INTERIM HEALTH CHECKS\n# ================================================================\necho \"\"\necho \"================================================================\"\necho \" PHASE 3: INTERIM HEALTH CHECKS (2x)\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nINTERIM1_START=$(date +%s)\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10\nINTERIM1_END=$(date +%s)\nINTERIM1_DURATION=$((INTERIM1_END - INTERIM1_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: INTERIM_HEALTH_CHECK_1 completed in ${INTERIM1_DURATION} seconds\"\n\nINTERIM2_START=$(date +%s)\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10\nINTERIM2_END=$(date +%s)\nINTERIM2_DURATION=$((INTERIM2_END - INTERIM2_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: INTERIM_HEALTH_CHECK_2 completed in ${INTERIM2_DURATION} seconds\"\n\n# ================================================================\n# PHASE 4: 2 RACK FAILURE SIMULATIONS\n# ================================================================\necho \"\"\necho \"================================================================\"\necho \" PHASE 4: RACK FAILURE SIMULATION 1/2\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nRACK1_START=$(date +%s)\npython3 /app/rack_resiliency_to_host.py simulate-rack --stabilization-time=60\nRACK1_END=$(date +%s)\nRACK1_DURATION=$((RACK1_END - RACK1_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: RACK_SIMULATION_1 completed in ${RACK1_DURATION} seconds\"\n\necho \"\"\necho \"================================================================\"\necho \" PHASE 4: RACK FAILURE SIMULATION 2/2\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nRACK2_START=$(date +%s)\npython3 /app/rack_resiliency_to_host.py simulate-rack --stabilization-time=60\nRACK2_END=$(date +%s)\nRACK2_DURATION=$((RACK2_END - RACK2_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: RACK_SIMULATION_2 completed in ${RACK2_DURATION} seconds\"\n\n# ================================================================\n# PHASE 5: 2 FINAL HEALTH CHECKS\n# ================================================================\necho \"\"\necho \"================================================================\"\necho \" PHASE 5: FINAL HEALTH CHECKS (2x)\"\necho \" Time: $(date)\"\necho \"================================================================\"\n\nFINAL1_START=$(date +%s)\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10\nFINAL1_END=$(date +%s)\nFINAL1_DURATION=$((FINAL1_END - FINAL1_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: FINAL_HEALTH_CHECK_1 completed in ${FINAL1_DURATION} seconds\"\n\nFINAL2_START=$(date +%s)\npython3 /app/rack_resiliency_to_host.py health-check --stabilization-time=10\nFINAL2_END=$(date +%s)\nFINAL2_DURATION=$((FINAL2_END - FINAL2_START))\necho \"[$(date '+%Y-%m-%d %H:%M:%S')] TIMING: FINAL_HEALTH_CHECK_2 completed in ${FINAL2_DURATION} seconds\"\n\n# ================================================================\n# FINALIZE\n# ================================================================\nWORKFLOW_END=$(date +%s)\nTOTAL_DURATION=$((WORKFLOW_END - WORKFLOW_START))\n\necho \"\"\necho \"================================================================\"\necho \" SCALED (2x) SIMULATION COMPLETE\"\necho \"================================================================\"\necho \"Run ID: ${RUN_ID}\"\necho \"Total Duration: ${TOTAL_DURATION} seconds\"\necho \"Scale: 2x\"\necho \"  - 6 Health Checks: ${HC_DURATION}s\"\necho \"  - Node Sim 1: ${NODE1_DURATION}s, Node Sim 2: ${NODE2_DURATION}s\"\necho \"  - Interim HC 1: ${INTERIM1_DURATION}s, Interim HC 2: ${INTERIM2_DURATION}s\"\necho \"  - Rack Sim 1: ${RACK1_DURATION}s, Rack Sim 2: ${RACK2_DURATION}s\"\necho \"  - Final HC 1: ${FINAL1_DURATION}s, Final HC 2: ${FINAL2_DURATION}s\"\n\n# Save metrics\ncat \u003e ${LOG_DIR}/metrics.txt \u003c\u003c METRICS\n# Scaled (2x) Native Kubernetes Resilience Metrics\n# Generated: $(date)\n\nPLATFORM=Native_Kubernetes_Scaled\nSCALE=2x\nRUN_ID=${RUN_ID}\nWORKFLOW_START_EPOCH=${WORKFLOW_START}\nWORKFLOW_END_EPOCH=${WORKFLOW_END}\nTOTAL_DURATION_SECONDS=${TOTAL_DURATION}\nHEALTH_CHECKS_6X_DURATION=${HC_DURATION}\nNODE_SIMULATION_1_DURATION=${NODE1_DURATION}\nNODE_SIMULATION_2_DURATION=${NODE2_DURATION}\nINTERIM_HEALTH_CHECK_1_DURATION=${INTERIM1_DURATION}\nINTERIM_HEALTH_CHECK_2_DURATION=${INTERIM2_DURATION}\nRACK_SIMULATION_1_DURATION=${RACK1_DURATION}\nRACK_SIMULATION_2_DURATION=${RACK2_DURATION}\nFINAL_HEALTH_CHECK_1_DURATION=${FINAL1_DURATION}\nFINAL_HEALTH_CHECK_2_DURATION=${FINAL2_DURATION}\nSTATUS=SUCCESS\nMETRICS\n\n# Save timing CSV\ncat \u003e ${LOG_DIR}/timing.csv \u003c\u003c TIMING\nstep,start_epoch,end_epoch,duration_seconds,status\nHEALTH_CHECKS_6X,${HC_START},${HC_END},${HC_DURATION},SUCCESS\nNODE_SIMULATION_1,${NODE1_START},${NODE1_END},${NODE1_DURATION},SUCCESS\nNODE_SIMULATION_2,${NODE2_START},${NODE2_END},${NODE2_DURATION},SUCCESS\nINTERIM_HEALTH_CHECK_1,${INTERIM1_START},${INTERIM1_END},${INTERIM1_DURATION},SUCCESS\nINTERIM_HEALTH_CHECK_2,${INTERIM2_START},${INTERIM2_END},${INTERIM2_DURATION},SUCCESS\nRACK_SIMULATION_1,${RACK1_START},${RACK1_END},${RACK1_DURATION},SUCCESS\nRACK_SIMULATION_2,${RACK2_START},${RACK2_END},${RACK2_DURATION},SUCCESS\nFINAL_HEALTH_CHECK_1,${FINAL1_START},${FINAL1_END},${FINAL1_DURATION},SUCCESS\nFINAL_HEALTH_CHECK_2,${FINAL2_START},${FINAL2_END},${FINAL2_DURATION},SUCCESS\nTIMING\n\necho \"Metrics saved to: ${LOG_DIR}\"\n"
+                        ],
+                        "command": [
+                            "/bin/bash",
+                            "-c"
+                        ],
+                        "env": [
+                            {
+                                "name": "PYTHONUNBUFFERED",
+                                "value": "1"
+                            }
+                        ],
+                        "image": "kushsahni1/chaos-sim:latest",
+                        "imagePullPolicy": "Always",
+                        "name": "scaled-resilience-sim",
+                        "resources": {},
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/app/logs",
+                                "name": "logs"
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "nodeSelector": {
+                    "kubernetes.io/hostname": "master-m003"
+                },
+                "restartPolicy": "Never",
+                "schedulerName": "default-scheduler",
+                "securityContext": {},
+                "serviceAccount": "chaos-admin",
+                "serviceAccountName": "chaos-admin",
+                "terminationGracePeriodSeconds": 30,
+                "volumes": [
+                    {
+                        "hostPath": {
+                            "path": "/home/vagrant/scaled-native-logs",
+                            "type": "DirectoryOrCreate"
+                        },
+                        "name": "logs"
+                    }
+                ]
+            }
+        },
+        "ttlSecondsAfterFinished": 3600
+    },
+    "status": {
+        "completionTime": "2026-01-08T01:03:36Z",
+        "conditions": [
+            {
+                "lastProbeTime": "2026-01-08T01:03:36Z",
+                "lastTransitionTime": "2026-01-08T01:03:36Z",
+                "message": "Reached expected number of succeeded pods",
+                "reason": "CompletionsReached",
+                "status": "True",
+                "type": "SuccessCriteriaMet"
+            },
+            {
+                "lastProbeTime": "2026-01-08T01:03:36Z",
+                "lastTransitionTime": "2026-01-08T01:03:36Z",
+                "message": "Reached expected number of succeeded pods",
+                "reason": "CompletionsReached",
+                "status": "True",
+                "type": "Complete"
+            }
+        ],
+        "ready": 0,
+        "startTime": "2026-01-08T00:52:41Z",
+        "succeeded": 1,
+        "terminating": 0,
+        "uncountedTerminatedPods": {}
+    }
+}
