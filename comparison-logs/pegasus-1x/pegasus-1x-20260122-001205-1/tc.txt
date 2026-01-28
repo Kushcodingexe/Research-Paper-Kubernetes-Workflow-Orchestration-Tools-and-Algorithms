@@ -1,0 +1,30 @@
+x-pegasus:
+  apiLang: python
+  createdBy: snu
+  createdOn: 01-22-26T00:12:05Z
+pegasus: 5.0.4
+transformations:
+- namespace: rack_resiliency
+  name: health-check
+  version: '1.0'
+  sites:
+  - name: local
+    pfn: /app/simulations/rack_resiliency_to_host.py
+    type: installed
+  profiles:
+    pegasus:
+      clusters.size: 1
+- namespace: rack_resiliency
+  name: node-failure-sim
+  version: '1.0'
+  sites:
+  - name: local
+    pfn: /app/simulations/rack_resiliency_to_host.py
+    type: installed
+- namespace: rack_resiliency
+  name: rack-failure-sim
+  version: '1.0'
+  sites:
+  - name: local
+    pfn: /app/simulations/rack_resiliency_to_host.py
+    type: installed

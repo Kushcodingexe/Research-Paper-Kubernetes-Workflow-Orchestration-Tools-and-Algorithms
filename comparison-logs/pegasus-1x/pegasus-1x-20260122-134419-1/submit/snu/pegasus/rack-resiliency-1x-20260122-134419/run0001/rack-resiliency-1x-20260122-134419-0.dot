@@ -1,0 +1,58 @@
+digraph E {
+size="8.0,10.0"
+ratio=fill
+node [shape=ellipse]
+edge [arrowhead=normal, arrowsize=1.0]
+	"health-check_ID0000005" [color=blueviolet,style=filled,label="health-check_ID0000005"]
+	"health-check_ID0000003" [color=blueviolet,style=filled,label="health-check_ID0000003"]
+	"stage_out_local_local_4_0" [color=goldenrod,style=filled,label="stage_out_local_local_4_0"]
+	"stage_out_local_local_3_0" [color=goldenrod,style=filled,label="stage_out_local_local_3_0"]
+	"stage_out_local_local_2_0" [color=goldenrod,style=filled,label="stage_out_local_local_2_0"]
+	"rack-failure-sim_ID0000006" [color=blueviolet,style=filled,label="rack-failure-sim_ID0000006"]
+	"health-check_ID0000007" [color=blueviolet,style=filled,label="health-check_ID0000007"]
+	"stage_out_local_local_1_0" [color=goldenrod,style=filled,label="stage_out_local_local_1_0"]
+	"stage_out_local_local_0_0" [color=goldenrod,style=filled,label="stage_out_local_local_0_0"]
+	"cleanup_rack-resiliency-1x-20260122-134419_0_local" [color=deepskyblue,style=filled,label="cleanup_rack-resiliency-1x-20260122-134419_0_local"]
+	"stage_in_local_local_0_0" [color=gold,style=filled,label="stage_in_local_local_0_0"]
+	"register_local_4_0" [color=orange,style=filled,label="register_local_4_0"]
+	"register_local_3_0" [color=orange,style=filled,label="register_local_3_0"]
+	"register_local_2_0" [color=orange,style=filled,label="register_local_2_0"]
+	"create_dir_rack-resiliency-1x-20260122-134419_0_local" [color=darkturquoise,style=filled,label="create_dir_rack-resiliency-1x-20260122-134419_0_local"]
+	"register_local_1_0" [color=orange,style=filled,label="register_local_1_0"]
+	"register_local_0_0" [color=orange,style=filled,label="register_local_0_0"]
+	"node-failure-sim_ID0000004" [color=blueviolet,style=filled,label="node-failure-sim_ID0000004"]
+	"health-check_ID0000002" [color=blueviolet,style=filled,label="health-check_ID0000002"]
+	"health-check_ID0000001" [color=blueviolet,style=filled,label="health-check_ID0000001"]
+
+	"health-check_ID0000005" -> "stage_out_local_local_2_0"
+	"health-check_ID0000005" -> "rack-failure-sim_ID0000006"
+	"health-check_ID0000003" -> "node-failure-sim_ID0000004"
+	"health-check_ID0000003" -> "stage_out_local_local_0_0"
+	"stage_out_local_local_4_0" -> "register_local_4_0"
+	"stage_out_local_local_4_0" -> "cleanup_rack-resiliency-1x-20260122-134419_0_local"
+	"stage_out_local_local_3_0" -> "register_local_3_0"
+	"stage_out_local_local_3_0" -> "cleanup_rack-resiliency-1x-20260122-134419_0_local"
+	"stage_out_local_local_2_0" -> "register_local_2_0"
+	"stage_out_local_local_2_0" -> "cleanup_rack-resiliency-1x-20260122-134419_0_local"
+	"rack-failure-sim_ID0000006" -> "stage_out_local_local_3_0"
+	"rack-failure-sim_ID0000006" -> "health-check_ID0000007"
+	"health-check_ID0000007" -> "stage_out_local_local_4_0"
+	"stage_out_local_local_1_0" -> "register_local_1_0"
+	"stage_out_local_local_1_0" -> "cleanup_rack-resiliency-1x-20260122-134419_0_local"
+	"stage_out_local_local_0_0" -> "register_local_0_0"
+	"stage_out_local_local_0_0" -> "cleanup_rack-resiliency-1x-20260122-134419_0_local"
+	"stage_in_local_local_0_0" -> "health-check_ID0000005"
+	"stage_in_local_local_0_0" -> "health-check_ID0000003"
+	"stage_in_local_local_0_0" -> "node-failure-sim_ID0000004"
+	"stage_in_local_local_0_0" -> "rack-failure-sim_ID0000006"
+	"stage_in_local_local_0_0" -> "health-check_ID0000007"
+	"stage_in_local_local_0_0" -> "health-check_ID0000002"
+	"stage_in_local_local_0_0" -> "health-check_ID0000001"
+	"create_dir_rack-resiliency-1x-20260122-134419_0_local" -> "stage_in_local_local_0_0"
+	"node-failure-sim_ID0000004" -> "health-check_ID0000005"
+	"node-failure-sim_ID0000004" -> "stage_out_local_local_1_0"
+	"health-check_ID0000002" -> "node-failure-sim_ID0000004"
+	"health-check_ID0000002" -> "stage_out_local_local_0_0"
+	"health-check_ID0000001" -> "node-failure-sim_ID0000004"
+	"health-check_ID0000001" -> "stage_out_local_local_0_0"
+}

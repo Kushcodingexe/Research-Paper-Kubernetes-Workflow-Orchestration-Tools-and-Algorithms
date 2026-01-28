@@ -1,0 +1,39 @@
+x-pegasus:
+  apiLang: python
+  createdBy: snu
+  createdOn: 01-22-26T13:44:19Z
+pegasus: 5.0.4
+transformations:
+- namespace: rack_resiliency
+  name: health-check
+  version: '1.0'
+  sites:
+  - name: local
+    pfn: /home/snu/kubernetes/Automation_Scripts/rack_resiliency_to_host.py
+    type: installed
+  - name: condorpool
+    pfn: /home/snu/kubernetes/Automation_Scripts/rack_resiliency_to_host.py
+    type: installed
+  profiles:
+    pegasus:
+      clusters.size: 1
+- namespace: rack_resiliency
+  name: node-failure-sim
+  version: '1.0'
+  sites:
+  - name: local
+    pfn: /home/snu/kubernetes/Automation_Scripts/rack_resiliency_to_host.py
+    type: installed
+  - name: condorpool
+    pfn: /home/snu/kubernetes/Automation_Scripts/rack_resiliency_to_host.py
+    type: installed
+- namespace: rack_resiliency
+  name: rack-failure-sim
+  version: '1.0'
+  sites:
+  - name: local
+    pfn: /home/snu/kubernetes/Automation_Scripts/rack_resiliency_to_host.py
+    type: installed
+  - name: condorpool
+    pfn: /home/snu/kubernetes/Automation_Scripts/rack_resiliency_to_host.py
+    type: installed

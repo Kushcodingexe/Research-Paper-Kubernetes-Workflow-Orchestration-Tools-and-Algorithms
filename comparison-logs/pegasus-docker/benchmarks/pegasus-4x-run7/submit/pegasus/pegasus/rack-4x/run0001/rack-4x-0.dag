@@ -1,0 +1,305 @@
+######################################################################
+# PEGASUS WMS GENERATED DAG FILE
+# DAG rack-4x
+# Index = 0, Count = null
+######################################################################
+MAXJOBS cleanup 4
+MAXJOBS registration 1
+MAXJOBS stageout 10
+MAXJOBS stagein 10
+
+JOB create_dir_rack-4x_0_local 00/00/create_dir_rack-4x_0_local.sub
+SCRIPT POST create_dir_rack-4x_0_local /usr/bin/pegasus-exitcode  -r $RETURN -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/create_dir_rack-4x_0_local.out
+PRIORITY create_dir_rack-4x_0_local 800
+RETRY create_dir_rack-4x_0_local 1
+VARS create_dir_rack-4x_0_local +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000010 00/00/sim_ID0000010.sub
+SCRIPT POST sim_ID0000010 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000010.out
+PRIORITY sim_ID0000010 10
+RETRY sim_ID0000010 1
+VARS sim_ID0000010 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000011 00/00/sim_ID0000011.sub
+SCRIPT POST sim_ID0000011 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000011.out
+PRIORITY sim_ID0000011 10
+RETRY sim_ID0000011 1
+VARS sim_ID0000011 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000012 00/00/sim_ID0000012.sub
+SCRIPT POST sim_ID0000012 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000012.out
+PRIORITY sim_ID0000012 10
+RETRY sim_ID0000012 1
+VARS sim_ID0000012 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000001 00/00/sim_ID0000001.sub
+SCRIPT POST sim_ID0000001 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000001.out
+PRIORITY sim_ID0000001 10
+RETRY sim_ID0000001 1
+VARS sim_ID0000001 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000002 00/00/sim_ID0000002.sub
+SCRIPT POST sim_ID0000002 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000002.out
+PRIORITY sim_ID0000002 10
+RETRY sim_ID0000002 1
+VARS sim_ID0000002 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000007 00/00/sim_ID0000007.sub
+SCRIPT POST sim_ID0000007 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000007.out
+PRIORITY sim_ID0000007 10
+RETRY sim_ID0000007 1
+VARS sim_ID0000007 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000008 00/00/sim_ID0000008.sub
+SCRIPT POST sim_ID0000008 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000008.out
+PRIORITY sim_ID0000008 10
+RETRY sim_ID0000008 1
+VARS sim_ID0000008 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000009 00/00/sim_ID0000009.sub
+SCRIPT POST sim_ID0000009 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000009.out
+PRIORITY sim_ID0000009 10
+RETRY sim_ID0000009 1
+VARS sim_ID0000009 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000003 00/00/sim_ID0000003.sub
+SCRIPT POST sim_ID0000003 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000003.out
+PRIORITY sim_ID0000003 10
+RETRY sim_ID0000003 1
+VARS sim_ID0000003 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000004 00/00/sim_ID0000004.sub
+SCRIPT POST sim_ID0000004 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000004.out
+PRIORITY sim_ID0000004 10
+RETRY sim_ID0000004 1
+VARS sim_ID0000004 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000005 00/00/sim_ID0000005.sub
+SCRIPT POST sim_ID0000005 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000005.out
+PRIORITY sim_ID0000005 10
+RETRY sim_ID0000005 1
+VARS sim_ID0000005 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000006 00/00/sim_ID0000006.sub
+SCRIPT POST sim_ID0000006 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000006.out
+PRIORITY sim_ID0000006 10
+RETRY sim_ID0000006 1
+VARS sim_ID0000006 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000013 00/00/sim_ID0000013.sub
+SCRIPT POST sim_ID0000013 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000013.out
+PRIORITY sim_ID0000013 20
+RETRY sim_ID0000013 1
+VARS sim_ID0000013 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000014 00/00/sim_ID0000014.sub
+SCRIPT POST sim_ID0000014 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000014.out
+PRIORITY sim_ID0000014 20
+RETRY sim_ID0000014 1
+VARS sim_ID0000014 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000015 00/00/sim_ID0000015.sub
+SCRIPT POST sim_ID0000015 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000015.out
+PRIORITY sim_ID0000015 20
+RETRY sim_ID0000015 1
+VARS sim_ID0000015 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000016 00/00/sim_ID0000016.sub
+SCRIPT POST sim_ID0000016 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000016.out
+PRIORITY sim_ID0000016 20
+RETRY sim_ID0000016 1
+VARS sim_ID0000016 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000020 00/00/sim_ID0000020.sub
+SCRIPT POST sim_ID0000020 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000020.out
+PRIORITY sim_ID0000020 30
+RETRY sim_ID0000020 1
+VARS sim_ID0000020 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000018 00/00/sim_ID0000018.sub
+SCRIPT POST sim_ID0000018 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000018.out
+PRIORITY sim_ID0000018 30
+RETRY sim_ID0000018 1
+VARS sim_ID0000018 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000019 00/00/sim_ID0000019.sub
+SCRIPT POST sim_ID0000019 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000019.out
+PRIORITY sim_ID0000019 30
+RETRY sim_ID0000019 1
+VARS sim_ID0000019 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000017 00/00/sim_ID0000017.sub
+SCRIPT POST sim_ID0000017 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000017.out
+PRIORITY sim_ID0000017 30
+RETRY sim_ID0000017 1
+VARS sim_ID0000017 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000021 00/00/sim_ID0000021.sub
+SCRIPT POST sim_ID0000021 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000021.out
+PRIORITY sim_ID0000021 40
+RETRY sim_ID0000021 1
+VARS sim_ID0000021 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000022 00/00/sim_ID0000022.sub
+SCRIPT POST sim_ID0000022 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000022.out
+PRIORITY sim_ID0000022 40
+RETRY sim_ID0000022 1
+VARS sim_ID0000022 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000023 00/00/sim_ID0000023.sub
+SCRIPT POST sim_ID0000023 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000023.out
+PRIORITY sim_ID0000023 40
+RETRY sim_ID0000023 1
+VARS sim_ID0000023 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000024 00/00/sim_ID0000024.sub
+SCRIPT POST sim_ID0000024 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000024.out
+PRIORITY sim_ID0000024 40
+RETRY sim_ID0000024 1
+VARS sim_ID0000024 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000025 00/00/sim_ID0000025.sub
+SCRIPT POST sim_ID0000025 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000025.out
+PRIORITY sim_ID0000025 50
+RETRY sim_ID0000025 1
+VARS sim_ID0000025 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000026 00/00/sim_ID0000026.sub
+SCRIPT POST sim_ID0000026 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000026.out
+PRIORITY sim_ID0000026 50
+RETRY sim_ID0000026 1
+VARS sim_ID0000026 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000027 00/00/sim_ID0000027.sub
+SCRIPT POST sim_ID0000027 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000027.out
+PRIORITY sim_ID0000027 50
+RETRY sim_ID0000027 1
+VARS sim_ID0000027 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000028 00/00/sim_ID0000028.sub
+SCRIPT POST sim_ID0000028 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/sim_ID0000028.out
+PRIORITY sim_ID0000028 50
+RETRY sim_ID0000028 1
+VARS sim_ID0000028 +DAGNodeRetry="$(RETRY)"
+
+JOB cleanup_rack-4x_0_local 00/00/cleanup_rack-4x_0_local.sub
+SCRIPT POST cleanup_rack-4x_0_local /usr/bin/pegasus-exitcode  -r $RETURN -l rack-4x-0.exitcode.log -M rack-4x-0.cache.meta   .//00/00/cleanup_rack-4x_0_local.out
+PRIORITY cleanup_rack-4x_0_local 1000
+RETRY cleanup_rack-4x_0_local 1
+VARS cleanup_rack-4x_0_local +DAGNodeRetry="$(RETRY)"
+
+PARENT  sim_ID0000018 CHILD sim_ID0000021
+PARENT  sim_ID0000018 CHILD sim_ID0000022
+PARENT  sim_ID0000018 CHILD sim_ID0000023
+PARENT  sim_ID0000018 CHILD sim_ID0000024
+PARENT  sim_ID0000019 CHILD sim_ID0000021
+PARENT  sim_ID0000019 CHILD sim_ID0000022
+PARENT  sim_ID0000019 CHILD sim_ID0000023
+PARENT  sim_ID0000019 CHILD sim_ID0000024
+PARENT  sim_ID0000014 CHILD sim_ID0000020
+PARENT  sim_ID0000014 CHILD sim_ID0000018
+PARENT  sim_ID0000014 CHILD sim_ID0000019
+PARENT  sim_ID0000014 CHILD sim_ID0000017
+PARENT  sim_ID0000015 CHILD sim_ID0000020
+PARENT  sim_ID0000015 CHILD sim_ID0000018
+PARENT  sim_ID0000015 CHILD sim_ID0000019
+PARENT  sim_ID0000015 CHILD sim_ID0000017
+PARENT  sim_ID0000016 CHILD sim_ID0000020
+PARENT  sim_ID0000016 CHILD sim_ID0000018
+PARENT  sim_ID0000016 CHILD sim_ID0000019
+PARENT  sim_ID0000016 CHILD sim_ID0000017
+PARENT  sim_ID0000017 CHILD sim_ID0000021
+PARENT  sim_ID0000017 CHILD sim_ID0000022
+PARENT  sim_ID0000017 CHILD sim_ID0000023
+PARENT  sim_ID0000017 CHILD sim_ID0000024
+PARENT  sim_ID0000010 CHILD sim_ID0000013
+PARENT  sim_ID0000010 CHILD sim_ID0000014
+PARENT  sim_ID0000010 CHILD sim_ID0000015
+PARENT  sim_ID0000010 CHILD sim_ID0000016
+PARENT  sim_ID0000011 CHILD sim_ID0000013
+PARENT  sim_ID0000011 CHILD sim_ID0000014
+PARENT  sim_ID0000011 CHILD sim_ID0000015
+PARENT  sim_ID0000011 CHILD sim_ID0000016
+PARENT  sim_ID0000012 CHILD sim_ID0000013
+PARENT  sim_ID0000012 CHILD sim_ID0000014
+PARENT  sim_ID0000012 CHILD sim_ID0000015
+PARENT  sim_ID0000012 CHILD sim_ID0000016
+PARENT  sim_ID0000013 CHILD sim_ID0000020
+PARENT  sim_ID0000013 CHILD sim_ID0000018
+PARENT  sim_ID0000013 CHILD sim_ID0000019
+PARENT  sim_ID0000013 CHILD sim_ID0000017
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000010
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000011
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000012
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000001
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000002
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000007
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000008
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000009
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000003
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000004
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000005
+PARENT  create_dir_rack-4x_0_local CHILD sim_ID0000006
+PARENT  sim_ID0000007 CHILD sim_ID0000013
+PARENT  sim_ID0000007 CHILD sim_ID0000014
+PARENT  sim_ID0000007 CHILD sim_ID0000015
+PARENT  sim_ID0000007 CHILD sim_ID0000016
+PARENT  sim_ID0000008 CHILD sim_ID0000013
+PARENT  sim_ID0000008 CHILD sim_ID0000014
+PARENT  sim_ID0000008 CHILD sim_ID0000015
+PARENT  sim_ID0000008 CHILD sim_ID0000016
+PARENT  sim_ID0000009 CHILD sim_ID0000013
+PARENT  sim_ID0000009 CHILD sim_ID0000014
+PARENT  sim_ID0000009 CHILD sim_ID0000015
+PARENT  sim_ID0000009 CHILD sim_ID0000016
+PARENT  sim_ID0000003 CHILD sim_ID0000013
+PARENT  sim_ID0000003 CHILD sim_ID0000014
+PARENT  sim_ID0000003 CHILD sim_ID0000015
+PARENT  sim_ID0000003 CHILD sim_ID0000016
+PARENT  sim_ID0000025 CHILD cleanup_rack-4x_0_local
+PARENT  sim_ID0000004 CHILD sim_ID0000013
+PARENT  sim_ID0000004 CHILD sim_ID0000014
+PARENT  sim_ID0000004 CHILD sim_ID0000015
+PARENT  sim_ID0000004 CHILD sim_ID0000016
+PARENT  sim_ID0000026 CHILD cleanup_rack-4x_0_local
+PARENT  sim_ID0000005 CHILD sim_ID0000013
+PARENT  sim_ID0000005 CHILD sim_ID0000014
+PARENT  sim_ID0000005 CHILD sim_ID0000015
+PARENT  sim_ID0000005 CHILD sim_ID0000016
+PARENT  sim_ID0000027 CHILD cleanup_rack-4x_0_local
+PARENT  sim_ID0000006 CHILD sim_ID0000013
+PARENT  sim_ID0000006 CHILD sim_ID0000014
+PARENT  sim_ID0000006 CHILD sim_ID0000015
+PARENT  sim_ID0000006 CHILD sim_ID0000016
+PARENT  sim_ID0000028 CHILD cleanup_rack-4x_0_local
+PARENT  sim_ID0000021 CHILD sim_ID0000025
+PARENT  sim_ID0000021 CHILD sim_ID0000026
+PARENT  sim_ID0000021 CHILD sim_ID0000027
+PARENT  sim_ID0000021 CHILD sim_ID0000028
+PARENT  sim_ID0000022 CHILD sim_ID0000025
+PARENT  sim_ID0000022 CHILD sim_ID0000026
+PARENT  sim_ID0000022 CHILD sim_ID0000027
+PARENT  sim_ID0000022 CHILD sim_ID0000028
+PARENT  sim_ID0000001 CHILD sim_ID0000013
+PARENT  sim_ID0000001 CHILD sim_ID0000014
+PARENT  sim_ID0000001 CHILD sim_ID0000015
+PARENT  sim_ID0000001 CHILD sim_ID0000016
+PARENT  sim_ID0000023 CHILD sim_ID0000025
+PARENT  sim_ID0000023 CHILD sim_ID0000026
+PARENT  sim_ID0000023 CHILD sim_ID0000027
+PARENT  sim_ID0000023 CHILD sim_ID0000028
+PARENT  sim_ID0000002 CHILD sim_ID0000013
+PARENT  sim_ID0000002 CHILD sim_ID0000014
+PARENT  sim_ID0000002 CHILD sim_ID0000015
+PARENT  sim_ID0000002 CHILD sim_ID0000016
+PARENT  sim_ID0000024 CHILD sim_ID0000025
+PARENT  sim_ID0000024 CHILD sim_ID0000026
+PARENT  sim_ID0000024 CHILD sim_ID0000027
+PARENT  sim_ID0000024 CHILD sim_ID0000028
+PARENT  sim_ID0000020 CHILD sim_ID0000021
+PARENT  sim_ID0000020 CHILD sim_ID0000022
+PARENT  sim_ID0000020 CHILD sim_ID0000023
+PARENT  sim_ID0000020 CHILD sim_ID0000024
+######################################################################
+# End of DAG
+######################################################################

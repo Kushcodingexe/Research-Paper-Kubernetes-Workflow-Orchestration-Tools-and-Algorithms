@@ -1,0 +1,154 @@
+x-pegasus:
+  apiLang: python
+  createdBy: snu
+  createdOn: 01-22-26T00:06:53Z
+pegasus: 5.0.4
+name: rack-resiliency-1x-20260122-000653
+jobs:
+- type: job
+  namespace: rack_resiliency
+  version: '1.0'
+  name: health-check
+  id: ID0000001
+  arguments:
+  - health-check
+  - --stabilization-time=10
+  uses:
+  - lfn: health-check-1.log
+    type: output
+    stageOut: true
+    registerReplica: true
+  - lfn: kubeconfig
+    type: input
+  profiles:
+    pegasus:
+      label: health-check-1
+- type: job
+  namespace: rack_resiliency
+  version: '1.0'
+  name: health-check
+  id: ID0000002
+  arguments:
+  - health-check
+  - --stabilization-time=10
+  uses:
+  - lfn: health-check-2.log
+    type: output
+    stageOut: true
+    registerReplica: true
+  - lfn: kubeconfig
+    type: input
+  profiles:
+    pegasus:
+      label: health-check-2
+- type: job
+  namespace: rack_resiliency
+  version: '1.0'
+  name: health-check
+  id: ID0000003
+  arguments:
+  - health-check
+  - --stabilization-time=10
+  uses:
+  - lfn: health-check-3.log
+    type: output
+    stageOut: true
+    registerReplica: true
+  - lfn: kubeconfig
+    type: input
+  profiles:
+    pegasus:
+      label: health-check-3
+- type: job
+  namespace: rack_resiliency
+  version: '1.0'
+  name: node-failure-sim
+  id: ID0000004
+  arguments:
+  - node-failure
+  - worker-w001
+  - --stabilization-time=30
+  uses:
+  - lfn: node-sim-1.log
+    type: output
+    stageOut: true
+    registerReplica: true
+  - lfn: kubeconfig
+    type: input
+  profiles:
+    pegasus:
+      label: node-sim-1
+- type: job
+  namespace: rack_resiliency
+  version: '1.0'
+  name: health-check
+  id: ID0000005
+  arguments:
+  - health-check
+  - --stabilization-time=10
+  uses:
+  - lfn: interim-hc-1.log
+    type: output
+    stageOut: true
+    registerReplica: true
+  - lfn: kubeconfig
+    type: input
+  profiles:
+    pegasus:
+      label: interim-hc-1
+- type: job
+  namespace: rack_resiliency
+  version: '1.0'
+  name: rack-failure-sim
+  id: ID0000006
+  arguments:
+  - rack-failure
+  - R1
+  - --stabilization-time=30
+  uses:
+  - lfn: rack-sim-1.log
+    type: output
+    stageOut: true
+    registerReplica: true
+  - lfn: kubeconfig
+    type: input
+  profiles:
+    pegasus:
+      label: rack-sim-1
+- type: job
+  namespace: rack_resiliency
+  version: '1.0'
+  name: health-check
+  id: ID0000007
+  arguments:
+  - health-check
+  - --stabilization-time=10
+  uses:
+  - lfn: final-hc-1.log
+    type: output
+    stageOut: true
+    registerReplica: true
+  - lfn: kubeconfig
+    type: input
+  profiles:
+    pegasus:
+      label: final-hc-1
+jobDependencies:
+- id: ID0000001
+  children:
+  - ID0000004
+- id: ID0000002
+  children:
+  - ID0000004
+- id: ID0000003
+  children:
+  - ID0000004
+- id: ID0000004
+  children:
+  - ID0000005
+- id: ID0000005
+  children:
+  - ID0000006
+- id: ID0000006
+  children:
+  - ID0000007

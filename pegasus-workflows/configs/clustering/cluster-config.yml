@@ -1,0 +1,71 @@
+# Pegasus Job Clustering Configuration
+# Groups multiple small jobs into larger execution units
+
+clustering:
+  # Enable clustering
+  enabled: true
+  
+  # Clustering strategies
+  strategies:
+    # Horizontal: Group N jobs with same dependency level
+    horizontal:
+      enabled: true
+      size: 3  # Group 3 health checks into 1 clustered job
+      
+    # Runtime-based: Group jobs until total runtime threshold
+    runtime:
+      enabled: false
+      max_runtime: 120  # Max 120 seconds per cluster
+      
+    # Label-based: Group by job label prefix
+    label:
+      enabled: true
+      prefix: 'health-check'
+
+# Cluster configurations per scale
+scale_clusters:
+  1x:
+    # 3 health checks → 1 clustered job
+    health_checks:
+      enabled: true
+      size: 3
+    # Other jobs: no clustering
+    other:
+      enabled: false
+      
+  2x:
+    # 6 health checks → 2 clustered jobs (3 each)
+    health_checks:
+      enabled: true
+      size: 3
+    # 2 node sims → 1 clustered job
+    node_sims:
+      enabled: true
+      size: 2
+      
+  4x:
+    # 12 health checks → 3 clustered jobs (4 each)
+    health_checks:
+      enabled: true
+      size: 4
+    # 4 node sims → 2 clustered jobs
+    node_sims:
+      enabled: true
+      size: 2
+    # 4 rack sims → 2 clustered jobs
+    rack_sims:
+      enabled: true
+      size: 2
+
+# Expected overhead reduction
+overhead_reduction:
+  1x: 30%   # 3 HC → 1 cluster
+  2x: 50%   # 6 HC → 2 clusters, etc.
+  4x: 70%   # Significant reduction at scale
+
+# DAGMan profiles for clustered execution
+dagman:
+  maxidle: 100
+  maxjobs: 50
+  maxpre: 10
+  maxpost: 10

@@ -1,0 +1,22 @@
+2026.01.22 00:12:05.878 IST: [FATAL ERROR]  
+ [1] java.lang.RuntimeException: Site Selector could not map the job rack_resiliency::health-check:1.0 with id health-check_ID0000005
+to any of the execution sites [condorpool]
+using the Transformation Mapper (All Mode - Handle both Installed and Stageable Executables on all sites)
+This error is most likely due to an error in the transformation catalog.
+Make sure that the rack_resiliency::health-check:1.0 transformation exists with matching system information for sites 
+[condorpool] you are trying to plan for {condorpool={arch=x86_64 os=linux}}
+Candidate Entries found were [
+ 
+ Logical Namespace : rack_resiliency
+ Logical Name      : health-check
+ Version           : 1.0
+ Resource Id       : local
+ Physical Name     : /app/simulations/rack_resiliency_to_host.py
+ SysInfo           : {arch=x86_64 os=linux}
+ TYPE              : INSTALLED
+ BYPASS              : false
+ Profiles : profile pegasus clusters.size 1
+
+ Notifications: 
+ Container    : null
+ Compound Tx  : null] at edu.isi.pegasus.planner.refiner.InterPoolEngine.complainForFailedSiteMapping(InterPoolEngine.java:860) 

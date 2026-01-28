@@ -1,0 +1,91 @@
+x-pegasus:
+  apiLang: python
+  createdBy: pegasus
+  createdOn: 01-27-26T09:00:39Z
+pegasus: 5.0.4
+name: rack-1x
+jobs:
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000001
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000002
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000003
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000004
+  arguments:
+  - node-failure
+  - w0
+  - --stabilization-time=3
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000005
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000006
+  arguments:
+  - rack-failure
+  - R0
+  - --stabilization-time=3
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000007
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+jobDependencies:
+- id: ID0000001
+  children:
+  - ID0000004
+- id: ID0000002
+  children:
+  - ID0000004
+- id: ID0000003
+  children:
+  - ID0000004
+- id: ID0000004
+  children:
+  - ID0000005
+- id: ID0000005
+  children:
+  - ID0000006
+- id: ID0000006
+  children:
+  - ID0000007

@@ -1,0 +1,141 @@
+######################################################################
+# PEGASUS WMS GENERATED DAG FILE
+# DAG rack-2x
+# Index = 0, Count = null
+######################################################################
+MAXJOBS cleanup 4
+MAXJOBS registration 1
+MAXJOBS stageout 10
+MAXJOBS stagein 10
+
+JOB create_dir_rack-2x_0_local 00/00/create_dir_rack-2x_0_local.sub
+SCRIPT POST create_dir_rack-2x_0_local /usr/bin/pegasus-exitcode  -r $RETURN -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/create_dir_rack-2x_0_local.out
+PRIORITY create_dir_rack-2x_0_local 800
+RETRY create_dir_rack-2x_0_local 1
+VARS create_dir_rack-2x_0_local +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000001 00/00/sim_ID0000001.sub
+SCRIPT POST sim_ID0000001 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000001.out
+PRIORITY sim_ID0000001 10
+RETRY sim_ID0000001 1
+VARS sim_ID0000001 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000002 00/00/sim_ID0000002.sub
+SCRIPT POST sim_ID0000002 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000002.out
+PRIORITY sim_ID0000002 10
+RETRY sim_ID0000002 1
+VARS sim_ID0000002 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000003 00/00/sim_ID0000003.sub
+SCRIPT POST sim_ID0000003 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000003.out
+PRIORITY sim_ID0000003 10
+RETRY sim_ID0000003 1
+VARS sim_ID0000003 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000004 00/00/sim_ID0000004.sub
+SCRIPT POST sim_ID0000004 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000004.out
+PRIORITY sim_ID0000004 10
+RETRY sim_ID0000004 1
+VARS sim_ID0000004 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000005 00/00/sim_ID0000005.sub
+SCRIPT POST sim_ID0000005 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000005.out
+PRIORITY sim_ID0000005 10
+RETRY sim_ID0000005 1
+VARS sim_ID0000005 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000006 00/00/sim_ID0000006.sub
+SCRIPT POST sim_ID0000006 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000006.out
+PRIORITY sim_ID0000006 10
+RETRY sim_ID0000006 1
+VARS sim_ID0000006 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000007 00/00/sim_ID0000007.sub
+SCRIPT POST sim_ID0000007 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000007.out
+PRIORITY sim_ID0000007 20
+RETRY sim_ID0000007 1
+VARS sim_ID0000007 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000008 00/00/sim_ID0000008.sub
+SCRIPT POST sim_ID0000008 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000008.out
+PRIORITY sim_ID0000008 20
+RETRY sim_ID0000008 1
+VARS sim_ID0000008 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000010 00/00/sim_ID0000010.sub
+SCRIPT POST sim_ID0000010 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000010.out
+PRIORITY sim_ID0000010 30
+RETRY sim_ID0000010 1
+VARS sim_ID0000010 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000009 00/00/sim_ID0000009.sub
+SCRIPT POST sim_ID0000009 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000009.out
+PRIORITY sim_ID0000009 30
+RETRY sim_ID0000009 1
+VARS sim_ID0000009 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000011 00/00/sim_ID0000011.sub
+SCRIPT POST sim_ID0000011 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000011.out
+PRIORITY sim_ID0000011 40
+RETRY sim_ID0000011 1
+VARS sim_ID0000011 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000012 00/00/sim_ID0000012.sub
+SCRIPT POST sim_ID0000012 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000012.out
+PRIORITY sim_ID0000012 40
+RETRY sim_ID0000012 1
+VARS sim_ID0000012 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000013 00/00/sim_ID0000013.sub
+SCRIPT POST sim_ID0000013 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000013.out
+PRIORITY sim_ID0000013 50
+RETRY sim_ID0000013 1
+VARS sim_ID0000013 +DAGNodeRetry="$(RETRY)"
+
+JOB sim_ID0000014 00/00/sim_ID0000014.sub
+SCRIPT POST sim_ID0000014 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/sim_ID0000014.out
+PRIORITY sim_ID0000014 50
+RETRY sim_ID0000014 1
+VARS sim_ID0000014 +DAGNodeRetry="$(RETRY)"
+
+JOB cleanup_rack-2x_0_local 00/00/cleanup_rack-2x_0_local.sub
+SCRIPT POST cleanup_rack-2x_0_local /usr/bin/pegasus-exitcode  -r $RETURN -l rack-2x-0.exitcode.log -M rack-2x-0.cache.meta   .//00/00/cleanup_rack-2x_0_local.out
+PRIORITY cleanup_rack-2x_0_local 1000
+RETRY cleanup_rack-2x_0_local 1
+VARS cleanup_rack-2x_0_local +DAGNodeRetry="$(RETRY)"
+
+PARENT  create_dir_rack-2x_0_local CHILD sim_ID0000001
+PARENT  create_dir_rack-2x_0_local CHILD sim_ID0000002
+PARENT  create_dir_rack-2x_0_local CHILD sim_ID0000003
+PARENT  create_dir_rack-2x_0_local CHILD sim_ID0000004
+PARENT  create_dir_rack-2x_0_local CHILD sim_ID0000005
+PARENT  create_dir_rack-2x_0_local CHILD sim_ID0000006
+PARENT  sim_ID0000007 CHILD sim_ID0000010
+PARENT  sim_ID0000007 CHILD sim_ID0000009
+PARENT  sim_ID0000008 CHILD sim_ID0000010
+PARENT  sim_ID0000008 CHILD sim_ID0000009
+PARENT  sim_ID0000009 CHILD sim_ID0000011
+PARENT  sim_ID0000009 CHILD sim_ID0000012
+PARENT  sim_ID0000003 CHILD sim_ID0000007
+PARENT  sim_ID0000003 CHILD sim_ID0000008
+PARENT  sim_ID0000014 CHILD cleanup_rack-2x_0_local
+PARENT  sim_ID0000004 CHILD sim_ID0000007
+PARENT  sim_ID0000004 CHILD sim_ID0000008
+PARENT  sim_ID0000005 CHILD sim_ID0000007
+PARENT  sim_ID0000005 CHILD sim_ID0000008
+PARENT  sim_ID0000006 CHILD sim_ID0000007
+PARENT  sim_ID0000006 CHILD sim_ID0000008
+PARENT  sim_ID0000010 CHILD sim_ID0000011
+PARENT  sim_ID0000010 CHILD sim_ID0000012
+PARENT  sim_ID0000011 CHILD sim_ID0000013
+PARENT  sim_ID0000011 CHILD sim_ID0000014
+PARENT  sim_ID0000001 CHILD sim_ID0000007
+PARENT  sim_ID0000001 CHILD sim_ID0000008
+PARENT  sim_ID0000012 CHILD sim_ID0000013
+PARENT  sim_ID0000012 CHILD sim_ID0000014
+PARENT  sim_ID0000002 CHILD sim_ID0000007
+PARENT  sim_ID0000002 CHILD sim_ID0000008
+PARENT  sim_ID0000013 CHILD cleanup_rack-2x_0_local
+######################################################################
+# End of DAG
+######################################################################

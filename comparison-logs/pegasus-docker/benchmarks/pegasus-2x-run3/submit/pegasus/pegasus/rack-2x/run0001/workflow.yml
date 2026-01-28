@@ -1,0 +1,186 @@
+x-pegasus:
+  apiLang: python
+  createdBy: pegasus
+  createdOn: 01-27-26T09:15:59Z
+pegasus: 5.0.4
+name: rack-2x
+jobs:
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000001
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000002
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000003
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000004
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000005
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000006
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000007
+  arguments:
+  - node-failure
+  - w0
+  - --stabilization-time=3
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000008
+  arguments:
+  - node-failure
+  - w1
+  - --stabilization-time=3
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000009
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000010
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000011
+  arguments:
+  - rack-failure
+  - R0
+  - --stabilization-time=3
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000012
+  arguments:
+  - rack-failure
+  - R1
+  - --stabilization-time=3
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000013
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+- type: job
+  namespace: rack
+  version: '1.0'
+  name: sim
+  id: ID0000014
+  arguments:
+  - health-check
+  - --stabilization-time=2
+  uses: []
+jobDependencies:
+- id: ID0000001
+  children:
+  - ID0000008
+  - ID0000007
+- id: ID0000002
+  children:
+  - ID0000008
+  - ID0000007
+- id: ID0000003
+  children:
+  - ID0000008
+  - ID0000007
+- id: ID0000004
+  children:
+  - ID0000008
+  - ID0000007
+- id: ID0000005
+  children:
+  - ID0000008
+  - ID0000007
+- id: ID0000006
+  children:
+  - ID0000008
+  - ID0000007
+- id: ID0000007
+  children:
+  - ID0000009
+  - ID0000010
+- id: ID0000008
+  children:
+  - ID0000009
+  - ID0000010
+- id: ID0000009
+  children:
+  - ID0000012
+  - ID0000011
+- id: ID0000010
+  children:
+  - ID0000012
+  - ID0000011
+- id: ID0000011
+  children:
+  - ID0000013
+  - ID0000014
+- id: ID0000012
+  children:
+  - ID0000013
+  - ID0000014

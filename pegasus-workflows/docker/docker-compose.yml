@@ -1,0 +1,13 @@
+services:
+  pegasus:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: pegasus-benchmark
+    hostname: pegasus-node
+    privileged: true
+    volumes:
+      # Mount output directory for results
+      - ~/kubernetes/comparison-logs/pegasus-docker:/app/output
+    stdin_open: true
+    tty: true

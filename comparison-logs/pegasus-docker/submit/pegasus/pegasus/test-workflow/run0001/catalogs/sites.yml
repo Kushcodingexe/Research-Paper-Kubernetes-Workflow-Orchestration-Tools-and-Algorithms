@@ -1,0 +1,21 @@
+pegasus: "5.0"
+sites:
+  - name: local
+    arch: x86_64
+    os.type: linux
+    directories:
+      - type: sharedScratch
+        path: /app/scratch
+        fileServers:
+          - operation: all
+            url: file:///app/scratch
+      - type: localStorage
+        path: /app/output
+        fileServers:
+          - operation: all
+            url: file:///app/output
+    profiles:
+      pegasus:
+        style: condor
+      condor:
+        universe: local

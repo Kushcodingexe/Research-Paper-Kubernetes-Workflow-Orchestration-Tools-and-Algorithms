@@ -1,0 +1,45 @@
+# Pegasus Workflow Scaling Configuration - 2x
+# Scaled with 6 health checks, 2 node sims, 2 rack sims
+
+workflow:
+  name: rack-resiliency-2x
+  scale: 2x
+  
+stages:
+  health_checks:
+    count: 6
+    parallel: true
+    stabilization_time: 10
+    
+  node_simulations:
+    count: 2
+    targets:
+      - worker-w001
+      - worker-w002
+    stabilization_time: 30
+    
+  interim_health_checks:
+    count: 2
+    stabilization_time: 10
+    
+  rack_simulations:
+    count: 2
+    targets:
+      - R1
+      - R2
+    stabilization_time: 30
+    
+  final_health_checks:
+    count: 2
+    stabilization_time: 10
+
+stats:
+  total_jobs: 14
+  parallel_stages: 5
+  max_parallel: 6
+  expected_duration_min: 300
+  expected_duration_max: 600
+
+clustering:
+  enabled: false
+  factor: 1

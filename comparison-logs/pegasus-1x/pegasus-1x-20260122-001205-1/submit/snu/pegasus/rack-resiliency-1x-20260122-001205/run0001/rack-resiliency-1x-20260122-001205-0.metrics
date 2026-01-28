@@ -1,0 +1,43 @@
+{
+  "client": "pegasus-plan",
+  "version": "5.0.9",
+  "wf_api": "python",
+  "type": "error",
+  "start_time": 1.769020925395E9,
+  "end_time": 1.769020925887E9,
+  "duration": 0.492,
+  "exitcode": 1,
+  "root_wf_uuid": "0b83cdde-d289-4135-9206-7b6b3a84e603",
+  "wf_uuid": "0b83cdde-d289-4135-9206-7b6b3a84e603",
+  "data_config": "nonsharedfs",
+  "planner_args": "--conf /home/snu/kubernetes/comparison-logs/pegasus-1x/pegasus-1x-20260122-001205-1/pegasus.properties --sites condorpool --staging-site local --dir /home/snu/kubernetes/comparison-logs/pegasus-1x/pegasus-1x-20260122-001205-1/submit --output-sites local --cleanup leaf --submit /home/snu/kubernetes/comparison-logs/pegasus-1x/pegasus-1x-20260122-001205-1/rack-resiliency-1x.dax ",
+  "uses_pmc": false,
+  "wf_metrics": {
+    "compute_tasks": 7,
+    "dax_tasks": 0,
+    "dag_tasks": 0,
+    "total_tasks": 7,
+    "deleted_tasks": 0,
+    "dax_input_files": 1,
+    "dax_inter_files": 0,
+    "dax_output_files": 7,
+    "dax_total_files": 8,
+    "compute_jobs": 7,
+    "clustered_jobs": 0,
+    "si_tx_jobs": 0,
+    "so_tx_jobs": 0,
+    "inter_tx_jobs": 0,
+    "reg_jobs": 0,
+    "cleanup_jobs": 0,
+    "create_dir_jobs": 0,
+    "dax_jobs": 0,
+    "dag_jobs": 0,
+    "chmod_jobs": 0,
+    "total_jobs": 7
+  },
+  "app_metrics": {
+    "name": "rack-resiliency-1x-20260122-001205"
+  },
+  "error": "java.lang.RuntimeException: Site Selector could not map the job rack_resiliency::health-check:1.0 with id health-check_ID0000005\nto any of the execution sites [condorpool]\nusing the Transformation Mapper (All Mode - Handle both Installed and Stageable Executables on all sites)\nThis error is most likely due to an error in the transformation catalog.\nMake sure that the rack_resiliency::health-check:1.0 transformation exists with matching system information for sites \n[condorpool] you are trying to plan for {condorpool\u003d{arch\u003dx86_64 os\u003dlinux}}\nCandidate Entries found were [\n \n Logical Namespace : rack_resiliency\n Logical Name      : health-check\n Version           : 1.0\n Resource Id       : local\n Physical Name     : /app/simulations/rack_resiliency_to_host.py\n SysInfo           : {arch\u003dx86_64 os\u003dlinux}\n TYPE              : INSTALLED\n BYPASS              : false\n Profiles : profile pegasus clusters.size 1\n\n Notifications: \n Container    : null\n Compound Tx  : null]\n\tat edu.isi.pegasus.planner.refiner.InterPoolEngine.complainForFailedSiteMapping(InterPoolEngine.java:860)\n\tat edu.isi.pegasus.planner.refiner.InterPoolEngine.incorporateSiteMapping(InterPoolEngine.java:226)\n\tat edu.isi.pegasus.planner.refiner.InterPoolEngine.scheduleJobs(InterPoolEngine.java:202)\n\tat edu.isi.pegasus.planner.refiner.InterPoolEngine.determineSites(InterPoolEngine.java:163)\n\tat edu.isi.pegasus.planner.refiner.MainEngine.runPlanner(MainEngine.java:182)\n\tat edu.isi.pegasus.planner.client.CPlanner.executeCommand(CPlanner.java:616)\n\tat edu.isi.pegasus.planner.client.CPlanner.executeCommand(CPlanner.java:333)\n\tat edu.isi.pegasus.planner.client.CPlanner.main(CPlanner.java:207)\n"
+}
+

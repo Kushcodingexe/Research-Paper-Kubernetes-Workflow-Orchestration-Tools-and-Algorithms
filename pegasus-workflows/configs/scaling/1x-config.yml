@@ -1,0 +1,45 @@
+# Pegasus Workflow Scaling Configuration - 1x
+# Standard scale with 3 health checks, 1 node sim, 1 rack sim
+
+workflow:
+  name: rack-resiliency-1x
+  scale: 1x
+  
+stages:
+  health_checks:
+    count: 3
+    parallel: true
+    stabilization_time: 10
+    
+  node_simulations:
+    count: 1
+    targets:
+      - worker-w001
+    stabilization_time: 30
+    
+  interim_health_checks:
+    count: 1
+    stabilization_time: 10
+    
+  rack_simulations:
+    count: 1
+    targets:
+      - R1
+    stabilization_time: 30
+    
+  final_health_checks:
+    count: 1
+    stabilization_time: 10
+
+# Job statistics
+stats:
+  total_jobs: 7
+  parallel_stages: 5
+  max_parallel: 3
+  expected_duration_min: 200
+  expected_duration_max: 400
+
+# Clustering (disabled for 1x)
+clustering:
+  enabled: false
+  factor: 1

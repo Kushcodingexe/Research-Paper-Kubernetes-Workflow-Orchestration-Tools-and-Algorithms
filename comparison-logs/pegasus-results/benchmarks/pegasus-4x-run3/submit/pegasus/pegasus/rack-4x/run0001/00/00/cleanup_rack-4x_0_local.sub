@@ -1,0 +1,40 @@
+######################################################################
+# PEGASUS WMS GENERATED SUBMIT FILE
+# DAG : rack-4x, Index = 0, Count = null
+# SUBMIT FILE NAME : cleanup_rack-4x_0_local.sub
+######################################################################
+stream_error  = false
+stream_output = false
+environment = "LANG=en_US.UTF-8 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin CONDOR_JOBID=$(cluster).$(process) PEGASUS_WF_UUID=9e576925-76dc-4fa7-9aa4-5f5ec097178c PEGASUS_WF_LABEL=rack-4x PEGASUS_DAG_JOB_ID=cleanup_rack-4x_0_local PEGASUS_SITE=local PEGASUS_BIN_DIR=/usr/bin _PEGASUS_CONNECT_STDIN=true"
+arguments = "pegasus-kickstart  -n pegasus::cleanup -N null -i - -R local  -L rack-4x -T 2026-01-27T10:12:17+00:00 pegasus-transfer "
+error = /app/output/benchmarks/pegasus-4x-run3/submit/pegasus/pegasus/rack-4x/run0001//00/00/cleanup_rack-4x_0_local.err
+executable = /usr/share/pegasus/sh/pegasus-lite-local.sh
+input = /app/output/benchmarks/pegasus-4x-run3/submit/pegasus/pegasus/rack-4x/run0001//00/00/cleanup_rack-4x_0_local.in
+log = /app/output/benchmarks/pegasus-4x-run3/submit/pegasus/pegasus/rack-4x/run0001/rack-4x-0.log
+notification = NEVER
+output = /app/output/benchmarks/pegasus-4x-run3/submit/pegasus/pegasus/rack-4x/run0001//00/00/cleanup_rack-4x_0_local.out
+periodic_release = False
+periodic_remove = (JobStatus == 5) && ((CurrentTime - EnteredCurrentStatus) > 1800)
+priority = 1000
+submit_event_user_notes = pool:local
+transfer_executable = false
+universe = local
++pegasus_generator = "Pegasus"
++pegasus_root_wf_uuid = "9e576925-76dc-4fa7-9aa4-5f5ec097178c"
++pegasus_wf_uuid = "9e576925-76dc-4fa7-9aa4-5f5ec097178c"
++pegasus_version = "5.0.9"
++pegasus_wf_name = "rack-4x-0"
++pegasus_wf_time = "20260127T101218+0000"
++pegasus_wf_xformation = "pegasus::cleanup"
++pegasus_wf_dax_job_id = "null"
++pegasus_wf_dag_job_id = "cleanup_rack-4x_0_local"
++pegasus_job_class = 8
++pegasus_site = "local"
++pegasus_job_runtime = 0
++pegasus_cores = 1
++pegasus_gpus = 1
++pegasus_cluster_size = 1
+queue
+######################################################################
+# END OF SUBMIT FILE
+######################################################################

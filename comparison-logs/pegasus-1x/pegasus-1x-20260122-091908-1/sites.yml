@@ -1,0 +1,32 @@
+x-pegasus:
+  apiLang: python
+  createdBy: snu
+  createdOn: 01-22-26T09:19:08Z
+pegasus: 5.0.4
+sites:
+- name: local
+  arch: x86_64
+  os.type: linux
+  directories:
+  - type: sharedScratch
+    path: /app/scratch
+    sharedFileSystem: false
+    fileServers:
+    - url: file:///app/scratch
+      operation: all
+  - type: localStorage
+    path: /app/output
+    sharedFileSystem: false
+    fileServers:
+    - url: file:///app/output
+      operation: all
+- name: condorpool
+  arch: x86_64
+  os.type: linux
+  directories: []
+  profiles:
+    condor:
+      universe: vanilla
+      requirements: 'True'
+    pegasus:
+      style: condor

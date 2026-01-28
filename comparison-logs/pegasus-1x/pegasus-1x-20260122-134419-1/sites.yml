@@ -1,0 +1,41 @@
+x-pegasus:
+  apiLang: python
+  createdBy: snu
+  createdOn: 01-22-26T13:44:19Z
+pegasus: 5.0.4
+sites:
+- name: local
+  arch: x86_64
+  os.type: linux
+  directories:
+  - type: sharedScratch
+    path: /tmp/pegasus-scratch
+    sharedFileSystem: false
+    fileServers:
+    - url: file:///tmp/pegasus-scratch
+      operation: all
+  - type: localStorage
+    path: /home/snu/kubernetes/comparison-logs/pegasus-output
+    sharedFileSystem: false
+    fileServers:
+    - url: file:///home/snu/kubernetes/comparison-logs/pegasus-output
+      operation: all
+  profiles:
+    condor:
+      universe: local
+    env:
+      KUBECONFIG: /home/snu/kubernetes/kubeconfig-master
+    pegasus:
+      style: condor
+- name: condorpool
+  arch: x86_64
+  os.type: linux
+  directories: []
+  profiles:
+    condor:
+      universe: vanilla
+      requirements: 'True'
+    env:
+      KUBECONFIG: /home/snu/kubernetes/kubeconfig-master
+    pegasus:
+      style: condor

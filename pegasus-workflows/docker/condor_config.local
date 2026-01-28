@@ -1,0 +1,43 @@
+# HTCondor configuration for local single-machine execution
+# This works inside Docker container
+
+CONDOR_HOST = 127.0.0.1
+COLLECTOR_NAME = "Pegasus Local Pool"
+
+# Run all daemons on this machine
+DAEMON_LIST = MASTER, COLLECTOR, NEGOTIATOR, SCHEDD, STARTD
+
+# Security - allow everything locally (safe inside container)
+ALLOW_READ = *
+ALLOW_WRITE = *
+ALLOW_ADMINISTRATOR = *
+ALLOW_DAEMON = *
+ALLOW_NEGOTIATOR = *
+HOSTALLOW_READ = *
+HOSTALLOW_WRITE = *
+
+# Disable authentication for simplicity inside container
+SEC_DEFAULT_AUTHENTICATION = OPTIONAL
+SEC_DEFAULT_AUTHENTICATION_METHODS = FS, CLAIMTOBE
+SEC_CLIENT_AUTHENTICATION = OPTIONAL
+SEC_DAEMON_AUTHENTICATION = OPTIONAL
+
+# Use local resources
+START = TRUE
+SUSPEND = FALSE
+PREEMPT = FALSE
+KILL = FALSE
+
+# Number of job slots
+NUM_CPUS = 2
+NUM_SLOTS = 2
+
+# Directories
+LOCAL_DIR = /var/lib/condor
+EXECUTE = /tmp/condor/execute
+LOCK = /tmp/condor/lock
+RUN = /var/run/condor
+LOG = /var/log/condor
+
+# Create required directories at startup
+STARTD_CRON_JOBLIST =

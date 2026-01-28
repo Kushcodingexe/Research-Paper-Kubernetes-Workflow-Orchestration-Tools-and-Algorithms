@@ -1,0 +1,27 @@
+x-pegasus:
+  apiLang: python
+  createdBy: pegasus
+  createdOn: 01-27-26T10:39:11Z
+pegasus: 5.0.4
+sites:
+- name: local
+  arch: x86_64
+  os.type: linux
+  directories:
+  - type: sharedScratch
+    path: /app/scratch
+    sharedFileSystem: false
+    fileServers:
+    - url: file:///app/scratch
+      operation: all
+  - type: localStorage
+    path: /app/output
+    sharedFileSystem: false
+    fileServers:
+    - url: file:///app/output
+      operation: all
+  profiles:
+    condor:
+      universe: local
+    pegasus:
+      style: condor

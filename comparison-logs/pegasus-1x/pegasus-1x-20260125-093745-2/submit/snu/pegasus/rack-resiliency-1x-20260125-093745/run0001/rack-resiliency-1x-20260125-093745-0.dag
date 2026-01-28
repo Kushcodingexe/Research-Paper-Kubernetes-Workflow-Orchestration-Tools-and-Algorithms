@@ -1,0 +1,175 @@
+######################################################################
+# PEGASUS WMS GENERATED DAG FILE
+# DAG rack-resiliency-1x-20260125-093745
+# Index = 0, Count = null
+######################################################################
+MAXJOBS cleanup 4
+MAXJOBS registration 1
+MAXJOBS stageout 10
+MAXJOBS stagein 10
+
+JOB create_dir_rack-resiliency-1x-20260125-093745_0_local 00/00/create_dir_rack-resiliency-1x-20260125-093745_0_local.sub
+SCRIPT POST create_dir_rack-resiliency-1x-20260125-093745_0_local /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/create_dir_rack-resiliency-1x-20260125-093745_0_local.out
+PRIORITY create_dir_rack-resiliency-1x-20260125-093745_0_local 800
+RETRY create_dir_rack-resiliency-1x-20260125-093745_0_local 1
+VARS create_dir_rack-resiliency-1x-20260125-093745_0_local My.DAGNodeRetry="$(RETRY)"
+
+JOB stage_in_local_local_0_0 00/00/stage_in_local_local_0_0.sub
+SCRIPT POST stage_in_local_local_0_0 /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/stage_in_local_local_0_0.out
+PRIORITY stage_in_local_local_0_0 700
+RETRY stage_in_local_local_0_0 1
+CATEGORY stage_in_local_local_0_0 stagein
+VARS stage_in_local_local_0_0 My.DAGNodeRetry="$(RETRY)"
+
+JOB health-check_ID0000003 00/00/health-check_ID0000003.sub
+SCRIPT POST health-check_ID0000003 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/health-check_ID0000003.out
+PRIORITY health-check_ID0000003 20
+RETRY health-check_ID0000003 1
+VARS health-check_ID0000003 My.DAGNodeRetry="$(RETRY)"
+
+JOB health-check_ID0000002 00/00/health-check_ID0000002.sub
+SCRIPT POST health-check_ID0000002 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/health-check_ID0000002.out
+PRIORITY health-check_ID0000002 20
+RETRY health-check_ID0000002 1
+VARS health-check_ID0000002 My.DAGNodeRetry="$(RETRY)"
+
+JOB health-check_ID0000001 00/00/health-check_ID0000001.sub
+SCRIPT POST health-check_ID0000001 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/health-check_ID0000001.out
+PRIORITY health-check_ID0000001 20
+RETRY health-check_ID0000001 1
+VARS health-check_ID0000001 My.DAGNodeRetry="$(RETRY)"
+
+JOB node-failure-sim_ID0000004 00/00/node-failure-sim_ID0000004.sub
+SCRIPT POST node-failure-sim_ID0000004 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/node-failure-sim_ID0000004.out
+PRIORITY node-failure-sim_ID0000004 30
+RETRY node-failure-sim_ID0000004 1
+VARS node-failure-sim_ID0000004 My.DAGNodeRetry="$(RETRY)"
+
+JOB stage_out_local_local_0_0 00/00/stage_out_local_local_0_0.sub
+SCRIPT POST stage_out_local_local_0_0 /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/stage_out_local_local_0_0.out
+PRIORITY stage_out_local_local_0_0 900
+RETRY stage_out_local_local_0_0 1
+CATEGORY stage_out_local_local_0_0 stageout
+VARS stage_out_local_local_0_0 My.DAGNodeRetry="$(RETRY)"
+
+JOB health-check_ID0000005 00/00/health-check_ID0000005.sub
+SCRIPT POST health-check_ID0000005 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/health-check_ID0000005.out
+PRIORITY health-check_ID0000005 40
+RETRY health-check_ID0000005 1
+VARS health-check_ID0000005 My.DAGNodeRetry="$(RETRY)"
+
+JOB stage_out_local_local_1_0 00/00/stage_out_local_local_1_0.sub
+SCRIPT POST stage_out_local_local_1_0 /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/stage_out_local_local_1_0.out
+PRIORITY stage_out_local_local_1_0 900
+RETRY stage_out_local_local_1_0 1
+CATEGORY stage_out_local_local_1_0 stageout
+VARS stage_out_local_local_1_0 My.DAGNodeRetry="$(RETRY)"
+
+JOB register_local_0_0 00/00/register_local_0_0.sub
+SCRIPT POST register_local_0_0 /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/register_local_0_0.out
+PRIORITY register_local_0_0 40
+RETRY register_local_0_0 1
+CATEGORY register_local_0_0 registration
+VARS register_local_0_0 My.DAGNodeRetry="$(RETRY)"
+
+JOB stage_out_local_local_2_0 00/00/stage_out_local_local_2_0.sub
+SCRIPT POST stage_out_local_local_2_0 /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/stage_out_local_local_2_0.out
+PRIORITY stage_out_local_local_2_0 900
+RETRY stage_out_local_local_2_0 1
+CATEGORY stage_out_local_local_2_0 stageout
+VARS stage_out_local_local_2_0 My.DAGNodeRetry="$(RETRY)"
+
+JOB rack-failure-sim_ID0000006 00/00/rack-failure-sim_ID0000006.sub
+SCRIPT POST rack-failure-sim_ID0000006 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/rack-failure-sim_ID0000006.out
+PRIORITY rack-failure-sim_ID0000006 50
+RETRY rack-failure-sim_ID0000006 1
+VARS rack-failure-sim_ID0000006 My.DAGNodeRetry="$(RETRY)"
+
+JOB register_local_1_0 00/00/register_local_1_0.sub
+SCRIPT POST register_local_1_0 /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/register_local_1_0.out
+PRIORITY register_local_1_0 50
+RETRY register_local_1_0 1
+CATEGORY register_local_1_0 registration
+VARS register_local_1_0 My.DAGNodeRetry="$(RETRY)"
+
+JOB register_local_2_0 00/00/register_local_2_0.sub
+SCRIPT POST register_local_2_0 /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/register_local_2_0.out
+PRIORITY register_local_2_0 60
+RETRY register_local_2_0 1
+CATEGORY register_local_2_0 registration
+VARS register_local_2_0 My.DAGNodeRetry="$(RETRY)"
+
+JOB stage_out_local_local_3_0 00/00/stage_out_local_local_3_0.sub
+SCRIPT POST stage_out_local_local_3_0 /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/stage_out_local_local_3_0.out
+PRIORITY stage_out_local_local_3_0 900
+RETRY stage_out_local_local_3_0 1
+CATEGORY stage_out_local_local_3_0 stageout
+VARS stage_out_local_local_3_0 My.DAGNodeRetry="$(RETRY)"
+
+JOB health-check_ID0000007 00/00/health-check_ID0000007.sub
+SCRIPT POST health-check_ID0000007 /usr/bin/pegasus-exitcode  -r $RETURN -s PegasusLite:+exitcode+0 -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/health-check_ID0000007.out
+PRIORITY health-check_ID0000007 60
+RETRY health-check_ID0000007 1
+VARS health-check_ID0000007 My.DAGNodeRetry="$(RETRY)"
+
+JOB register_local_3_0 00/00/register_local_3_0.sub
+SCRIPT POST register_local_3_0 /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/register_local_3_0.out
+PRIORITY register_local_3_0 70
+RETRY register_local_3_0 1
+CATEGORY register_local_3_0 registration
+VARS register_local_3_0 My.DAGNodeRetry="$(RETRY)"
+
+JOB stage_out_local_local_4_0 00/00/stage_out_local_local_4_0.sub
+SCRIPT POST stage_out_local_local_4_0 /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/stage_out_local_local_4_0.out
+PRIORITY stage_out_local_local_4_0 900
+RETRY stage_out_local_local_4_0 1
+CATEGORY stage_out_local_local_4_0 stageout
+VARS stage_out_local_local_4_0 My.DAGNodeRetry="$(RETRY)"
+
+JOB register_local_4_0 00/00/register_local_4_0.sub
+SCRIPT POST register_local_4_0 /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/register_local_4_0.out
+PRIORITY register_local_4_0 80
+RETRY register_local_4_0 1
+CATEGORY register_local_4_0 registration
+VARS register_local_4_0 My.DAGNodeRetry="$(RETRY)"
+
+JOB cleanup_rack-resiliency-1x-20260125-093745_0_local 00/00/cleanup_rack-resiliency-1x-20260125-093745_0_local.sub
+SCRIPT POST cleanup_rack-resiliency-1x-20260125-093745_0_local /usr/bin/pegasus-exitcode  -r $RETURN -l rack-resiliency-1x-20260125-093745-0.exitcode.log -M rack-resiliency-1x-20260125-093745-0.cache.meta   .//00/00/cleanup_rack-resiliency-1x-20260125-093745_0_local.out
+PRIORITY cleanup_rack-resiliency-1x-20260125-093745_0_local 1000
+RETRY cleanup_rack-resiliency-1x-20260125-093745_0_local 1
+VARS cleanup_rack-resiliency-1x-20260125-093745_0_local My.DAGNodeRetry="$(RETRY)"
+
+PARENT  health-check_ID0000005 CHILD stage_out_local_local_2_0
+PARENT  health-check_ID0000005 CHILD rack-failure-sim_ID0000006
+PARENT  health-check_ID0000003 CHILD node-failure-sim_ID0000004
+PARENT  health-check_ID0000003 CHILD stage_out_local_local_0_0
+PARENT  stage_out_local_local_4_0 CHILD register_local_4_0
+PARENT  stage_out_local_local_4_0 CHILD cleanup_rack-resiliency-1x-20260125-093745_0_local
+PARENT  create_dir_rack-resiliency-1x-20260125-093745_0_local CHILD stage_in_local_local_0_0
+PARENT  stage_out_local_local_3_0 CHILD register_local_3_0
+PARENT  stage_out_local_local_3_0 CHILD cleanup_rack-resiliency-1x-20260125-093745_0_local
+PARENT  stage_out_local_local_2_0 CHILD register_local_2_0
+PARENT  stage_out_local_local_2_0 CHILD cleanup_rack-resiliency-1x-20260125-093745_0_local
+PARENT  rack-failure-sim_ID0000006 CHILD stage_out_local_local_3_0
+PARENT  rack-failure-sim_ID0000006 CHILD health-check_ID0000007
+PARENT  health-check_ID0000007 CHILD stage_out_local_local_4_0
+PARENT  stage_out_local_local_1_0 CHILD register_local_1_0
+PARENT  stage_out_local_local_1_0 CHILD cleanup_rack-resiliency-1x-20260125-093745_0_local
+PARENT  stage_out_local_local_0_0 CHILD register_local_0_0
+PARENT  stage_out_local_local_0_0 CHILD cleanup_rack-resiliency-1x-20260125-093745_0_local
+PARENT  stage_in_local_local_0_0 CHILD health-check_ID0000005
+PARENT  stage_in_local_local_0_0 CHILD health-check_ID0000003
+PARENT  stage_in_local_local_0_0 CHILD node-failure-sim_ID0000004
+PARENT  stage_in_local_local_0_0 CHILD rack-failure-sim_ID0000006
+PARENT  stage_in_local_local_0_0 CHILD health-check_ID0000007
+PARENT  stage_in_local_local_0_0 CHILD health-check_ID0000002
+PARENT  stage_in_local_local_0_0 CHILD health-check_ID0000001
+PARENT  node-failure-sim_ID0000004 CHILD health-check_ID0000005
+PARENT  node-failure-sim_ID0000004 CHILD stage_out_local_local_1_0
+PARENT  health-check_ID0000002 CHILD node-failure-sim_ID0000004
+PARENT  health-check_ID0000002 CHILD stage_out_local_local_0_0
+PARENT  health-check_ID0000001 CHILD node-failure-sim_ID0000004
+PARENT  health-check_ID0000001 CHILD stage_out_local_local_0_0
+######################################################################
+# End of DAG
+######################################################################

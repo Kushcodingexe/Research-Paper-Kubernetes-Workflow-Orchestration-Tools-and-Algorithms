@@ -1,0 +1,989 @@
+01/27/26 10:24:28 ******************************************************
+01/27/26 10:24:28 ** condor_scheduniv_exec.849.0 (CONDOR_DAGMAN) STARTING UP
+01/27/26 10:24:28 ** /usr/bin/condor_dagman
+01/27/26 10:24:28 ** SubsystemInfo: name=DAGMAN type=DAGMAN(10) class=DAEMON(1)
+01/27/26 10:24:28 ** Configuration: subsystem:DAGMAN local:<NONE> class:DAEMON
+01/27/26 10:24:28 ** $CondorVersion: 8.8.13 Mar 23 2021 BuildID: Debian-8.8.13-1.1 PackageID: 8.8.13-1.1 Debian-8.8.13-1.1 $
+01/27/26 10:24:28 ** $CondorPlatform: X86_64-Ubuntu_20.04 $
+01/27/26 10:24:28 ** PID = 178541
+01/27/26 10:24:28 ** Log last touched time unavailable (No such file or directory)
+01/27/26 10:24:28 ******************************************************
+01/27/26 10:24:28 Using config source: /etc/condor/condor_config
+01/27/26 10:24:28 Using local config sources: 
+01/27/26 10:24:28    /etc/condor/config.d/00-local.conf
+01/27/26 10:24:28    /etc/condor/condor_config.local
+01/27/26 10:24:28 config Macros = 78, Sorted = 78, StringBytes = 2147, TablesBytes = 2856
+01/27/26 10:24:28 CLASSAD_CACHING is ENABLED
+01/27/26 10:24:28 Daemon Log is logging: D_ALWAYS D_ERROR
+01/27/26 10:24:28 DaemonCore: No command port requested.
+01/27/26 10:24:28 DAGMAN_USE_STRICT setting: 1
+01/27/26 10:24:28 DAGMAN_VERBOSITY setting: 3
+01/27/26 10:24:28 DAGMAN_DEBUG_CACHE_SIZE setting: 5242880
+01/27/26 10:24:28 DAGMAN_DEBUG_CACHE_ENABLE setting: False
+01/27/26 10:24:28 DAGMAN_SUBMIT_DELAY setting: 0
+01/27/26 10:24:28 DAGMAN_MAX_SUBMIT_ATTEMPTS setting: 6
+01/27/26 10:24:28 DAGMAN_STARTUP_CYCLE_DETECT setting: False
+01/27/26 10:24:28 DAGMAN_MAX_SUBMITS_PER_INTERVAL setting: 100
+01/27/26 10:24:28 DAGMAN_AGGRESSIVE_SUBMIT setting: False
+01/27/26 10:24:28 DAGMAN_USER_LOG_SCAN_INTERVAL setting: 5
+01/27/26 10:24:28 DAGMAN_QUEUE_UPDATE_INTERVAL setting: 300
+01/27/26 10:24:28 DAGMAN_DEFAULT_PRIORITY setting: 0
+01/27/26 10:24:28 DAGMAN_SUPPRESS_NOTIFICATION setting: True
+01/27/26 10:24:28 allow_events (DAGMAN_ALLOW_EVENTS) setting: 114
+01/27/26 10:24:28 DAGMAN_RETRY_SUBMIT_FIRST setting: True
+01/27/26 10:24:28 DAGMAN_RETRY_NODE_FIRST setting: False
+01/27/26 10:24:28 DAGMAN_MAX_JOBS_IDLE setting: 1000
+01/27/26 10:24:28 DAGMAN_MAX_JOBS_SUBMITTED setting: 0
+01/27/26 10:24:28 DAGMAN_MAX_PRE_SCRIPTS setting: 20
+01/27/26 10:24:28 DAGMAN_MAX_POST_SCRIPTS setting: 20
+01/27/26 10:24:28 DAGMAN_MUNGE_NODE_NAMES setting: True
+01/27/26 10:24:28 DAGMAN_PROHIBIT_MULTI_JOBS setting: False
+01/27/26 10:24:28 DAGMAN_SUBMIT_DEPTH_FIRST setting: False
+01/27/26 10:24:28 DAGMAN_ALWAYS_RUN_POST setting: False
+01/27/26 10:24:28 DAGMAN_CONDOR_SUBMIT_EXE setting: /usr/bin/condor_submit
+01/27/26 10:24:28 DAGMAN_USE_CONDOR_SUBMIT setting: True
+01/27/26 10:24:28 DAGMAN_ABORT_DUPLICATES setting: True
+01/27/26 10:24:28 DAGMAN_ABORT_ON_SCARY_SUBMIT setting: True
+01/27/26 10:24:28 DAGMAN_PENDING_REPORT_INTERVAL setting: 600
+01/27/26 10:24:28 DAGMAN_AUTO_RESCUE setting: True
+01/27/26 10:24:28 DAGMAN_MAX_RESCUE_NUM setting: 100
+01/27/26 10:24:28 DAGMAN_WRITE_PARTIAL_RESCUE setting: True
+01/27/26 10:24:28 DAGMAN_DEFAULT_NODE_LOG setting: @(DAG_DIR)/@(DAG_FILE).nodes.log
+01/27/26 10:24:28 DAGMAN_GENERATE_SUBDAG_SUBMITS setting: True
+01/27/26 10:24:28 DAGMAN_MAX_JOB_HOLDS setting: 100
+01/27/26 10:24:28 DAGMAN_HOLD_CLAIM_TIME setting: 20
+01/27/26 10:24:28 ALL_DEBUG setting: 
+01/27/26 10:24:28 DAGMAN_DEBUG setting: 
+01/27/26 10:24:28 DAGMAN_SUPPRESS_JOB_LOGS setting: False
+01/27/26 10:24:28 DAGMAN_REMOVE_NODE_JOBS setting: True
+01/27/26 10:24:28 argv[0] == "condor_scheduniv_exec.849.0"
+01/27/26 10:24:28 argv[1] == "-Lockfile"
+01/27/26 10:24:28 argv[2] == "rack-4x-0.dag.lock"
+01/27/26 10:24:28 argv[3] == "-AutoRescue"
+01/27/26 10:24:28 argv[4] == "1"
+01/27/26 10:24:28 argv[5] == "-DoRescueFrom"
+01/27/26 10:24:28 argv[6] == "0"
+01/27/26 10:24:28 argv[7] == "-Dag"
+01/27/26 10:24:28 argv[8] == "rack-4x-0.dag"
+01/27/26 10:24:28 argv[9] == "-MaxPost"
+01/27/26 10:24:28 argv[10] == "20"
+01/27/26 10:24:28 argv[11] == "-Suppress_notification"
+01/27/26 10:24:28 argv[12] == "-CsdVersion"
+01/27/26 10:24:28 argv[13] == "$CondorVersion: 8.8.13 Mar 23 2021 BuildID: Debian-8.8.13-1.1 PackageID: 8.8.13-1.1 Debian-8.8.13-1.1 $"
+01/27/26 10:24:28 argv[14] == "-Dagman"
+01/27/26 10:24:28 argv[15] == "/usr/bin/condor_dagman"
+01/27/26 10:24:28 Workflow batch-name: <rack-4x-0.dag+849>
+01/27/26 10:24:28 Workflow accounting_group: <>
+01/27/26 10:24:28 Workflow accounting_group_user: <>
+01/27/26 10:24:28 Warning: failed to get attribute DAGNodeName
+01/27/26 10:24:28 DAGMAN_LOG_ON_NFS_IS_ERROR setting: False
+01/27/26 10:24:28 Default node log file is: </app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log>
+01/27/26 10:24:28 DAG Lockfile will be written to rack-4x-0.dag.lock
+01/27/26 10:24:28 DAG Input file is rack-4x-0.dag
+01/27/26 10:24:28 Parsing 1 dagfiles
+01/27/26 10:24:28 Parsing rack-4x-0.dag ...
+01/27/26 10:24:28 Warning:  could not open Pegasus braindump file braindump.txt
+01/27/26 10:24:28 Warning: category stagein has no assigned nodes, so the throttle setting (10) will have no effect
+01/27/26 10:24:28 Warning: category registration has no assigned nodes, so the throttle setting (1) will have no effect
+01/27/26 10:24:28 Warning: category stageout has no assigned nodes, so the throttle setting (10) will have no effect
+01/27/26 10:24:28 Warning: category cleanup has no assigned nodes, so the throttle setting (4) will have no effect
+01/27/26 10:24:28 Dag contains 30 total jobs
+01/27/26 10:24:28 Sleeping for 3 seconds to ensure ProcessId uniqueness
+01/27/26 10:24:31 Bootstrapping...
+01/27/26 10:24:31 Number of pre-completed nodes: 0
+01/27/26 10:24:31 MultiLogFiles: truncating log file /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:31 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:24:31 Of 30 nodes total:
+01/27/26 10:24:31  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:24:31   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:24:31     0       0        0       0       1         29        0
+01/27/26 10:24:31 0 job proc(s) currently held
+01/27/26 10:24:31 DAGMan Runtime Statistics: [ SleepCycleTimeSum = 0.0; SleepCycleTimeCount = 0.0; EventCycleTimeCount = 0.0; SubmitCycleTimeSum = 0.0; LogProcessCycleTimeSum = 0.0; EventCycleTimeSum = 0.0; SubmitCycleTimeCount = 0.0; LogProcessCycleTimeCount = 0.0; ]
+01/27/26 10:24:31 Registering condor_event_timer...
+01/27/26 10:24:32 Submitting HTCondor Node create_dir_rack-4x_0_local job(s)...
+01/27/26 10:24:32 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:32 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:32 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:32 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'create_dir_rack-4x_0_local -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'create_dir_rack-4x_0_local -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=800 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"" 00/00/create_dir_rack-4x_0_local.sub
+01/27/26 10:24:32 From submit: Submitting job(s).
+01/27/26 10:24:32 From submit: 1 job(s) submitted to cluster 850.
+01/27/26 10:24:32 	assigned HTCondor ID (850.0.0)
+01/27/26 10:24:32 Just submitted 1 job this cycle...
+01/27/26 10:24:32 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:24:32 Of 30 nodes total:
+01/27/26 10:24:32  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:24:32   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:24:32     0       0        1       0       0         29        0
+01/27/26 10:24:32 0 job proc(s) currently held
+01/27/26 10:24:32 DAGMan Runtime Statistics: [ SleepCycleTimeSum = 0.0; SleepCycleTimeCount = 0.0; SubmitCycleTimeMax = 0.1690671443939209; SubmitCycleTimeStd = 0.1690671443939209; SubmitCycleTimeMin = 0.1690671443939209; SubmitCycleTimeAvg = 0.1690671443939209; EventCycleTimeCount = 0.0; SubmitCycleTimeSum = 0.1690671443939209; LogProcessCycleTimeSum = 0.0; EventCycleTimeSum = 0.0; SubmitCycleTimeCount = 1.0; LogProcessCycleTimeCount = 0.0; ]
+01/27/26 10:24:37 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:24:37 Reassigning the id of job create_dir_rack-4x_0_local from (850.0.0) to (850.0.0)
+01/27/26 10:24:37 Event: ULOG_SUBMIT for HTCondor Node create_dir_rack-4x_0_local (850.0.0) {01/27/26 15:54:32}
+01/27/26 10:24:37 Number of idle job procs: 1
+01/27/26 10:24:37 Event: ULOG_EXECUTE for HTCondor Node create_dir_rack-4x_0_local (850.0.0) {01/27/26 15:54:34}
+01/27/26 10:24:37 Number of idle job procs: 0
+01/27/26 10:24:37 Event: ULOG_JOB_TERMINATED for HTCondor Node create_dir_rack-4x_0_local (850.0.0) {01/27/26 15:54:37}
+01/27/26 10:24:37 Number of idle job procs: 0
+01/27/26 10:24:37 Node create_dir_rack-4x_0_local job proc (850.0.0) completed successfully.
+01/27/26 10:24:37 Node create_dir_rack-4x_0_local job completed
+01/27/26 10:24:37 Running POST script of Node create_dir_rack-4x_0_local...
+01/27/26 10:24:37 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:37 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:24:37 Of 30 nodes total:
+01/27/26 10:24:37  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:24:37   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:24:37     0       0        0       1       0         29        0
+01/27/26 10:24:37 0 job proc(s) currently held
+01/27/26 10:24:37 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.1691708564758301; EventCycleTimeSum = 0.1691708564758301; SleepCycleTimeMin = 5.00484299659729; EventCycleTimeCount = 1.0; SleepCycleTimeAvg = 5.00484299659729; LogProcessCycleTimeCount = 1.0; SubmitCycleTimeCount = 2.0; EventCycleTimeMax = 0.1691708564758301; LogProcessCycleTimeSum = 0.002444028854370117; LogProcessCycleTimeAvg = 0.002444028854370117; SubmitCycleTimeAvg = 0.08453762531280518; LogProcessCycleTimeMin = 0.002444028854370117; SleepCycleTimeMax = 5.00484299659729; SubmitCycleTimeSum = 0.1690752506256104; LogProcessCycleTimeStd = 0.002444028854370117; SubmitCycleTimeMin = 8.106231689453125E-06; EventCycleTimeMin = 0.1691708564758301; SubmitCycleTimeStd = 0.1195427923053892; EventCycleTimeStd = 0.1691708564758301; SleepCycleTimeSum = 5.00484299659729; LogProcessCycleTimeMax = 0.002444028854370117; SleepCycleTimeStd = 5.00484299659729; SubmitCycleTimeMax = 0.1690671443939209; SleepCycleTimeCount = 1.0; ]
+01/27/26 10:24:37 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (850.0.0)
+01/27/26 10:24:42 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:24:42 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node create_dir_rack-4x_0_local (850.0.0) {01/27/26 10:24:37}
+01/27/26 10:24:42 POST Script of node create_dir_rack-4x_0_local completed successfully.
+01/27/26 10:24:42 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:24:42 Of 30 nodes total:
+01/27/26 10:24:42  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:24:42   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:24:42     1       0        0       0      12         17        0
+01/27/26 10:24:42 0 job proc(s) currently held
+01/27/26 10:24:42 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.08587849140167236; EventCycleTimeSum = 0.1717569828033447; SleepCycleTimeMin = 4.884393930435181; EventCycleTimeCount = 2.0; SleepCycleTimeAvg = 4.944618463516235; LogProcessCycleTimeCount = 2.0; SubmitCycleTimeCount = 3.0; EventCycleTimeMax = 0.1691708564758301; LogProcessCycleTimeSum = 0.002552986145019531; LogProcessCycleTimeAvg = 0.001276493072509766; SubmitCycleTimeAvg = 0.05636111895243327; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.00484299659729; SubmitCycleTimeSum = 0.1690833568572998; LogProcessCycleTimeStd = 0.001651144937262785; SubmitCycleTimeMin = 8.106231689453125E-06; EventCycleTimeMin = 0.002586126327514648; SubmitCycleTimeStd = 0.09760628119190354; EventCycleTimeStd = 0.1177931923300049; SleepCycleTimeSum = 9.889236927032471; LogProcessCycleTimeMax = 0.002444028854370117; SleepCycleTimeStd = 0.08517035147081466; SubmitCycleTimeMax = 0.1690671443939209; SleepCycleTimeCount = 2.0; ]
+01/27/26 10:24:47 Submitting HTCondor Node sim_ID0000010 job(s)...
+01/27/26 10:24:47 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:47 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:47 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:47 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000010 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000010 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000010.sub
+01/27/26 10:24:47 From submit: Submitting job(s).
+01/27/26 10:24:47 From submit: 1 job(s) submitted to cluster 851.
+01/27/26 10:24:47 	assigned HTCondor ID (851.0.0)
+01/27/26 10:24:47 Submitting HTCondor Node sim_ID0000011 job(s)...
+01/27/26 10:24:47 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:47 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:47 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:47 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000011 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000011 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000011.sub
+01/27/26 10:24:47 From submit: Submitting job(s).
+01/27/26 10:24:47 From submit: 1 job(s) submitted to cluster 852.
+01/27/26 10:24:47 	assigned HTCondor ID (852.0.0)
+01/27/26 10:24:47 Submitting HTCondor Node sim_ID0000012 job(s)...
+01/27/26 10:24:47 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:47 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:47 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:47 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000012 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000012 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000012.sub
+01/27/26 10:24:48 From submit: Submitting job(s).
+01/27/26 10:24:48 From submit: 1 job(s) submitted to cluster 853.
+01/27/26 10:24:48 	assigned HTCondor ID (853.0.0)
+01/27/26 10:24:48 Submitting HTCondor Node sim_ID0000001 job(s)...
+01/27/26 10:24:48 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:48 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:48 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:48 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000001 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000001 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000001.sub
+01/27/26 10:24:48 From submit: Submitting job(s).
+01/27/26 10:24:48 From submit: 1 job(s) submitted to cluster 854.
+01/27/26 10:24:48 	assigned HTCondor ID (854.0.0)
+01/27/26 10:24:48 Submitting HTCondor Node sim_ID0000002 job(s)...
+01/27/26 10:24:48 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:48 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:48 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:48 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000002 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000002 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000002.sub
+01/27/26 10:24:48 From submit: Submitting job(s).
+01/27/26 10:24:48 From submit: 1 job(s) submitted to cluster 855.
+01/27/26 10:24:48 	assigned HTCondor ID (855.0.0)
+01/27/26 10:24:48 Submitting HTCondor Node sim_ID0000007 job(s)...
+01/27/26 10:24:48 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:48 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:48 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:48 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000007 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000007 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000007.sub
+01/27/26 10:24:48 From submit: Submitting job(s).
+01/27/26 10:24:48 From submit: 1 job(s) submitted to cluster 856.
+01/27/26 10:24:48 	assigned HTCondor ID (856.0.0)
+01/27/26 10:24:48 Submitting HTCondor Node sim_ID0000008 job(s)...
+01/27/26 10:24:48 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:48 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:48 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:48 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000008 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000008 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000008.sub
+01/27/26 10:24:48 From submit: Submitting job(s).
+01/27/26 10:24:48 From submit: 1 job(s) submitted to cluster 857.
+01/27/26 10:24:48 	assigned HTCondor ID (857.0.0)
+01/27/26 10:24:48 Submitting HTCondor Node sim_ID0000009 job(s)...
+01/27/26 10:24:48 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:48 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:48 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:48 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000009 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000009 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000009.sub
+01/27/26 10:24:48 From submit: Submitting job(s).
+01/27/26 10:24:48 From submit: 1 job(s) submitted to cluster 858.
+01/27/26 10:24:48 	assigned HTCondor ID (858.0.0)
+01/27/26 10:24:48 Submitting HTCondor Node sim_ID0000003 job(s)...
+01/27/26 10:24:48 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:48 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:48 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:48 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000003 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000003 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000003.sub
+01/27/26 10:24:48 From submit: Submitting job(s).
+01/27/26 10:24:48 From submit: 1 job(s) submitted to cluster 859.
+01/27/26 10:24:48 	assigned HTCondor ID (859.0.0)
+01/27/26 10:24:48 Submitting HTCondor Node sim_ID0000004 job(s)...
+01/27/26 10:24:48 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:48 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:48 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:48 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000004 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000004 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000004.sub
+01/27/26 10:24:48 From submit: Submitting job(s).
+01/27/26 10:24:48 From submit: 1 job(s) submitted to cluster 860.
+01/27/26 10:24:48 	assigned HTCondor ID (860.0.0)
+01/27/26 10:24:48 Submitting HTCondor Node sim_ID0000005 job(s)...
+01/27/26 10:24:48 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:48 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:48 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:48 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000005 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000005 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000005.sub
+01/27/26 10:24:48 From submit: Submitting job(s).
+01/27/26 10:24:48 From submit: 1 job(s) submitted to cluster 861.
+01/27/26 10:24:48 	assigned HTCondor ID (861.0.0)
+01/27/26 10:24:48 Submitting HTCondor Node sim_ID0000006 job(s)...
+01/27/26 10:24:48 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:24:48 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:24:48 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:24:48 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000006 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000006 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=10 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"create_dir_rack-4x_0_local" 00/00/sim_ID0000006.sub
+01/27/26 10:24:48 From submit: Submitting job(s).
+01/27/26 10:24:48 From submit: 1 job(s) submitted to cluster 862.
+01/27/26 10:24:48 	assigned HTCondor ID (862.0.0)
+01/27/26 10:24:48 Just submitted 12 jobs this cycle...
+01/27/26 10:24:48 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:24:48 Of 30 nodes total:
+01/27/26 10:24:48  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:24:48   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:24:48     1       0       12       0       0         17        0
+01/27/26 10:24:48 0 job proc(s) currently held
+01/27/26 10:24:48 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.05732997258504232; EventCycleTimeSum = 0.171989917755127; SleepCycleTimeMin = 4.884393930435181; EventCycleTimeCount = 3.0; SleepCycleTimeAvg = 4.964668035507202; LogProcessCycleTimeCount = 2.0; SubmitCycleTimeCount = 4.0; EventCycleTimeMax = 0.1691708564758301; LogProcessCycleTimeSum = 0.002552986145019531; LogProcessCycleTimeAvg = 0.001276493072509766; SubmitCycleTimeAvg = 0.296116054058075; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.00484299659729; SubmitCycleTimeSum = 1.1844642162323; LogProcessCycleTimeStd = 0.001651144937262785; SubmitCycleTimeMin = 8.106231689453125E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4860874815457095; EventCycleTimeStd = 0.09686419286566737; SleepCycleTimeSum = 14.89400410652161; LogProcessCycleTimeMax = 0.002444028854370117; SleepCycleTimeStd = 0.06951942459409406; SubmitCycleTimeMax = 1.015380859375; SleepCycleTimeCount = 3.0; ]
+01/27/26 10:24:53 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000010 from (851.0.0) to (851.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000010 (851.0.0) {01/27/26 15:54:47}
+01/27/26 10:24:53 Number of idle job procs: 1
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000011 from (852.0.0) to (852.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000011 (852.0.0) {01/27/26 15:54:47}
+01/27/26 10:24:53 Number of idle job procs: 2
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000010 (851.0.0) {01/27/26 15:54:47}
+01/27/26 10:24:53 Number of idle job procs: 1
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000012 from (853.0.0) to (853.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000012 (853.0.0) {01/27/26 15:54:47}
+01/27/26 10:24:53 Number of idle job procs: 2
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000001 from (854.0.0) to (854.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000001 (854.0.0) {01/27/26 15:54:48}
+01/27/26 10:24:53 Number of idle job procs: 3
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000002 from (855.0.0) to (855.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000002 (855.0.0) {01/27/26 15:54:48}
+01/27/26 10:24:53 Number of idle job procs: 4
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000007 from (856.0.0) to (856.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000007 (856.0.0) {01/27/26 15:54:48}
+01/27/26 10:24:53 Number of idle job procs: 5
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000008 from (857.0.0) to (857.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000008 (857.0.0) {01/27/26 15:54:48}
+01/27/26 10:24:53 Number of idle job procs: 6
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000009 from (858.0.0) to (858.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000009 (858.0.0) {01/27/26 15:54:48}
+01/27/26 10:24:53 Number of idle job procs: 7
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000003 from (859.0.0) to (859.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000003 (859.0.0) {01/27/26 15:54:48}
+01/27/26 10:24:53 Number of idle job procs: 8
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000004 from (860.0.0) to (860.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000004 (860.0.0) {01/27/26 15:54:48}
+01/27/26 10:24:53 Number of idle job procs: 9
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000005 from (861.0.0) to (861.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000005 (861.0.0) {01/27/26 15:54:48}
+01/27/26 10:24:53 Number of idle job procs: 10
+01/27/26 10:24:53 Reassigning the id of job sim_ID0000006 from (862.0.0) to (862.0.0)
+01/27/26 10:24:53 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000006 (862.0.0) {01/27/26 15:54:48}
+01/27/26 10:24:53 Number of idle job procs: 11
+01/27/26 10:24:53 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000010 (851.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 11
+01/27/26 10:24:53 Node sim_ID0000010 job proc (851.0.0) completed successfully.
+01/27/26 10:24:53 Node sim_ID0000010 job completed
+01/27/26 10:24:53 Running POST script of Node sim_ID0000010...
+01/27/26 10:24:53 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000008 (857.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 10
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000003 (859.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 9
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000009 (858.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 8
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000004 (860.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 7
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000005 (861.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 6
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000012 (853.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 5
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000006 (862.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 4
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000011 (852.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 3
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000001 (854.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 2
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000002 (855.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 1
+01/27/26 10:24:53 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000007 (856.0.0) {01/27/26 15:54:50}
+01/27/26 10:24:53 Number of idle job procs: 0
+01/27/26 10:24:53 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:24:53 Of 30 nodes total:
+01/27/26 10:24:53  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:24:53   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:24:53     1       0       11       1       0         17        0
+01/27/26 10:24:53 0 job proc(s) currently held
+01/27/26 10:24:53 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.296870231628418; EventCycleTimeSum = 1.187480926513672; SleepCycleTimeMin = 4.884393930435181; EventCycleTimeCount = 4.0; SleepCycleTimeAvg = 4.974628269672394; LogProcessCycleTimeCount = 3.0; SubmitCycleTimeCount = 5.0; EventCycleTimeMax = 1.015491008758545; LogProcessCycleTimeSum = 0.005645036697387695; LogProcessCycleTimeAvg = 0.001881678899129232; SubmitCycleTimeAvg = 0.236894416809082; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.00484299659729; SubmitCycleTimeSum = 1.18447208404541; LogProcessCycleTimeStd = 0.001569040935140802; SubmitCycleTimeMin = 7.867813110351562E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4413012478781863; EventCycleTimeStd = 0.4855648848334088; SleepCycleTimeSum = 19.89851307868958; LogProcessCycleTimeMax = 0.003092050552368164; SleepCycleTimeStd = 0.06015639607803777; SubmitCycleTimeMax = 1.015380859375; SleepCycleTimeCount = 4.0; ]
+01/27/26 10:24:53 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (851.0.0)
+01/27/26 10:24:58 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:24:58 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000010 (851.0.0) {01/27/26 10:24:53}
+01/27/26 10:24:58 POST Script of node sim_ID0000010 completed successfully.
+01/27/26 10:24:58 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000008 (857.0.0) {01/27/26 15:54:53}
+01/27/26 10:24:58 Number of idle job procs: 0
+01/27/26 10:24:58 Node sim_ID0000008 job proc (857.0.0) completed successfully.
+01/27/26 10:24:58 Node sim_ID0000008 job completed
+01/27/26 10:24:58 Running POST script of Node sim_ID0000008...
+01/27/26 10:24:58 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:58 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000011 (852.0.0) {01/27/26 15:54:54}
+01/27/26 10:24:58 Number of idle job procs: 0
+01/27/26 10:24:58 Node sim_ID0000011 job proc (852.0.0) completed successfully.
+01/27/26 10:24:58 Node sim_ID0000011 job completed
+01/27/26 10:24:58 Running POST script of Node sim_ID0000011...
+01/27/26 10:24:58 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:58 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000007 (856.0.0) {01/27/26 15:54:54}
+01/27/26 10:24:58 Number of idle job procs: 0
+01/27/26 10:24:58 Node sim_ID0000007 job proc (856.0.0) completed successfully.
+01/27/26 10:24:58 Node sim_ID0000007 job completed
+01/27/26 10:24:58 Running POST script of Node sim_ID0000007...
+01/27/26 10:24:58 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:58 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000006 (862.0.0) {01/27/26 15:54:54}
+01/27/26 10:24:58 Number of idle job procs: 0
+01/27/26 10:24:58 Node sim_ID0000006 job proc (862.0.0) completed successfully.
+01/27/26 10:24:58 Node sim_ID0000006 job completed
+01/27/26 10:24:58 Running POST script of Node sim_ID0000006...
+01/27/26 10:24:58 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:58 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000001 (854.0.0) {01/27/26 15:54:54}
+01/27/26 10:24:58 Number of idle job procs: 0
+01/27/26 10:24:58 Node sim_ID0000001 job proc (854.0.0) completed successfully.
+01/27/26 10:24:58 Node sim_ID0000001 job completed
+01/27/26 10:24:58 Running POST script of Node sim_ID0000001...
+01/27/26 10:24:58 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:58 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000002 (855.0.0) {01/27/26 15:54:54}
+01/27/26 10:24:58 Number of idle job procs: 0
+01/27/26 10:24:58 Node sim_ID0000002 job proc (855.0.0) completed successfully.
+01/27/26 10:24:58 Node sim_ID0000002 job completed
+01/27/26 10:24:58 Running POST script of Node sim_ID0000002...
+01/27/26 10:24:58 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:58 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000009 (858.0.0) {01/27/26 15:54:54}
+01/27/26 10:24:58 Number of idle job procs: 0
+01/27/26 10:24:58 Node sim_ID0000009 job proc (858.0.0) completed successfully.
+01/27/26 10:24:58 Node sim_ID0000009 job completed
+01/27/26 10:24:58 Running POST script of Node sim_ID0000009...
+01/27/26 10:24:58 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:58 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000003 (859.0.0) {01/27/26 15:54:54}
+01/27/26 10:24:58 Number of idle job procs: 0
+01/27/26 10:24:58 Node sim_ID0000003 job proc (859.0.0) completed successfully.
+01/27/26 10:24:58 Node sim_ID0000003 job completed
+01/27/26 10:24:58 Running POST script of Node sim_ID0000003...
+01/27/26 10:24:58 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:58 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000012 (853.0.0) {01/27/26 15:54:54}
+01/27/26 10:24:58 Number of idle job procs: 0
+01/27/26 10:24:58 Node sim_ID0000012 job proc (853.0.0) completed successfully.
+01/27/26 10:24:58 Node sim_ID0000012 job completed
+01/27/26 10:24:58 Running POST script of Node sim_ID0000012...
+01/27/26 10:24:58 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:58 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000004 (860.0.0) {01/27/26 15:54:54}
+01/27/26 10:24:58 Number of idle job procs: 0
+01/27/26 10:24:58 Node sim_ID0000004 job proc (860.0.0) completed successfully.
+01/27/26 10:24:58 Node sim_ID0000004 job completed
+01/27/26 10:24:58 Running POST script of Node sim_ID0000004...
+01/27/26 10:24:58 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:58 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000005 (861.0.0) {01/27/26 15:54:54}
+01/27/26 10:24:58 Number of idle job procs: 0
+01/27/26 10:24:58 Node sim_ID0000005 job proc (861.0.0) completed successfully.
+01/27/26 10:24:58 Node sim_ID0000005 job completed
+01/27/26 10:24:58 Running POST script of Node sim_ID0000005...
+01/27/26 10:24:58 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:24:58 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:24:58 Of 30 nodes total:
+01/27/26 10:24:58  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:24:58   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:24:58     2       0        0      11       0         17        0
+01/27/26 10:24:58 0 job proc(s) currently held
+01/27/26 10:24:58 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2381361484527588; EventCycleTimeSum = 1.190680742263794; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 5.0; SleepCycleTimeAvg = 4.860062217712402; LogProcessCycleTimeCount = 4.0; SubmitCycleTimeCount = 6.0; EventCycleTimeMax = 1.015491008758545; LogProcessCycleTimeSum = 0.0245060920715332; LogProcessCycleTimeAvg = 0.006126523017883301; SubmitCycleTimeAvg = 0.1974134842554728; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.00484299659729; SubmitCycleTimeSum = 1.184480905532837; LogProcessCycleTimeStd = 0.008585806077912296; SubmitCycleTimeMin = 7.867813110351562E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.406386389185085; EventCycleTimeStd = 0.4405433073715765; SleepCycleTimeSum = 24.30031108856201; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2614211072203645; SubmitCycleTimeMax = 1.015380859375; SleepCycleTimeCount = 5.0; ]
+01/27/26 10:24:58 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (853.0.0)
+01/27/26 10:24:58 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (857.0.0)
+01/27/26 10:24:58 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (852.0.0)
+01/27/26 10:24:58 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (856.0.0)
+01/27/26 10:24:59 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (862.0.0)
+01/27/26 10:24:59 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (854.0.0)
+01/27/26 10:24:59 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (855.0.0)
+01/27/26 10:24:59 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (858.0.0)
+01/27/26 10:24:59 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (859.0.0)
+01/27/26 10:24:59 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (860.0.0)
+01/27/26 10:24:59 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (861.0.0)
+01/27/26 10:25:03 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:25:03 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000012 (853.0.0) {01/27/26 10:24:58}
+01/27/26 10:25:03 POST Script of node sim_ID0000012 completed successfully.
+01/27/26 10:25:03 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000008 (857.0.0) {01/27/26 10:24:58}
+01/27/26 10:25:03 POST Script of node sim_ID0000008 completed successfully.
+01/27/26 10:25:03 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000011 (852.0.0) {01/27/26 10:24:58}
+01/27/26 10:25:03 POST Script of node sim_ID0000011 completed successfully.
+01/27/26 10:25:03 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000007 (856.0.0) {01/27/26 10:24:58}
+01/27/26 10:25:03 POST Script of node sim_ID0000007 completed successfully.
+01/27/26 10:25:03 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000006 (862.0.0) {01/27/26 10:24:59}
+01/27/26 10:25:03 POST Script of node sim_ID0000006 completed successfully.
+01/27/26 10:25:03 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000001 (854.0.0) {01/27/26 10:24:59}
+01/27/26 10:25:03 POST Script of node sim_ID0000001 completed successfully.
+01/27/26 10:25:03 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000002 (855.0.0) {01/27/26 10:24:59}
+01/27/26 10:25:03 POST Script of node sim_ID0000002 completed successfully.
+01/27/26 10:25:03 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000009 (858.0.0) {01/27/26 10:24:59}
+01/27/26 10:25:03 POST Script of node sim_ID0000009 completed successfully.
+01/27/26 10:25:03 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000003 (859.0.0) {01/27/26 10:24:59}
+01/27/26 10:25:03 POST Script of node sim_ID0000003 completed successfully.
+01/27/26 10:25:03 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000004 (860.0.0) {01/27/26 10:24:59}
+01/27/26 10:25:03 POST Script of node sim_ID0000004 completed successfully.
+01/27/26 10:25:03 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000005 (861.0.0) {01/27/26 10:24:59}
+01/27/26 10:25:03 POST Script of node sim_ID0000005 completed successfully.
+01/27/26 10:25:03 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:25:03 Of 30 nodes total:
+01/27/26 10:25:03  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:25:03   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:25:03    13       0        0       0       4         13        0
+01/27/26 10:25:03 0 job proc(s) currently held
+01/27/26 10:25:03 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2016129891077677; EventCycleTimeSum = 1.209677934646606; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 6.0; SleepCycleTimeAvg = 4.891052007675171; LogProcessCycleTimeCount = 5.0; SubmitCycleTimeCount = 7.0; EventCycleTimeMax = 1.015491008758545; LogProcessCycleTimeSum = 0.02489924430847168; LogProcessCycleTimeAvg = 0.004979848861694336; SubmitCycleTimeAvg = 0.1692126819065639; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.046000957489014; SubmitCycleTimeSum = 1.184488773345947; LogProcessCycleTimeStd = 0.007865199146111633; SubmitCycleTimeMin = 7.867813110351562E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.3784070707596935; EventCycleTimeStd = 0.4040623362145346; SleepCycleTimeSum = 29.34631204605103; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2458353081472952; SubmitCycleTimeMax = 1.015380859375; SleepCycleTimeCount = 6.0; ]
+01/27/26 10:25:08 Submitting HTCondor Node sim_ID0000013 job(s)...
+01/27/26 10:25:08 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:08 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:08 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:08 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000013 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000013 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=20 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000010,sim_ID0000011,sim_ID0000012,sim_ID0000001,sim_ID0000002,sim_ID0000007,sim_ID0000008,sim_ID0000009,sim_ID0000003,sim_ID0000004,sim_ID0000005,sim_ID0000006" 00/00/sim_ID0000013.sub
+01/27/26 10:25:08 From submit: Submitting job(s).
+01/27/26 10:25:08 From submit: 1 job(s) submitted to cluster 863.
+01/27/26 10:25:08 	assigned HTCondor ID (863.0.0)
+01/27/26 10:25:08 Submitting HTCondor Node sim_ID0000014 job(s)...
+01/27/26 10:25:08 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:08 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:08 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:08 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000014 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000014 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=20 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000010,sim_ID0000011,sim_ID0000012,sim_ID0000001,sim_ID0000002,sim_ID0000007,sim_ID0000008,sim_ID0000009,sim_ID0000003,sim_ID0000004,sim_ID0000005,sim_ID0000006" 00/00/sim_ID0000014.sub
+01/27/26 10:25:08 From submit: Submitting job(s).
+01/27/26 10:25:08 From submit: 1 job(s) submitted to cluster 864.
+01/27/26 10:25:08 	assigned HTCondor ID (864.0.0)
+01/27/26 10:25:08 Submitting HTCondor Node sim_ID0000015 job(s)...
+01/27/26 10:25:08 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:08 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:08 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:08 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000015 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000015 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=20 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000010,sim_ID0000011,sim_ID0000012,sim_ID0000001,sim_ID0000002,sim_ID0000007,sim_ID0000008,sim_ID0000009,sim_ID0000003,sim_ID0000004,sim_ID0000005,sim_ID0000006" 00/00/sim_ID0000015.sub
+01/27/26 10:25:08 From submit: Submitting job(s).
+01/27/26 10:25:08 From submit: 1 job(s) submitted to cluster 865.
+01/27/26 10:25:08 	assigned HTCondor ID (865.0.0)
+01/27/26 10:25:08 Submitting HTCondor Node sim_ID0000016 job(s)...
+01/27/26 10:25:08 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:08 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:08 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:08 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000016 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000016 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=20 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000010,sim_ID0000011,sim_ID0000012,sim_ID0000001,sim_ID0000002,sim_ID0000007,sim_ID0000008,sim_ID0000009,sim_ID0000003,sim_ID0000004,sim_ID0000005,sim_ID0000006" 00/00/sim_ID0000016.sub
+01/27/26 10:25:09 From submit: Submitting job(s).
+01/27/26 10:25:09 From submit: 1 job(s) submitted to cluster 866.
+01/27/26 10:25:09 	assigned HTCondor ID (866.0.0)
+01/27/26 10:25:09 Just submitted 4 jobs this cycle...
+01/27/26 10:25:09 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:25:09 Of 30 nodes total:
+01/27/26 10:25:09  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:25:09   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:25:09    13       0        4       0       0         13        0
+01/27/26 10:25:09 0 job proc(s) currently held
+01/27/26 10:25:09 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.1728829656328474; EventCycleTimeSum = 1.210180759429932; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 7.0; SleepCycleTimeAvg = 4.907263585499355; LogProcessCycleTimeCount = 5.0; SubmitCycleTimeCount = 8.0; EventCycleTimeMax = 1.015491008758545; LogProcessCycleTimeSum = 0.02489924430847168; LogProcessCycleTimeAvg = 0.004979848861694336; SubmitCycleTimeAvg = 0.2488058507442474; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.046000957489014; SubmitCycleTimeSum = 1.990446805953979; LogProcessCycleTimeStd = 0.007865199146111633; SubmitCycleTimeMin = 7.867813110351562E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4164330727638054; EventCycleTimeStd = 0.3766075004095236; SleepCycleTimeSum = 34.35084509849548; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2284780202384303; SubmitCycleTimeMax = 1.015380859375; SleepCycleTimeCount = 7.0; ]
+01/27/26 10:25:14 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:25:14 Reassigning the id of job sim_ID0000013 from (863.0.0) to (863.0.0)
+01/27/26 10:25:14 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000013 (863.0.0) {01/27/26 15:55:08}
+01/27/26 10:25:14 Number of idle job procs: 1
+01/27/26 10:25:14 Reassigning the id of job sim_ID0000014 from (864.0.0) to (864.0.0)
+01/27/26 10:25:14 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000014 (864.0.0) {01/27/26 15:55:08}
+01/27/26 10:25:14 Number of idle job procs: 2
+01/27/26 10:25:14 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000013 (863.0.0) {01/27/26 15:55:08}
+01/27/26 10:25:14 Number of idle job procs: 1
+01/27/26 10:25:14 Reassigning the id of job sim_ID0000015 from (865.0.0) to (865.0.0)
+01/27/26 10:25:14 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000015 (865.0.0) {01/27/26 15:55:08}
+01/27/26 10:25:14 Number of idle job procs: 2
+01/27/26 10:25:14 Reassigning the id of job sim_ID0000016 from (866.0.0) to (866.0.0)
+01/27/26 10:25:14 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000016 (866.0.0) {01/27/26 15:55:08}
+01/27/26 10:25:14 Number of idle job procs: 3
+01/27/26 10:25:14 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000013 (863.0.0) {01/27/26 15:55:12}
+01/27/26 10:25:14 Number of idle job procs: 3
+01/27/26 10:25:14 Node sim_ID0000013 job proc (863.0.0) completed successfully.
+01/27/26 10:25:14 Node sim_ID0000013 job completed
+01/27/26 10:25:14 Running POST script of Node sim_ID0000013...
+01/27/26 10:25:14 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:25:14 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000014 (864.0.0) {01/27/26 15:55:12}
+01/27/26 10:25:14 Number of idle job procs: 2
+01/27/26 10:25:14 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000016 (866.0.0) {01/27/26 15:55:12}
+01/27/26 10:25:14 Number of idle job procs: 1
+01/27/26 10:25:14 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000015 (865.0.0) {01/27/26 15:55:12}
+01/27/26 10:25:14 Number of idle job procs: 0
+01/27/26 10:25:14 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:25:14 Of 30 nodes total:
+01/27/26 10:25:14  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:25:14   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:25:14    13       0        3       1       0         13        0
+01/27/26 10:25:14 0 job proc(s) currently held
+01/27/26 10:25:14 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2520323395729065; EventCycleTimeSum = 2.016258716583252; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 8.0; SleepCycleTimeAvg = 4.919467389583588; LogProcessCycleTimeCount = 6.0; SubmitCycleTimeCount = 9.0; EventCycleTimeMax = 1.015491008758545; LogProcessCycleTimeSum = 0.02755832672119141; LogProcessCycleTimeAvg = 0.004593054453531901; SubmitCycleTimeAvg = 0.2211617363823785; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.046000957489014; SubmitCycleTimeSum = 1.990455627441406; LogProcessCycleTimeStd = 0.007098362175284556; SubmitCycleTimeMin = 7.867813110351562E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.3982677674752698; EventCycleTimeStd = 0.4143528803730396; SleepCycleTimeSum = 39.3557391166687; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2143273441335989; SubmitCycleTimeMax = 1.015380859375; SleepCycleTimeCount = 8.0; ]
+01/27/26 10:25:14 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (863.0.0)
+01/27/26 10:25:19 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:25:19 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000013 (863.0.0) {01/27/26 10:25:14}
+01/27/26 10:25:19 POST Script of node sim_ID0000013 completed successfully.
+01/27/26 10:25:19 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000014 (864.0.0) {01/27/26 15:55:17}
+01/27/26 10:25:19 Number of idle job procs: 0
+01/27/26 10:25:19 Node sim_ID0000014 job proc (864.0.0) completed successfully.
+01/27/26 10:25:19 Node sim_ID0000014 job completed
+01/27/26 10:25:19 Running POST script of Node sim_ID0000014...
+01/27/26 10:25:19 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:25:19 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000015 (865.0.0) {01/27/26 15:55:17}
+01/27/26 10:25:19 Number of idle job procs: 0
+01/27/26 10:25:19 Node sim_ID0000015 job proc (865.0.0) completed successfully.
+01/27/26 10:25:19 Node sim_ID0000015 job completed
+01/27/26 10:25:19 Running POST script of Node sim_ID0000015...
+01/27/26 10:25:19 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:25:19 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000016 (866.0.0) {01/27/26 15:55:17}
+01/27/26 10:25:19 Number of idle job procs: 0
+01/27/26 10:25:19 Node sim_ID0000016 job proc (866.0.0) completed successfully.
+01/27/26 10:25:19 Node sim_ID0000016 job completed
+01/27/26 10:25:19 Running POST script of Node sim_ID0000016...
+01/27/26 10:25:19 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:25:19 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:25:19 Of 30 nodes total:
+01/27/26 10:25:19  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:25:19   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:25:19    14       0        0       3       0         13        0
+01/27/26 10:25:19 0 job proc(s) currently held
+01/27/26 10:25:19 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2243375248379177; EventCycleTimeSum = 2.01903772354126; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 9.0; SleepCycleTimeAvg = 4.939989699257745; LogProcessCycleTimeCount = 7.0; SubmitCycleTimeCount = 10.0; EventCycleTimeMax = 1.015491008758545; LogProcessCycleTimeSum = 0.03333616256713867; LogProcessCycleTimeAvg = 0.004762308938162667; SubmitCycleTimeAvg = 0.1990461587905884; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.104168176651001; SubmitCycleTimeSum = 1.990461587905884; LogProcessCycleTimeStd = 0.006495343270905611; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.3819477285902917; EventCycleTimeStd = 0.3963966393123222; SleepCycleTimeSum = 44.4599072933197; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2097252271120436; SubmitCycleTimeMax = 1.015380859375; SleepCycleTimeCount = 9.0; ]
+01/27/26 10:25:19 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (865.0.0)
+01/27/26 10:25:19 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (864.0.0)
+01/27/26 10:25:19 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (866.0.0)
+01/27/26 10:25:24 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:25:24 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000015 (865.0.0) {01/27/26 10:25:19}
+01/27/26 10:25:24 POST Script of node sim_ID0000015 completed successfully.
+01/27/26 10:25:24 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000014 (864.0.0) {01/27/26 10:25:19}
+01/27/26 10:25:24 POST Script of node sim_ID0000014 completed successfully.
+01/27/26 10:25:24 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000016 (866.0.0) {01/27/26 10:25:19}
+01/27/26 10:25:24 POST Script of node sim_ID0000016 completed successfully.
+01/27/26 10:25:24 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:25:24 Of 30 nodes total:
+01/27/26 10:25:24  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:25:24   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:25:24    17       0        0       0       4          9        0
+01/27/26 10:25:24 0 job proc(s) currently held
+01/27/26 10:25:24 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2024948596954346; EventCycleTimeSum = 2.024948596954346; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 10.0; SleepCycleTimeAvg = 4.964599037170411; LogProcessCycleTimeCount = 8.0; SubmitCycleTimeCount = 11.0; EventCycleTimeMax = 1.015491008758545; LogProcessCycleTimeSum = 0.03349924087524414; LogProcessCycleTimeAvg = 0.004187405109405518; SubmitCycleTimeAvg = 0.1809516820040616; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.186083078384399; SubmitCycleTimeSum = 1.990468502044678; LogProcessCycleTimeStd = 0.006229488769798186; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.3672835030731908; EventCycleTimeStd = 0.3800557776479401; SleepCycleTimeSum = 49.6459903717041; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2124939536976559; SubmitCycleTimeMax = 1.015380859375; SleepCycleTimeCount = 10.0; ]
+01/27/26 10:25:29 Submitting HTCondor Node sim_ID0000020 job(s)...
+01/27/26 10:25:29 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:29 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:29 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:29 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000020 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000020 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=30 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000013,sim_ID0000014,sim_ID0000015,sim_ID0000016" 00/00/sim_ID0000020.sub
+01/27/26 10:25:29 From submit: Submitting job(s).
+01/27/26 10:25:29 From submit: 1 job(s) submitted to cluster 867.
+01/27/26 10:25:29 	assigned HTCondor ID (867.0.0)
+01/27/26 10:25:29 Submitting HTCondor Node sim_ID0000018 job(s)...
+01/27/26 10:25:29 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:29 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:29 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:29 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000018 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000018 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=30 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000013,sim_ID0000014,sim_ID0000015,sim_ID0000016" 00/00/sim_ID0000018.sub
+01/27/26 10:25:30 From submit: Submitting job(s).
+01/27/26 10:25:30 From submit: 1 job(s) submitted to cluster 868.
+01/27/26 10:25:30 	assigned HTCondor ID (868.0.0)
+01/27/26 10:25:30 Submitting HTCondor Node sim_ID0000019 job(s)...
+01/27/26 10:25:30 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:30 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:30 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:30 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000019 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000019 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=30 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000013,sim_ID0000014,sim_ID0000015,sim_ID0000016" 00/00/sim_ID0000019.sub
+01/27/26 10:25:30 From submit: Submitting job(s).
+01/27/26 10:25:30 From submit: 1 job(s) submitted to cluster 869.
+01/27/26 10:25:30 	assigned HTCondor ID (869.0.0)
+01/27/26 10:25:30 Submitting HTCondor Node sim_ID0000017 job(s)...
+01/27/26 10:25:30 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:30 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:30 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:30 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000017 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000017 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=30 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000013,sim_ID0000014,sim_ID0000015,sim_ID0000016" 00/00/sim_ID0000017.sub
+01/27/26 10:25:30 From submit: Submitting job(s).
+01/27/26 10:25:30 From submit: 1 job(s) submitted to cluster 870.
+01/27/26 10:25:30 	assigned HTCondor ID (870.0.0)
+01/27/26 10:25:30 Just submitted 4 jobs this cycle...
+01/27/26 10:25:30 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:25:30 Of 30 nodes total:
+01/27/26 10:25:30  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:25:30   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:25:30    17       0        4       0       0          9        0
+01/27/26 10:25:30 0 job proc(s) currently held
+01/27/26 10:25:30 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.1841124187816273; EventCycleTimeSum = 2.0252366065979; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 11.0; SleepCycleTimeAvg = 4.968250491402366; LogProcessCycleTimeCount = 8.0; SubmitCycleTimeCount = 12.0; EventCycleTimeMax = 1.015491008758545; LogProcessCycleTimeSum = 0.03349924087524414; LogProcessCycleTimeAvg = 0.004187405109405518; SubmitCycleTimeAvg = 0.2816362778345744; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.186083078384399; SubmitCycleTimeSum = 3.379635334014893; LogProcessCycleTimeStd = 0.006229488769798186; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4942493767738044; EventCycleTimeStd = 0.3656709042085086; SleepCycleTimeSum = 54.65075540542603; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2019529069371048; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 11.0; ]
+01/27/26 10:25:35 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:25:35 Reassigning the id of job sim_ID0000020 from (867.0.0) to (867.0.0)
+01/27/26 10:25:35 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000020 (867.0.0) {01/27/26 15:55:29}
+01/27/26 10:25:35 Number of idle job procs: 1
+01/27/26 10:25:35 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000020 (867.0.0) {01/27/26 15:55:29}
+01/27/26 10:25:35 Number of idle job procs: 0
+01/27/26 10:25:35 Reassigning the id of job sim_ID0000018 from (868.0.0) to (868.0.0)
+01/27/26 10:25:35 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000018 (868.0.0) {01/27/26 15:55:29}
+01/27/26 10:25:35 Number of idle job procs: 1
+01/27/26 10:25:35 Reassigning the id of job sim_ID0000019 from (869.0.0) to (869.0.0)
+01/27/26 10:25:35 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000019 (869.0.0) {01/27/26 15:55:30}
+01/27/26 10:25:35 Number of idle job procs: 2
+01/27/26 10:25:35 Reassigning the id of job sim_ID0000017 from (870.0.0) to (870.0.0)
+01/27/26 10:25:35 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000017 (870.0.0) {01/27/26 15:55:30}
+01/27/26 10:25:35 Number of idle job procs: 3
+01/27/26 10:25:35 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000020 (867.0.0) {01/27/26 15:55:32}
+01/27/26 10:25:35 Number of idle job procs: 3
+01/27/26 10:25:35 Node sim_ID0000020 job proc (867.0.0) completed successfully.
+01/27/26 10:25:35 Node sim_ID0000020 job completed
+01/27/26 10:25:35 Running POST script of Node sim_ID0000020...
+01/27/26 10:25:35 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:25:35 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000017 (870.0.0) {01/27/26 15:55:33}
+01/27/26 10:25:35 Number of idle job procs: 2
+01/27/26 10:25:35 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000018 (868.0.0) {01/27/26 15:55:33}
+01/27/26 10:25:35 Number of idle job procs: 1
+01/27/26 10:25:35 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000019 (869.0.0) {01/27/26 15:55:33}
+01/27/26 10:25:35 Number of idle job procs: 0
+01/27/26 10:25:35 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:25:35 Of 30 nodes total:
+01/27/26 10:25:35  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:25:35   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:25:35    17       0        3       1       0          9        0
+01/27/26 10:25:35 0 job proc(s) currently held
+01/27/26 10:25:35 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2845435341199239; EventCycleTimeSum = 3.414522409439087; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 12.0; SleepCycleTimeAvg = 4.971300542354584; LogProcessCycleTimeCount = 9.0; SubmitCycleTimeCount = 13.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.03603935241699219; LogProcessCycleTimeAvg = 0.00400437249077691; SubmitCycleTimeAvg = 0.2599724806272067; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.186083078384399; SubmitCycleTimeSum = 3.379642248153687; LogProcessCycleTimeStd = 0.005852966982373121; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4796110271118305; EventCycleTimeStd = 0.4925405456642051; SleepCycleTimeSum = 59.655606508255; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.1928441992977087; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 12.0; ]
+01/27/26 10:25:35 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (867.0.0)
+01/27/26 10:25:40 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:25:40 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000020 (867.0.0) {01/27/26 10:25:35}
+01/27/26 10:25:40 POST Script of node sim_ID0000020 completed successfully.
+01/27/26 10:25:40 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000018 (868.0.0) {01/27/26 15:55:36}
+01/27/26 10:25:40 Number of idle job procs: 0
+01/27/26 10:25:40 Node sim_ID0000018 job proc (868.0.0) completed successfully.
+01/27/26 10:25:40 Node sim_ID0000018 job completed
+01/27/26 10:25:40 Running POST script of Node sim_ID0000018...
+01/27/26 10:25:40 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:25:40 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000017 (870.0.0) {01/27/26 15:55:37}
+01/27/26 10:25:40 Number of idle job procs: 0
+01/27/26 10:25:40 Node sim_ID0000017 job proc (870.0.0) completed successfully.
+01/27/26 10:25:40 Node sim_ID0000017 job completed
+01/27/26 10:25:40 Running POST script of Node sim_ID0000017...
+01/27/26 10:25:40 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:25:40 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000019 (869.0.0) {01/27/26 15:55:37}
+01/27/26 10:25:40 Number of idle job procs: 0
+01/27/26 10:25:40 Node sim_ID0000019 job proc (869.0.0) completed successfully.
+01/27/26 10:25:40 Node sim_ID0000019 job completed
+01/27/26 10:25:40 Running POST script of Node sim_ID0000019...
+01/27/26 10:25:40 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:25:41 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:25:41 Of 30 nodes total:
+01/27/26 10:25:41  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:25:41   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:25:41    18       0        0       3       0          9        0
+01/27/26 10:25:41 0 job proc(s) currently held
+01/27/26 10:25:41 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2628591060638428; EventCycleTimeSum = 3.417168378829956; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 13.0; SleepCycleTimeAvg = 4.993295889634353; LogProcessCycleTimeCount = 10.0; SubmitCycleTimeCount = 14.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.04203438758850098; LogProcessCycleTimeAvg = 0.004203438758850098; SubmitCycleTimeAvg = 0.2414036648614066; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.257240056991577; SubmitCycleTimeSum = 3.379651308059692; LogProcessCycleTimeStd = 0.005554020006481913; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4660038473904422; EventCycleTimeStd = 0.4780090244871378; SleepCycleTimeSum = 64.91284656524658; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.200945640314308; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 13.0; ]
+01/27/26 10:25:41 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (868.0.0)
+01/27/26 10:25:41 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (870.0.0)
+01/27/26 10:25:41 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (869.0.0)
+01/27/26 10:25:46 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:25:46 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000018 (868.0.0) {01/27/26 10:25:41}
+01/27/26 10:25:46 POST Script of node sim_ID0000018 completed successfully.
+01/27/26 10:25:46 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000017 (870.0.0) {01/27/26 10:25:41}
+01/27/26 10:25:46 POST Script of node sim_ID0000017 completed successfully.
+01/27/26 10:25:46 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000019 (869.0.0) {01/27/26 10:25:41}
+01/27/26 10:25:46 POST Script of node sim_ID0000019 completed successfully.
+01/27/26 10:25:46 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:25:46 Of 30 nodes total:
+01/27/26 10:25:46  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:25:46   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:25:46    21       0        0       0       4          5        0
+01/27/26 10:25:46 0 job proc(s) currently held
+01/27/26 10:25:46 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2445223161152431; EventCycleTimeSum = 3.423312425613403; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 14.0; SleepCycleTimeAvg = 5.051481110709054; LogProcessCycleTimeCount = 11.0; SubmitCycleTimeCount = 15.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.0422055721282959; LogProcessCycleTimeAvg = 0.003836870193481445; SubmitCycleTimeAvg = 0.2253105481465658; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.807888984680176; SubmitCycleTimeSum = 3.379658222198486; LogProcessCycleTimeStd = 0.005407450605732979; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4533574890549165; EventCycleTimeStd = 0.4643528848289356; SleepCycleTimeSum = 70.72073554992676; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2909816853225626; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 14.0; ]
+01/27/26 10:25:51 Submitting HTCondor Node sim_ID0000021 job(s)...
+01/27/26 10:25:51 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:51 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:51 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:51 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000021 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000021 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=40 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000020,sim_ID0000018,sim_ID0000019,sim_ID0000017" 00/00/sim_ID0000021.sub
+01/27/26 10:25:51 From submit: Submitting job(s).
+01/27/26 10:25:51 From submit: 1 job(s) submitted to cluster 871.
+01/27/26 10:25:51 	assigned HTCondor ID (871.0.0)
+01/27/26 10:25:51 Submitting HTCondor Node sim_ID0000022 job(s)...
+01/27/26 10:25:51 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:51 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:51 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:51 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000022 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000022 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=40 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000020,sim_ID0000018,sim_ID0000019,sim_ID0000017" 00/00/sim_ID0000022.sub
+01/27/26 10:25:52 From submit: Submitting job(s).
+01/27/26 10:25:52 From submit: 1 job(s) submitted to cluster 872.
+01/27/26 10:25:52 	assigned HTCondor ID (872.0.0)
+01/27/26 10:25:52 Submitting HTCondor Node sim_ID0000023 job(s)...
+01/27/26 10:25:52 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:52 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:52 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:52 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000023 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000023 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=40 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000020,sim_ID0000018,sim_ID0000019,sim_ID0000017" 00/00/sim_ID0000023.sub
+01/27/26 10:25:52 From submit: Submitting job(s).
+01/27/26 10:25:52 From submit: 1 job(s) submitted to cluster 873.
+01/27/26 10:25:52 	assigned HTCondor ID (873.0.0)
+01/27/26 10:25:52 Submitting HTCondor Node sim_ID0000024 job(s)...
+01/27/26 10:25:52 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:25:52 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:25:52 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:25:52 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000024 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000024 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=40 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000020,sim_ID0000018,sim_ID0000019,sim_ID0000017" 00/00/sim_ID0000024.sub
+01/27/26 10:25:52 From submit: Submitting job(s).
+01/27/26 10:25:52 From submit: 1 job(s) submitted to cluster 874.
+01/27/26 10:25:52 	assigned HTCondor ID (874.0.0)
+01/27/26 10:25:52 Just submitted 4 jobs this cycle...
+01/27/26 10:25:52 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:25:52 Of 30 nodes total:
+01/27/26 10:25:52  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:25:52   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:25:52    21       0        4       0       0          5        0
+01/27/26 10:25:52 0 job proc(s) currently held
+01/27/26 10:25:52 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2282404899597168; EventCycleTimeSum = 3.423607349395752; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 15.0; SleepCycleTimeAvg = 5.048358964920044; LogProcessCycleTimeCount = 11.0; SubmitCycleTimeCount = 16.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.0422055721282959; LogProcessCycleTimeAvg = 0.003836870193481445; SubmitCycleTimeAvg = 0.2350068986415863; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.807888984680176; SubmitCycleTimeSum = 3.760110378265381; LogProcessCycleTimeStd = 0.005407450605732979; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4396988963257963; EventCycleTimeStd = 0.4518831527743297; SleepCycleTimeSum = 75.72538447380066; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2806575789004878; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 15.0; ]
+01/27/26 10:25:57 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:25:57 Reassigning the id of job sim_ID0000021 from (871.0.0) to (871.0.0)
+01/27/26 10:25:57 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000021 (871.0.0) {01/27/26 15:55:51}
+01/27/26 10:25:57 Number of idle job procs: 1
+01/27/26 10:25:57 Reassigning the id of job sim_ID0000022 from (872.0.0) to (872.0.0)
+01/27/26 10:25:57 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000022 (872.0.0) {01/27/26 15:55:51}
+01/27/26 10:25:57 Number of idle job procs: 2
+01/27/26 10:25:57 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000021 (871.0.0) {01/27/26 15:55:51}
+01/27/26 10:25:57 Number of idle job procs: 1
+01/27/26 10:25:57 Reassigning the id of job sim_ID0000023 from (873.0.0) to (873.0.0)
+01/27/26 10:25:57 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000023 (873.0.0) {01/27/26 15:55:52}
+01/27/26 10:25:57 Number of idle job procs: 2
+01/27/26 10:25:57 Reassigning the id of job sim_ID0000024 from (874.0.0) to (874.0.0)
+01/27/26 10:25:57 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000024 (874.0.0) {01/27/26 15:55:52}
+01/27/26 10:25:57 Number of idle job procs: 3
+01/27/26 10:25:57 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000021 (871.0.0) {01/27/26 15:55:55}
+01/27/26 10:25:57 Number of idle job procs: 3
+01/27/26 10:25:57 Node sim_ID0000021 job proc (871.0.0) completed successfully.
+01/27/26 10:25:57 Node sim_ID0000021 job completed
+01/27/26 10:25:57 Running POST script of Node sim_ID0000021...
+01/27/26 10:25:57 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:25:57 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000022 (872.0.0) {01/27/26 15:55:56}
+01/27/26 10:25:57 Number of idle job procs: 2
+01/27/26 10:25:57 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000023 (873.0.0) {01/27/26 15:55:56}
+01/27/26 10:25:57 Number of idle job procs: 1
+01/27/26 10:25:57 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000024 (874.0.0) {01/27/26 15:55:56}
+01/27/26 10:25:57 Number of idle job procs: 0
+01/27/26 10:25:57 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:25:57 Of 30 nodes total:
+01/27/26 10:25:57  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:25:57   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:25:57    21       0        3       1       0          5        0
+01/27/26 10:25:57 0 job proc(s) currently held
+01/27/26 10:25:57 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2377606481313705; EventCycleTimeSum = 3.804170370101929; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 16.0; SleepCycleTimeAvg = 5.045623660087585; LogProcessCycleTimeCount = 12.0; SubmitCycleTimeCount = 17.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.04476356506347656; LogProcessCycleTimeAvg = 0.003730297088623047; SubmitCycleTimeAvg = 0.2211833701414221; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.807888984680176; SubmitCycleTimeSum = 3.760117292404175; LogProcessCycleTimeStd = 0.005169002485587161; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4295348687231959; EventCycleTimeStd = 0.4382183163253181; SleepCycleTimeSum = 80.72997856140137; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2713616438784582; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 16.0; ]
+01/27/26 10:25:57 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (871.0.0)
+01/27/26 10:26:02 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:26:02 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000021 (871.0.0) {01/27/26 10:25:57}
+01/27/26 10:26:02 POST Script of node sim_ID0000021 completed successfully.
+01/27/26 10:26:02 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000022 (872.0.0) {01/27/26 15:56:00}
+01/27/26 10:26:02 Number of idle job procs: 0
+01/27/26 10:26:02 Node sim_ID0000022 job proc (872.0.0) completed successfully.
+01/27/26 10:26:02 Node sim_ID0000022 job completed
+01/27/26 10:26:02 Running POST script of Node sim_ID0000022...
+01/27/26 10:26:02 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:26:02 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000024 (874.0.0) {01/27/26 15:56:00}
+01/27/26 10:26:02 Number of idle job procs: 0
+01/27/26 10:26:02 Node sim_ID0000024 job proc (874.0.0) completed successfully.
+01/27/26 10:26:02 Node sim_ID0000024 job completed
+01/27/26 10:26:02 Running POST script of Node sim_ID0000024...
+01/27/26 10:26:02 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:26:02 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000023 (873.0.0) {01/27/26 15:56:00}
+01/27/26 10:26:02 Number of idle job procs: 0
+01/27/26 10:26:02 Node sim_ID0000023 job proc (873.0.0) completed successfully.
+01/27/26 10:26:02 Node sim_ID0000023 job completed
+01/27/26 10:26:02 Running POST script of Node sim_ID0000023...
+01/27/26 10:26:02 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:26:02 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:26:02 Of 30 nodes total:
+01/27/26 10:26:02  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:26:02   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:26:02    22       0        0       3       0          5        0
+01/27/26 10:26:02 0 job proc(s) currently held
+01/27/26 10:26:02 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2239320278167725; EventCycleTimeSum = 3.806844472885132; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 17.0; SleepCycleTimeAvg = 5.049302844440236; LogProcessCycleTimeCount = 13.0; SubmitCycleTimeCount = 18.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.05092453956604004; LogProcessCycleTimeAvg = 0.003917272274310772; SubmitCycleTimeAvg = 0.2088958554797702; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.807888984680176; SubmitCycleTimeSum = 3.760125398635864; LogProcessCycleTimeStd = 0.004994648552750319; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4199582653110625; EventCycleTimeStd = 0.4281168176350932; SleepCycleTimeSum = 85.83814835548401; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2631823306481786; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 17.0; ]
+01/27/26 10:26:02 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (873.0.0)
+01/27/26 10:26:02 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (872.0.0)
+01/27/26 10:26:03 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (874.0.0)
+01/27/26 10:26:07 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:26:07 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000023 (873.0.0) {01/27/26 10:26:02}
+01/27/26 10:26:07 POST Script of node sim_ID0000023 completed successfully.
+01/27/26 10:26:07 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000022 (872.0.0) {01/27/26 10:26:02}
+01/27/26 10:26:07 POST Script of node sim_ID0000022 completed successfully.
+01/27/26 10:26:07 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000024 (874.0.0) {01/27/26 10:26:03}
+01/27/26 10:26:07 POST Script of node sim_ID0000024 completed successfully.
+01/27/26 10:26:07 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:26:07 Of 30 nodes total:
+01/27/26 10:26:07  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:26:07   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:26:07    25       0        0       0       4          1        0
+01/27/26 10:26:07 0 job proc(s) currently held
+01/27/26 10:26:07 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2118417554431491; EventCycleTimeSum = 3.813151597976685; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 18.0; SleepCycleTimeAvg = 5.056102792421977; LogProcessCycleTimeCount = 14.0; SubmitCycleTimeCount = 19.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.05108237266540527; LogProcessCycleTimeAvg = 0.003648740904671805; SubmitCycleTimeAvg = 0.1979017634140818; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.807888984680176; SubmitCycleTimeSum = 3.760133504867554; LogProcessCycleTimeStd = 0.004902762373203366; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4109299493487374; EventCycleTimeStd = 0.4184898344825485; SleepCycleTimeSum = 91.00985026359558; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2569490966031662; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 18.0; ]
+01/27/26 10:26:12 Submitting HTCondor Node sim_ID0000025 job(s)...
+01/27/26 10:26:12 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:26:12 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:26:12 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:26:12 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000025 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000025 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=50 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000021,sim_ID0000022,sim_ID0000023,sim_ID0000024" 00/00/sim_ID0000025.sub
+01/27/26 10:26:13 From submit: Submitting job(s).
+01/27/26 10:26:13 From submit: 1 job(s) submitted to cluster 875.
+01/27/26 10:26:13 	assigned HTCondor ID (875.0.0)
+01/27/26 10:26:13 Submitting HTCondor Node sim_ID0000026 job(s)...
+01/27/26 10:26:13 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:26:13 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:26:13 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:26:13 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000026 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000026 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=50 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000021,sim_ID0000022,sim_ID0000023,sim_ID0000024" 00/00/sim_ID0000026.sub
+01/27/26 10:26:13 From submit: Submitting job(s).
+01/27/26 10:26:13 From submit: 1 job(s) submitted to cluster 876.
+01/27/26 10:26:13 	assigned HTCondor ID (876.0.0)
+01/27/26 10:26:13 Submitting HTCondor Node sim_ID0000027 job(s)...
+01/27/26 10:26:13 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:26:13 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:26:13 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:26:13 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000027 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000027 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=50 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000021,sim_ID0000022,sim_ID0000023,sim_ID0000024" 00/00/sim_ID0000027.sub
+01/27/26 10:26:13 From submit: Submitting job(s).
+01/27/26 10:26:13 From submit: 1 job(s) submitted to cluster 877.
+01/27/26 10:26:13 	assigned HTCondor ID (877.0.0)
+01/27/26 10:26:13 Submitting HTCondor Node sim_ID0000028 job(s)...
+01/27/26 10:26:13 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:26:13 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:26:13 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:26:13 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'sim_ID0000028 -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'sim_ID0000028 -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=50 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000021,sim_ID0000022,sim_ID0000023,sim_ID0000024" 00/00/sim_ID0000028.sub
+01/27/26 10:26:13 From submit: Submitting job(s).
+01/27/26 10:26:13 From submit: 1 job(s) submitted to cluster 878.
+01/27/26 10:26:13 	assigned HTCondor ID (878.0.0)
+01/27/26 10:26:13 Just submitted 4 jobs this cycle...
+01/27/26 10:26:13 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:26:13 Of 30 nodes total:
+01/27/26 10:26:13  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:26:13   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:26:13    25       0        4       0       0          1        0
+01/27/26 10:26:13 0 job proc(s) currently held
+01/27/26 10:26:13 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2007063564501311; EventCycleTimeSum = 3.81342077255249; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 19.0; SleepCycleTimeAvg = 5.053265533949199; LogProcessCycleTimeCount = 14.0; SubmitCycleTimeCount = 20.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.05108237266540527; LogProcessCycleTimeAvg = 0.003648740904671805; SubmitCycleTimeAvg = 0.2513772249221802; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.807888984680176; SubmitCycleTimeSum = 5.027544498443604; LogProcessCycleTimeStd = 0.004902762373203366; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4660132770089151; EventCycleTimeStd = 0.4095851979258916; SleepCycleTimeSum = 96.01204514503479; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2500157064352281; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 19.0; ]
+01/27/26 10:26:18 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:26:18 Reassigning the id of job sim_ID0000025 from (875.0.0) to (875.0.0)
+01/27/26 10:26:18 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000025 (875.0.0) {01/27/26 15:56:12}
+01/27/26 10:26:18 Number of idle job procs: 1
+01/27/26 10:26:18 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000025 (875.0.0) {01/27/26 15:56:13}
+01/27/26 10:26:18 Number of idle job procs: 0
+01/27/26 10:26:18 Reassigning the id of job sim_ID0000026 from (876.0.0) to (876.0.0)
+01/27/26 10:26:18 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000026 (876.0.0) {01/27/26 15:56:13}
+01/27/26 10:26:18 Number of idle job procs: 1
+01/27/26 10:26:18 Reassigning the id of job sim_ID0000027 from (877.0.0) to (877.0.0)
+01/27/26 10:26:18 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000027 (877.0.0) {01/27/26 15:56:13}
+01/27/26 10:26:18 Number of idle job procs: 2
+01/27/26 10:26:18 Reassigning the id of job sim_ID0000028 from (878.0.0) to (878.0.0)
+01/27/26 10:26:18 Event: ULOG_SUBMIT for HTCondor Node sim_ID0000028 (878.0.0) {01/27/26 15:56:13}
+01/27/26 10:26:18 Number of idle job procs: 3
+01/27/26 10:26:18 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000025 (875.0.0) {01/27/26 15:56:16}
+01/27/26 10:26:18 Number of idle job procs: 3
+01/27/26 10:26:18 Node sim_ID0000025 job proc (875.0.0) completed successfully.
+01/27/26 10:26:18 Node sim_ID0000025 job completed
+01/27/26 10:26:18 Running POST script of Node sim_ID0000025...
+01/27/26 10:26:18 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:26:18 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000026 (876.0.0) {01/27/26 15:56:16}
+01/27/26 10:26:18 Number of idle job procs: 2
+01/27/26 10:26:18 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000028 (878.0.0) {01/27/26 15:56:16}
+01/27/26 10:26:18 Number of idle job procs: 1
+01/27/26 10:26:18 Event: ULOG_EXECUTE for HTCondor Node sim_ID0000027 (877.0.0) {01/27/26 15:56:16}
+01/27/26 10:26:18 Number of idle job procs: 0
+01/27/26 10:26:18 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:26:18 Of 30 nodes total:
+01/27/26 10:26:18  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:26:18   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:26:18    25       0        3       1       0          1        0
+01/27/26 10:26:18 0 job proc(s) currently held
+01/27/26 10:26:18 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2540485858917236; EventCycleTimeSum = 5.080971717834473; SleepCycleTimeMin = 4.401798009872437; EventCycleTimeCount = 20.0; SleepCycleTimeAvg = 5.050851011276245; LogProcessCycleTimeCount = 15.0; SubmitCycleTimeCount = 21.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.05369949340820312; LogProcessCycleTimeAvg = 0.003579966227213542; SubmitCycleTimeAvg = 0.2394073009490967; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.807888984680176; SubmitCycleTimeSum = 5.02755331993103; LogProcessCycleTimeStd = 0.004731922867682677; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4575137334654642; EventCycleTimeStd = 0.4645841449117165; SleepCycleTimeSum = 101.0170202255249; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2435868732806211; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 20.0; ]
+01/27/26 10:26:18 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (875.0.0)
+01/27/26 10:26:23 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:26:23 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000025 (875.0.0) {01/27/26 10:26:18}
+01/27/26 10:26:23 POST Script of node sim_ID0000025 completed successfully.
+01/27/26 10:26:23 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000027 (877.0.0) {01/27/26 15:56:19}
+01/27/26 10:26:23 Number of idle job procs: 0
+01/27/26 10:26:23 Node sim_ID0000027 job proc (877.0.0) completed successfully.
+01/27/26 10:26:23 Node sim_ID0000027 job completed
+01/27/26 10:26:23 Running POST script of Node sim_ID0000027...
+01/27/26 10:26:23 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:26:23 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000026 (876.0.0) {01/27/26 15:56:19}
+01/27/26 10:26:23 Number of idle job procs: 0
+01/27/26 10:26:23 Node sim_ID0000026 job proc (876.0.0) completed successfully.
+01/27/26 10:26:23 Node sim_ID0000026 job completed
+01/27/26 10:26:23 Running POST script of Node sim_ID0000026...
+01/27/26 10:26:23 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:26:23 Event: ULOG_JOB_TERMINATED for HTCondor Node sim_ID0000028 (878.0.0) {01/27/26 15:56:19}
+01/27/26 10:26:23 Number of idle job procs: 0
+01/27/26 10:26:23 Node sim_ID0000028 job proc (878.0.0) completed successfully.
+01/27/26 10:26:23 Node sim_ID0000028 job completed
+01/27/26 10:26:23 Running POST script of Node sim_ID0000028...
+01/27/26 10:26:23 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:26:23 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:26:23 Of 30 nodes total:
+01/27/26 10:26:23  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:26:23   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:26:23    26       0        0       3       0          1        0
+01/27/26 10:26:23 0 job proc(s) currently held
+01/27/26 10:26:23 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2420816989172073; EventCycleTimeSum = 5.083715677261353; SleepCycleTimeMin = 4.256254911422729; EventCycleTimeCount = 21.0; SleepCycleTimeAvg = 5.013013101759411; LogProcessCycleTimeCount = 16.0; SubmitCycleTimeCount = 22.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.05998945236206055; LogProcessCycleTimeAvg = 0.003749340772628784; SubmitCycleTimeAvg = 0.228525465184992; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.807888984680176; SubmitCycleTimeSum = 5.027560234069824; LogProcessCycleTimeStd = 0.004621402190909049; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4493955599683152; EventCycleTimeStd = 0.4561291926409239; SleepCycleTimeSum = 105.2732751369476; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.2939960746703822; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 21.0; ]
+01/27/26 10:26:23 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (877.0.0)
+01/27/26 10:26:23 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (876.0.0)
+01/27/26 10:26:23 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (878.0.0)
+01/27/26 10:26:28 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:26:28 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000027 (877.0.0) {01/27/26 10:26:23}
+01/27/26 10:26:28 POST Script of node sim_ID0000027 completed successfully.
+01/27/26 10:26:28 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000026 (876.0.0) {01/27/26 10:26:23}
+01/27/26 10:26:28 POST Script of node sim_ID0000026 completed successfully.
+01/27/26 10:26:28 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node sim_ID0000028 (878.0.0) {01/27/26 10:26:23}
+01/27/26 10:26:28 POST Script of node sim_ID0000028 completed successfully.
+01/27/26 10:26:28 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:26:28 Of 30 nodes total:
+01/27/26 10:26:28  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:26:28   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:26:28    29       0        0       0       1          0        0
+01/27/26 10:26:28 0 job proc(s) currently held
+01/27/26 10:26:28 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2313703515312888; EventCycleTimeSum = 5.090147733688354; SleepCycleTimeMin = 4.256254911422729; EventCycleTimeCount = 22.0; SleepCycleTimeAvg = 5.052006959915161; LogProcessCycleTimeCount = 17.0; SubmitCycleTimeCount = 23.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.06015253067016602; LogProcessCycleTimeAvg = 0.003538384157068589; SubmitCycleTimeAvg = 0.218589969303297; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.870877981185913; SubmitCycleTimeSum = 5.02756929397583; LogProcessCycleTimeStd = 0.004558406422647247; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4416412097548512; EventCycleTimeStd = 0.4479627661190105; SleepCycleTimeSum = 111.1441531181335; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.3402488255016309; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 22.0; ]
+01/27/26 10:26:33 Submitting HTCondor Node cleanup_rack-4x_0_local job(s)...
+01/27/26 10:26:33 Adding a DAGMan workflow log /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log
+01/27/26 10:26:33 Masking the events recorded in the DAGMAN workflow log
+01/27/26 10:26:33 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36
+01/27/26 10:26:33 submitting: /usr/bin/condor_submit -a dag_node_name' '=' 'cleanup_rack-4x_0_local -a +DAGManJobId' '=' '849 -a DAGManJobId' '=' '849 -batch-name rack-4x-0.dag+849 -a submit_event_notes' '=' 'DAG' 'Node:' 'cleanup_rack-4x_0_local -a dagman_log' '=' '/app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27,35,36" -a priority=1000 -a +DAGNodeRetry' '=' '0 -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a notification' '=' 'never -a +DAGParentNodeNames' '=' '"sim_ID0000025,sim_ID0000026,sim_ID0000027,sim_ID0000028" 00/00/cleanup_rack-4x_0_local.sub
+01/27/26 10:26:34 From submit: Submitting job(s).
+01/27/26 10:26:34 From submit: 1 job(s) submitted to cluster 879.
+01/27/26 10:26:34 	assigned HTCondor ID (879.0.0)
+01/27/26 10:26:34 Just submitted 1 job this cycle...
+01/27/26 10:26:34 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:26:34 Of 30 nodes total:
+01/27/26 10:26:34  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:26:34   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:26:34    29       0        1       0       0          0        0
+01/27/26 10:26:34 0 job proc(s) currently held
+01/27/26 10:26:34 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2213228163511857; EventCycleTimeSum = 5.090424776077271; SleepCycleTimeMin = 4.256254911422729; EventCycleTimeCount = 23.0; SleepCycleTimeAvg = 5.049937704335088; LogProcessCycleTimeCount = 17.0; SubmitCycleTimeCount = 24.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.06015253067016602; LogProcessCycleTimeAvg = 0.003538384157068589; SubmitCycleTimeAvg = 0.2147510945796967; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.870877981185913; SubmitCycleTimeSum = 5.15402626991272; LogProcessCycleTimeStd = 0.004558406422647247; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.432342853120934; EventCycleTimeStd = 0.4403080345201414; SleepCycleTimeSum = 116.148567199707; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.33257406069242; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 23.0; ]
+01/27/26 10:26:39 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:26:39 Reassigning the id of job cleanup_rack-4x_0_local from (879.0.0) to (879.0.0)
+01/27/26 10:26:39 Event: ULOG_SUBMIT for HTCondor Node cleanup_rack-4x_0_local (879.0.0) {01/27/26 15:56:33}
+01/27/26 10:26:39 Number of idle job procs: 1
+01/27/26 10:26:39 Event: ULOG_EXECUTE for HTCondor Node cleanup_rack-4x_0_local (879.0.0) {01/27/26 15:56:34}
+01/27/26 10:26:39 Number of idle job procs: 0
+01/27/26 10:26:39 Event: ULOG_JOB_TERMINATED for HTCondor Node cleanup_rack-4x_0_local (879.0.0) {01/27/26 15:56:36}
+01/27/26 10:26:39 Number of idle job procs: 0
+01/27/26 10:26:39 Node cleanup_rack-4x_0_local job proc (879.0.0) completed successfully.
+01/27/26 10:26:39 Node cleanup_rack-4x_0_local job completed
+01/27/26 10:26:39 Running POST script of Node cleanup_rack-4x_0_local...
+01/27/26 10:26:39 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:26:39 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:26:39 Of 30 nodes total:
+01/27/26 10:26:39  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:26:39   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:26:39    29       0        0       1       0          0        0
+01/27/26 10:26:39 0 job proc(s) currently held
+01/27/26 10:26:39 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2173754076162974; EventCycleTimeSum = 5.217009782791138; SleepCycleTimeMin = 4.256254911422729; EventCycleTimeCount = 24.0; SleepCycleTimeAvg = 5.048043837149938; LogProcessCycleTimeCount = 18.0; SubmitCycleTimeCount = 25.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.06258463859558105; LogProcessCycleTimeAvg = 0.00347692436642117; SubmitCycleTimeAvg = 0.2061614036560059; LogProcessCycleTimeMin = 0.0001089572906494141; SleepCycleTimeMax = 5.870877981185913; SubmitCycleTimeSum = 5.154035091400146; LogProcessCycleTimeStd = 0.004429984473612631; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4254134045709714; EventCycleTimeStd = 0.4310637458913539; SleepCycleTimeSum = 121.1530520915985; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.3253961468712351; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 24.0; ]
+01/27/26 10:26:39 Initializing user log writer for /app/output/benchmarks/pegasus-4x-run7/submit/pegasus/pegasus/rack-4x/run0001/./rack-4x-0.dag.nodes.log, (879.0.0)
+01/27/26 10:26:44 Currently monitoring 1 HTCondor log file(s)
+01/27/26 10:26:44 Event: ULOG_POST_SCRIPT_TERMINATED for HTCondor Node cleanup_rack-4x_0_local (879.0.0) {01/27/26 10:26:39}
+01/27/26 10:26:44 POST Script of node cleanup_rack-4x_0_local completed successfully.
+01/27/26 10:26:44 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:26:44 Of 30 nodes total:
+01/27/26 10:26:44  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:26:44   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:26:44    30       0        0       0       0          0        0
+01/27/26 10:26:44 0 job proc(s) currently held
+01/27/26 10:26:44 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2087833499908447; EventCycleTimeSum = 5.219583749771118; SleepCycleTimeMin = 4.256254911422729; EventCycleTimeCount = 25.0; SleepCycleTimeAvg = 5.065096282958985; LogProcessCycleTimeCount = 19.0; SubmitCycleTimeCount = 26.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.0626826286315918; LogProcessCycleTimeAvg = 0.0032990857174522; SubmitCycleTimeAvg = 0.1982324673579289; LogProcessCycleTimeMin = 9.799003601074219E-05; SleepCycleTimeMax = 5.870877981185913; SubmitCycleTimeSum = 5.154044151306152; LogProcessCycleTimeStd = 0.004374403156194148; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4187744870433386; EventCycleTimeStd = 0.4241688437426201; SleepCycleTimeSum = 126.6274070739746; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.3297582795277872; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 25.0; ]
+01/27/26 10:26:44 All jobs Completed!
+01/27/26 10:26:44 Note: 0 total job deferrals because of -MaxJobs limit (0)
+01/27/26 10:26:44 Note: 0 total job deferrals because of -MaxIdle limit (1000)
+01/27/26 10:26:44 Note: 0 total job deferrals because of node category throttles
+01/27/26 10:26:44 Note: 0 total PRE script deferrals because of -MaxPre limit (20) or DEFER
+01/27/26 10:26:44 Note: 0 total POST script deferrals because of -MaxPost limit (20) or DEFER
+01/27/26 10:26:44 DAG status: 0 (DAG_STATUS_OK)
+01/27/26 10:26:44 Of 30 nodes total:
+01/27/26 10:26:44  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+01/27/26 10:26:44   ===     ===      ===     ===     ===        ===      ===
+01/27/26 10:26:44    30       0        0       0       0          0        0
+01/27/26 10:26:44 0 job proc(s) currently held
+01/27/26 10:26:44 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2087833499908447; EventCycleTimeSum = 5.219583749771118; SleepCycleTimeMin = 4.256254911422729; EventCycleTimeCount = 25.0; SleepCycleTimeAvg = 5.065096282958985; LogProcessCycleTimeCount = 19.0; SubmitCycleTimeCount = 26.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.0626826286315918; LogProcessCycleTimeAvg = 0.0032990857174522; SubmitCycleTimeAvg = 0.1982324673579289; LogProcessCycleTimeMin = 9.799003601074219E-05; SleepCycleTimeMax = 5.870877981185913; SubmitCycleTimeSum = 5.154044151306152; LogProcessCycleTimeStd = 0.004374403156194148; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4187744870433386; EventCycleTimeStd = 0.4241688437426201; SleepCycleTimeSum = 126.6274070739746; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.3297582795277872; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 25.0; ]
+01/27/26 10:26:44 Wrote metrics file rack-4x-0.dag.metrics.
+01/27/26 10:26:44 Reporting metrics to Pegasus metrics server(s); output is in rack-4x-0.dag.metrics.out.
+01/27/26 10:26:44 Running command </usr/lib/condor/libexec/condor_dagman_metrics_reporter -f rack-4x-0.dag.metrics -t 100>
+01/27/26 10:26:44 Warning: mysin has length 0 (ignore if produced by DAGMan; see gittrac #4987, #5031)
+01/27/26 10:26:44 DAGMan Runtime Statistics: [ EventCycleTimeAvg = 0.2087833499908447; EventCycleTimeSum = 5.219583749771118; SleepCycleTimeMin = 4.256254911422729; EventCycleTimeCount = 25.0; SleepCycleTimeAvg = 5.065096282958985; LogProcessCycleTimeCount = 19.0; SubmitCycleTimeCount = 26.0; EventCycleTimeMax = 1.389285802841187; LogProcessCycleTimeSum = 0.0626826286315918; LogProcessCycleTimeAvg = 0.0032990857174522; SubmitCycleTimeAvg = 0.1982324673579289; LogProcessCycleTimeMin = 9.799003601074219E-05; SleepCycleTimeMax = 5.870877981185913; SubmitCycleTimeSum = 5.154044151306152; LogProcessCycleTimeStd = 0.004374403156194148; SubmitCycleTimeMin = 5.960464477539062E-06; EventCycleTimeMin = 0.0002329349517822266; SubmitCycleTimeStd = 0.4187744870433386; EventCycleTimeStd = 0.4241688437426201; SleepCycleTimeSum = 126.6274070739746; LogProcessCycleTimeMax = 0.01886105537414551; SleepCycleTimeStd = 0.3297582795277872; SubmitCycleTimeMax = 1.389166831970215; SleepCycleTimeCount = 25.0; ]
+01/27/26 10:26:44 **** condor_scheduniv_exec.849.0 (condor_DAGMAN) pid 178541 EXITING WITH STATUS 0
