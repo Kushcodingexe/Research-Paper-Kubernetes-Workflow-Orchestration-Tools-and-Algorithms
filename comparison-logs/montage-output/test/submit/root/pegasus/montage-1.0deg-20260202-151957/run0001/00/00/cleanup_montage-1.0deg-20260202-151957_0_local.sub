@@ -1,0 +1,40 @@
+######################################################################
+# PEGASUS WMS GENERATED SUBMIT FILE
+# DAG : montage-1.0deg-20260202-151957, Index = 0, Count = null
+# SUBMIT FILE NAME : cleanup_montage-1.0deg-20260202-151957_0_local.sub
+######################################################################
+stream_error  = false
+stream_output = false
+environment = "LANG=en_US.UTF-8 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin CONDOR_JOBID=$(cluster).$(process) PEGASUS_WF_UUID=c45f3520-52b5-4c20-abee-69c6a90ec30b PEGASUS_WF_LABEL=montage-1.0deg-20260202-151957 PEGASUS_DAG_JOB_ID=cleanup_montage-1.0deg-20260202-151957_0_local PEGASUS_SITE=local PEGASUS_BIN_DIR=/usr/bin _PEGASUS_CONNECT_STDIN=true"
+arguments = "pegasus-kickstart  -n pegasus::cleanup -N null -i - -R local  -L montage-1.0deg-20260202-151957 -T 2026-02-02T15:19:57+05:30 pegasus-transfer "
+error = /app/output/test/submit/root/pegasus/montage-1.0deg-20260202-151957/run0001//00/00/cleanup_montage-1.0deg-20260202-151957_0_local.err
+executable = /usr/share/pegasus/sh/pegasus-lite-local.sh
+input = /app/output/test/submit/root/pegasus/montage-1.0deg-20260202-151957/run0001//00/00/cleanup_montage-1.0deg-20260202-151957_0_local.in
+log = /app/output/test/submit/root/pegasus/montage-1.0deg-20260202-151957/run0001/montage-1.0deg-20260202-151957-0.log
+notification = NEVER
+output = /app/output/test/submit/root/pegasus/montage-1.0deg-20260202-151957/run0001//00/00/cleanup_montage-1.0deg-20260202-151957_0_local.out
+periodic_release = False
+periodic_remove = (JobStatus == 5) && ((CurrentTime - EnteredCurrentStatus) > 1800)
+priority = 1000
+submit_event_user_notes = pool:local
+transfer_executable = false
+universe = local
++pegasus_generator = "Pegasus"
++pegasus_root_wf_uuid = "c45f3520-52b5-4c20-abee-69c6a90ec30b"
++pegasus_wf_uuid = "c45f3520-52b5-4c20-abee-69c6a90ec30b"
++pegasus_version = "5.0.9"
++pegasus_wf_name = "montage-1.0deg-20260202-151957-0"
++pegasus_wf_time = "20260202T152056+0530"
++pegasus_wf_xformation = "pegasus::cleanup"
++pegasus_wf_dax_job_id = "null"
++pegasus_wf_dag_job_id = "cleanup_montage-1.0deg-20260202-151957_0_local"
++pegasus_job_class = 8
++pegasus_site = "local"
++pegasus_job_runtime = 0
++pegasus_cores = 1
++pegasus_gpus = 1
++pegasus_cluster_size = 1
+queue
+######################################################################
+# END OF SUBMIT FILE
+######################################################################

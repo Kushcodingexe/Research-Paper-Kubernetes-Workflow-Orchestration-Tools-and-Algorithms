@@ -1,0 +1,12 @@
+services:
+  montage:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: montage-pegasus
+    hostname: montage-node
+    privileged: true
+    volumes:
+      - ~/kubernetes/comparison-logs/montage-output:/app/output
+    stdin_open: true
+    tty: true
