@@ -1,0 +1,575 @@
+# Native Kubernetes - 4x Scale Rack Resiliency
+# 28 jobs: 12 HC + 4 Node + 4 Interim + 4 Rack + 4 Final (same pattern as 2x)
+---
+# Stage 1: 12 Health Check Jobs
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-1
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 1 starting...'; sleep 5; echo 'Health Check 1 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-2
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 2 starting...'; sleep 5; echo 'Health Check 2 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-3
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 3 starting...'; sleep 5; echo 'Health Check 3 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-4
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 4 starting...'; sleep 5; echo 'Health Check 4 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-5
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 5 starting...'; sleep 5; echo 'Health Check 5 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-6
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 6 starting...'; sleep 5; echo 'Health Check 6 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-7
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 7 starting...'; sleep 5; echo 'Health Check 7 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-8
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 8 starting...'; sleep 5; echo 'Health Check 8 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-9
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 9 starting...'; sleep 5; echo 'Health Check 9 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-10
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 10 starting...'; sleep 5; echo 'Health Check 10 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-11
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 11 starting...'; sleep 5; echo 'Health Check 11 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: health-check-4x-12
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: health-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: health-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Health Check 12 starting...'; sleep 5; echo 'Health Check 12 complete'"]
+---
+# Stage 2: 4 Node Failure Jobs
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: node-failure-4x-1
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: node-failure
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-health
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for health checks...'; sleep 30"]
+      containers:
+        - name: node-failure
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Simulating node failure: worker-w001'; sleep 10; echo 'Node worker-w001 recovered'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: node-failure-4x-2
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: node-failure
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-health
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for health checks...'; sleep 30"]
+      containers:
+        - name: node-failure
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Simulating node failure: worker-w002'; sleep 10; echo 'Node worker-w002 recovered'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: node-failure-4x-3
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: node-failure
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-health
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for health checks...'; sleep 30"]
+      containers:
+        - name: node-failure
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Simulating node failure: worker-w003'; sleep 10; echo 'Node worker-w003 recovered'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: node-failure-4x-4
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: node-failure
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-health
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for health checks...'; sleep 30"]
+      containers:
+        - name: node-failure
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Simulating node failure: worker-w004'; sleep 10; echo 'Node worker-w004 recovered'"]
+---
+# Stage 3: 4 Interim Health Check Jobs
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: interim-check-4x-1
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: interim-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-nodes
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for node failures...'; sleep 45"]
+      containers:
+        - name: interim-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Interim Health Check 1'; sleep 5; echo 'Interim Check 1 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: interim-check-4x-2
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: interim-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-nodes
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for node failures...'; sleep 45"]
+      containers:
+        - name: interim-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Interim Health Check 2'; sleep 5; echo 'Interim Check 2 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: interim-check-4x-3
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: interim-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-nodes
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for node failures...'; sleep 45"]
+      containers:
+        - name: interim-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Interim Health Check 3'; sleep 5; echo 'Interim Check 3 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: interim-check-4x-4
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: interim-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-nodes
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for node failures...'; sleep 45"]
+      containers:
+        - name: interim-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Interim Health Check 4'; sleep 5; echo 'Interim Check 4 complete'"]
+---
+# Stage 4: 4 Rack Failure Jobs
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rack-failure-4x-1
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: rack-failure
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-interim
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for interim checks...'; sleep 55"]
+      containers:
+        - name: rack-failure
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Simulating rack failure: R1'; sleep 10; echo 'Rack R1 recovered'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rack-failure-4x-2
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: rack-failure
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-interim
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for interim checks...'; sleep 55"]
+      containers:
+        - name: rack-failure
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Simulating rack failure: R2'; sleep 10; echo 'Rack R2 recovered'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rack-failure-4x-3
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: rack-failure
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-interim
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for interim checks...'; sleep 55"]
+      containers:
+        - name: rack-failure
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Simulating rack failure: R3'; sleep 10; echo 'Rack R3 recovered'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rack-failure-4x-4
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: rack-failure
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-interim
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for interim checks...'; sleep 55"]
+      containers:
+        - name: rack-failure
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Simulating rack failure: R4'; sleep 10; echo 'Rack R4 recovered'"]
+---
+# Stage 5: 4 Final Health Check Jobs
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: final-check-4x-1
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: final-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-rack
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for rack failures...'; sleep 70"]
+      containers:
+        - name: final-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Final Health Check 1'; sleep 5; echo '4x Workflow Complete - 28 Jobs'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: final-check-4x-2
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: final-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-rack
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for rack failures...'; sleep 70"]
+      containers:
+        - name: final-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Final Health Check 2'; sleep 5; echo 'Final Check 2 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: final-check-4x-3
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: final-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-rack
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for rack failures...'; sleep 70"]
+      containers:
+        - name: final-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Final Health Check 3'; sleep 5; echo 'Final Check 3 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: final-check-4x-4
+  labels:
+    app: rack-resiliency
+    scale: "4x"
+    stage: final-check
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-rack
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for rack failures...'; sleep 70"]
+      containers:
+        - name: final-check
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Final Health Check 4'; sleep 5; echo 'Final Check 4 complete'"]

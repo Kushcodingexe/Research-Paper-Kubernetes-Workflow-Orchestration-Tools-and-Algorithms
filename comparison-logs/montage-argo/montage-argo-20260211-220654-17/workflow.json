@@ -1,0 +1,1088 @@
+{
+    "metadata": {
+        "name": "montage-1x-sqw4x",
+        "generateName": "montage-1x-",
+        "namespace": "argo",
+        "uid": "f21b687f-0503-4a52-96c4-c2ea39b89849",
+        "resourceVersion": "9319200",
+        "generation": 25,
+        "creationTimestamp": "2026-02-11T16:36:55Z",
+        "labels": {
+            "scale": "1x",
+            "workflow": "montage",
+            "workflows.argoproj.io/completed": "true",
+            "workflows.argoproj.io/creator": "kubernetes-admin",
+            "workflows.argoproj.io/phase": "Succeeded"
+        },
+        "annotations": {
+            "workflows.argoproj.io/pod-name-format": "v2"
+        },
+        "managedFields": [
+            {
+                "manager": "argo",
+                "operation": "Update",
+                "apiVersion": "argoproj.io/v1alpha1",
+                "time": "2026-02-11T16:36:55Z",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:generateName": {},
+                        "f:labels": {
+                            ".": {},
+                            "f:scale": {},
+                            "f:workflow": {},
+                            "f:workflows.argoproj.io/creator": {}
+                        }
+                    },
+                    "f:spec": {}
+                }
+            },
+            {
+                "manager": "workflow-controller",
+                "operation": "Update",
+                "apiVersion": "argoproj.io/v1alpha1",
+                "time": "2026-02-11T16:43:43Z",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:annotations": {
+                            ".": {},
+                            "f:workflows.argoproj.io/pod-name-format": {}
+                        },
+                        "f:labels": {
+                            "f:workflows.argoproj.io/completed": {},
+                            "f:workflows.argoproj.io/phase": {}
+                        }
+                    },
+                    "f:status": {}
+                }
+            }
+        ]
+    },
+    "spec": {
+        "templates": [
+            {
+                "name": "mprojectpp",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "image-id"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"mProjectPP: Reprojecting image {{inputs.parameters.image-id}}\"\nsleep $(shuf -i 2-4 -n 1)\necho \"mProjectPP: Image {{inputs.parameters.image-id}} reprojection complete\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "mimgtbl",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"mImgtbl: Generating image metadata table\"\nsleep 2\necho \"mImgtbl: Image table generated (4 images)\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "mdifffit",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "pair-id"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"mDiffFit: Computing difference for pair {{inputs.parameters.pair-id}}\"\nsleep $(shuf -i 1-3 -n 1)\necho \"mDiffFit: Pair {{inputs.parameters.pair-id}} fit complete\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "mconcatfit",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"mConcatFit: Concatenating fit results\"\nsleep 2\necho \"mConcatFit: fits.tbl generated\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "mbgmodel",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"mBgModel: Computing background model (sequential bottleneck)\"\nsleep 5\necho \"mBgModel: Background corrections computed\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "mbgexec",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "image-id"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"mBgExec: Applying background correction to image {{inputs.parameters.image-id}}\"\nsleep $(shuf -i 1-3 -n 1)\necho \"mBgExec: Image {{inputs.parameters.image-id}} corrected\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "madd",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"mAdd: Co-adding 4 corrected images into mosaic\"\nsleep 4\necho \"mAdd: mosaic.fits created\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "mshrink",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"mShrink: Creating thumbnail\"\nsleep 2\necho \"mShrink: mosaic_thumb.fits created\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "mjpeg",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"mJPEG: Converting mosaic to JPEG\"\nsleep 2\necho \"mJPEG: mosaic.jpg created\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "montage-pipeline",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "dag": {
+                    "tasks": [
+                        {
+                            "name": "project-1",
+                            "template": "mprojectpp",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "image-id",
+                                        "value": "001"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "project-2",
+                            "template": "mprojectpp",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "image-id",
+                                        "value": "002"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "project-3",
+                            "template": "mprojectpp",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "image-id",
+                                        "value": "003"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "project-4",
+                            "template": "mprojectpp",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "image-id",
+                                        "value": "004"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "imgtbl",
+                            "template": "mimgtbl",
+                            "arguments": {},
+                            "dependencies": [
+                                "project-1",
+                                "project-2",
+                                "project-3",
+                                "project-4"
+                            ]
+                        },
+                        {
+                            "name": "difffit-1",
+                            "template": "mdifffit",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "pair-id",
+                                        "value": "001-002"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "imgtbl"
+                            ]
+                        },
+                        {
+                            "name": "difffit-2",
+                            "template": "mdifffit",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "pair-id",
+                                        "value": "002-003"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "imgtbl"
+                            ]
+                        },
+                        {
+                            "name": "difffit-3",
+                            "template": "mdifffit",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "pair-id",
+                                        "value": "003-004"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "imgtbl"
+                            ]
+                        },
+                        {
+                            "name": "difffit-4",
+                            "template": "mdifffit",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "pair-id",
+                                        "value": "001-003"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "imgtbl"
+                            ]
+                        },
+                        {
+                            "name": "concatfit",
+                            "template": "mconcatfit",
+                            "arguments": {},
+                            "dependencies": [
+                                "difffit-1",
+                                "difffit-2",
+                                "difffit-3",
+                                "difffit-4"
+                            ]
+                        },
+                        {
+                            "name": "bgmodel",
+                            "template": "mbgmodel",
+                            "arguments": {},
+                            "dependencies": [
+                                "concatfit"
+                            ]
+                        },
+                        {
+                            "name": "bgexec-1",
+                            "template": "mbgexec",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "image-id",
+                                        "value": "001"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "bgmodel"
+                            ]
+                        },
+                        {
+                            "name": "bgexec-2",
+                            "template": "mbgexec",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "image-id",
+                                        "value": "002"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "bgmodel"
+                            ]
+                        },
+                        {
+                            "name": "bgexec-3",
+                            "template": "mbgexec",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "image-id",
+                                        "value": "003"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "bgmodel"
+                            ]
+                        },
+                        {
+                            "name": "bgexec-4",
+                            "template": "mbgexec",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "image-id",
+                                        "value": "004"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "bgmodel"
+                            ]
+                        },
+                        {
+                            "name": "mosaic-add",
+                            "template": "madd",
+                            "arguments": {},
+                            "dependencies": [
+                                "bgexec-1",
+                                "bgexec-2",
+                                "bgexec-3",
+                                "bgexec-4"
+                            ]
+                        },
+                        {
+                            "name": "shrink",
+                            "template": "mshrink",
+                            "arguments": {},
+                            "dependencies": [
+                                "mosaic-add"
+                            ]
+                        },
+                        {
+                            "name": "jpeg",
+                            "template": "mjpeg",
+                            "arguments": {},
+                            "dependencies": [
+                                "mosaic-add"
+                            ]
+                        }
+                    ]
+                }
+            }
+        ],
+        "entrypoint": "montage-pipeline",
+        "arguments": {},
+        "serviceAccountName": "argo"
+    },
+    "status": {
+        "phase": "Succeeded",
+        "startedAt": "2026-02-11T16:36:55Z",
+        "finishedAt": "2026-02-11T16:43:43Z",
+        "progress": "18/18",
+        "nodes": {
+            "montage-1x-sqw4x": {
+                "id": "montage-1x-sqw4x",
+                "name": "montage-1x-sqw4x",
+                "displayName": "montage-1x-sqw4x",
+                "type": "DAG",
+                "templateName": "montage-pipeline",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "startedAt": "2026-02-11T16:36:55Z",
+                "finishedAt": "2026-02-11T16:43:43Z",
+                "progress": "18/18",
+                "resourcesDuration": {
+                    "cpu": 4,
+                    "memory": 220
+                },
+                "children": [
+                    "montage-1x-sqw4x-1071708277",
+                    "montage-1x-sqw4x-1021375420",
+                    "montage-1x-sqw4x-1038153039",
+                    "montage-1x-sqw4x-987820182"
+                ],
+                "outboundNodes": [
+                    "montage-1x-sqw4x-3758404684",
+                    "montage-1x-sqw4x-2050039079"
+                ]
+            },
+            "montage-1x-sqw4x-1021375420": {
+                "id": "montage-1x-sqw4x-1021375420",
+                "name": "montage-1x-sqw4x.project-2",
+                "displayName": "project-2",
+                "type": "Pod",
+                "templateName": "mprojectpp",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:36:55Z",
+                "finishedAt": "2026-02-11T16:39:57Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 8
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "image-id",
+                            "value": "002"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-1180691637"
+                ],
+                "hostNodeName": "worker-w001"
+            },
+            "montage-1x-sqw4x-1038153039": {
+                "id": "montage-1x-sqw4x-1038153039",
+                "name": "montage-1x-sqw4x.project-3",
+                "displayName": "project-3",
+                "type": "Pod",
+                "templateName": "mprojectpp",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:36:55Z",
+                "finishedAt": "2026-02-11T16:40:07Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 1,
+                    "memory": 20
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "image-id",
+                            "value": "003"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-1180691637"
+                ],
+                "hostNodeName": "worker-w004"
+            },
+            "montage-1x-sqw4x-1039477038": {
+                "id": "montage-1x-sqw4x-1039477038",
+                "name": "montage-1x-sqw4x.bgmodel",
+                "displayName": "bgmodel",
+                "type": "Pod",
+                "templateName": "mbgmodel",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:41:42Z",
+                "finishedAt": "2026-02-11T16:41:56Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 11
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-1886195778",
+                    "montage-1x-sqw4x-1869418159",
+                    "montage-1x-sqw4x-1852640540",
+                    "montage-1x-sqw4x-1835862921"
+                ],
+                "hostNodeName": "worker-w004"
+            },
+            "montage-1x-sqw4x-1071708277": {
+                "id": "montage-1x-sqw4x-1071708277",
+                "name": "montage-1x-sqw4x.project-1",
+                "displayName": "project-1",
+                "type": "Pod",
+                "templateName": "mprojectpp",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:36:55Z",
+                "finishedAt": "2026-02-11T16:40:05Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 1,
+                    "memory": 17
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "image-id",
+                            "value": "001"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-1180691637"
+                ],
+                "hostNodeName": "worker-w002"
+            },
+            "montage-1x-sqw4x-1180691637": {
+                "id": "montage-1x-sqw4x-1180691637",
+                "name": "montage-1x-sqw4x.imgtbl",
+                "displayName": "imgtbl",
+                "type": "Pod",
+                "templateName": "mimgtbl",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:40:15Z",
+                "finishedAt": "2026-02-11T16:40:28Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 10
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-1269166747",
+                    "montage-1x-sqw4x-1252389128",
+                    "montage-1x-sqw4x-1369832461",
+                    "montage-1x-sqw4x-1285944366"
+                ],
+                "hostNodeName": "worker-w002"
+            },
+            "montage-1x-sqw4x-1252389128": {
+                "id": "montage-1x-sqw4x-1252389128",
+                "name": "montage-1x-sqw4x.difffit-3",
+                "displayName": "difffit-3",
+                "type": "Pod",
+                "templateName": "mdifffit",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:40:38Z",
+                "finishedAt": "2026-02-11T16:41:12Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 1,
+                    "memory": 27
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "pair-id",
+                            "value": "003-004"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-541373245"
+                ],
+                "hostNodeName": "worker-w002"
+            },
+            "montage-1x-sqw4x-1269166747": {
+                "id": "montage-1x-sqw4x-1269166747",
+                "name": "montage-1x-sqw4x.difffit-2",
+                "displayName": "difffit-2",
+                "type": "Pod",
+                "templateName": "mdifffit",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:40:38Z",
+                "finishedAt": "2026-02-11T16:41:09Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 8
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "pair-id",
+                            "value": "002-003"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-541373245"
+                ],
+                "hostNodeName": "worker-w001"
+            },
+            "montage-1x-sqw4x-1285944366": {
+                "id": "montage-1x-sqw4x-1285944366",
+                "name": "montage-1x-sqw4x.difffit-1",
+                "displayName": "difffit-1",
+                "type": "Pod",
+                "templateName": "mdifffit",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:40:38Z",
+                "finishedAt": "2026-02-11T16:41:03Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 13
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "pair-id",
+                            "value": "001-002"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-541373245"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "montage-1x-sqw4x-1369832461": {
+                "id": "montage-1x-sqw4x-1369832461",
+                "name": "montage-1x-sqw4x.difffit-4",
+                "displayName": "difffit-4",
+                "type": "Pod",
+                "templateName": "mdifffit",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:40:38Z",
+                "finishedAt": "2026-02-11T16:41:03Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 10
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "pair-id",
+                            "value": "001-003"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-541373245"
+                ],
+                "hostNodeName": "worker-w004"
+            },
+            "montage-1x-sqw4x-1513813348": {
+                "id": "montage-1x-sqw4x-1513813348",
+                "name": "montage-1x-sqw4x.mosaic-add",
+                "displayName": "mosaic-add",
+                "type": "Pod",
+                "templateName": "madd",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:42:47Z",
+                "finishedAt": "2026-02-11T16:42:59Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 10
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-3758404684",
+                    "montage-1x-sqw4x-2050039079"
+                ],
+                "hostNodeName": "worker-w001"
+            },
+            "montage-1x-sqw4x-1835862921": {
+                "id": "montage-1x-sqw4x-1835862921",
+                "name": "montage-1x-sqw4x.bgexec-4",
+                "displayName": "bgexec-4",
+                "type": "Pod",
+                "templateName": "mbgexec",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:42:04Z",
+                "finishedAt": "2026-02-11T16:42:34Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 11
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "image-id",
+                            "value": "004"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-1513813348"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "montage-1x-sqw4x-1852640540": {
+                "id": "montage-1x-sqw4x-1852640540",
+                "name": "montage-1x-sqw4x.bgexec-3",
+                "displayName": "bgexec-3",
+                "type": "Pod",
+                "templateName": "mbgexec",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:42:04Z",
+                "finishedAt": "2026-02-11T16:42:33Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 12
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "image-id",
+                            "value": "003"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-1513813348"
+                ],
+                "hostNodeName": "worker-w002"
+            },
+            "montage-1x-sqw4x-1869418159": {
+                "id": "montage-1x-sqw4x-1869418159",
+                "name": "montage-1x-sqw4x.bgexec-2",
+                "displayName": "bgexec-2",
+                "type": "Pod",
+                "templateName": "mbgexec",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:42:04Z",
+                "finishedAt": "2026-02-11T16:42:33Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 11
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "image-id",
+                            "value": "002"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-1513813348"
+                ],
+                "hostNodeName": "worker-w004"
+            },
+            "montage-1x-sqw4x-1886195778": {
+                "id": "montage-1x-sqw4x-1886195778",
+                "name": "montage-1x-sqw4x.bgexec-1",
+                "displayName": "bgexec-1",
+                "type": "Pod",
+                "templateName": "mbgexec",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:42:04Z",
+                "finishedAt": "2026-02-11T16:42:28Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 10
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "image-id",
+                            "value": "001"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-1513813348"
+                ],
+                "hostNodeName": "worker-w001"
+            },
+            "montage-1x-sqw4x-2050039079": {
+                "id": "montage-1x-sqw4x-2050039079",
+                "name": "montage-1x-sqw4x.shrink",
+                "displayName": "shrink",
+                "type": "Pod",
+                "templateName": "mshrink",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:43:08Z",
+                "finishedAt": "2026-02-11T16:43:27Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 9
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "hostNodeName": "worker-w001"
+            },
+            "montage-1x-sqw4x-3758404684": {
+                "id": "montage-1x-sqw4x-3758404684",
+                "name": "montage-1x-sqw4x.jpeg",
+                "displayName": "jpeg",
+                "type": "Pod",
+                "templateName": "mjpeg",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:43:08Z",
+                "finishedAt": "2026-02-11T16:43:27Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 9
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "hostNodeName": "worker-w004"
+            },
+            "montage-1x-sqw4x-541373245": {
+                "id": "montage-1x-sqw4x-541373245",
+                "name": "montage-1x-sqw4x.concatfit",
+                "displayName": "concatfit",
+                "type": "Pod",
+                "templateName": "mconcatfit",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:41:22Z",
+                "finishedAt": "2026-02-11T16:41:30Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 5
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-1039477038"
+                ],
+                "hostNodeName": "worker-w002"
+            },
+            "montage-1x-sqw4x-987820182": {
+                "id": "montage-1x-sqw4x-987820182",
+                "name": "montage-1x-sqw4x.project-4",
+                "displayName": "project-4",
+                "type": "Pod",
+                "templateName": "mprojectpp",
+                "templateScope": "local/montage-1x-sqw4x",
+                "phase": "Succeeded",
+                "boundaryID": "montage-1x-sqw4x",
+                "startedAt": "2026-02-11T16:36:55Z",
+                "finishedAt": "2026-02-11T16:40:06Z",
+                "progress": "1/1",
+                "resourcesDuration": {
+                    "cpu": 1,
+                    "memory": 19
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "image-id",
+                            "value": "004"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "montage-1x-sqw4x-1180691637"
+                ],
+                "hostNodeName": "master-m002"
+            }
+        },
+        "conditions": [
+            {
+                "type": "PodRunning",
+                "status": "False"
+            },
+            {
+                "type": "Completed",
+                "status": "True"
+            }
+        ],
+        "resourcesDuration": {
+            "cpu": 4,
+            "memory": 220
+        },
+        "artifactRepositoryRef": {
+            "default": true,
+            "artifactRepository": {}
+        },
+        "artifactGCStatus": {
+            "notSpecified": true
+        },
+        "taskResultsCompletionStatus": {
+            "montage-1x-sqw4x-1021375420": true,
+            "montage-1x-sqw4x-1038153039": true,
+            "montage-1x-sqw4x-1039477038": true,
+            "montage-1x-sqw4x-1071708277": true,
+            "montage-1x-sqw4x-1180691637": true,
+            "montage-1x-sqw4x-1252389128": true,
+            "montage-1x-sqw4x-1269166747": true,
+            "montage-1x-sqw4x-1285944366": true,
+            "montage-1x-sqw4x-1369832461": true,
+            "montage-1x-sqw4x-1513813348": true,
+            "montage-1x-sqw4x-1835862921": true,
+            "montage-1x-sqw4x-1852640540": true,
+            "montage-1x-sqw4x-1869418159": true,
+            "montage-1x-sqw4x-1886195778": true,
+            "montage-1x-sqw4x-2050039079": true,
+            "montage-1x-sqw4x-3758404684": true,
+            "montage-1x-sqw4x-541373245": true,
+            "montage-1x-sqw4x-987820182": true
+        }
+    }
+}

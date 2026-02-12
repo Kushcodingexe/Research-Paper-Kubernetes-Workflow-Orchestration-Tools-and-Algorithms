@@ -1,0 +1,1421 @@
+{
+    "metadata": {
+        "name": "rack-resiliency-4x-87gbw",
+        "generateName": "rack-resiliency-4x-",
+        "namespace": "argo",
+        "uid": "c21035db-278b-44b3-84bc-86f79f446169",
+        "resourceVersion": "8825970",
+        "generation": 5,
+        "creationTimestamp": "2026-02-08T17:40:13Z",
+        "labels": {
+            "benchmark": "true",
+            "scale": "4x",
+            "workflows.argoproj.io/completed": "true",
+            "workflows.argoproj.io/creator": "kubernetes-admin",
+            "workflows.argoproj.io/phase": "Error"
+        },
+        "annotations": {
+            "workflows.argoproj.io/pod-name-format": "v2"
+        },
+        "managedFields": [
+            {
+                "manager": "argo",
+                "operation": "Update",
+                "apiVersion": "argoproj.io/v1alpha1",
+                "time": "2026-02-08T17:40:13Z",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:generateName": {},
+                        "f:labels": {
+                            ".": {},
+                            "f:benchmark": {},
+                            "f:scale": {},
+                            "f:workflows.argoproj.io/creator": {}
+                        }
+                    },
+                    "f:spec": {}
+                }
+            },
+            {
+                "manager": "workflow-controller",
+                "operation": "Update",
+                "apiVersion": "argoproj.io/v1alpha1",
+                "time": "2026-02-08T17:43:56Z",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:annotations": {
+                            ".": {},
+                            "f:workflows.argoproj.io/pod-name-format": {}
+                        },
+                        "f:labels": {
+                            "f:workflows.argoproj.io/completed": {},
+                            "f:workflows.argoproj.io/phase": {}
+                        }
+                    },
+                    "f:status": {}
+                }
+            }
+        ]
+    },
+    "spec": {
+        "templates": [
+            {
+                "name": "rack-resiliency-4x",
+                "inputs": {},
+                "outputs": {},
+                "metadata": {},
+                "dag": {
+                    "tasks": [
+                        {
+                            "name": "health-check-1",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "1"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-2",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "2"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-3",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "3"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-4",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "4"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-5",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "5"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-6",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "6"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-7",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "7"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-8",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "8"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-9",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "9"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-10",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "10"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-11",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "11"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "health-check-12",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "12"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "name": "node-failure-1",
+                            "template": "node-failure",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "node-name",
+                                        "value": "worker-w001"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "health-check-1",
+                                "health-check-2",
+                                "health-check-3",
+                                "health-check-4",
+                                "health-check-5",
+                                "health-check-6",
+                                "health-check-7",
+                                "health-check-8",
+                                "health-check-9",
+                                "health-check-10",
+                                "health-check-11",
+                                "health-check-12"
+                            ]
+                        },
+                        {
+                            "name": "node-failure-2",
+                            "template": "node-failure",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "node-name",
+                                        "value": "worker-w002"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "health-check-1",
+                                "health-check-2",
+                                "health-check-3",
+                                "health-check-4",
+                                "health-check-5",
+                                "health-check-6",
+                                "health-check-7",
+                                "health-check-8",
+                                "health-check-9",
+                                "health-check-10",
+                                "health-check-11",
+                                "health-check-12"
+                            ]
+                        },
+                        {
+                            "name": "node-failure-3",
+                            "template": "node-failure",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "node-name",
+                                        "value": "worker-w003"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "health-check-1",
+                                "health-check-2",
+                                "health-check-3",
+                                "health-check-4",
+                                "health-check-5",
+                                "health-check-6",
+                                "health-check-7",
+                                "health-check-8",
+                                "health-check-9",
+                                "health-check-10",
+                                "health-check-11",
+                                "health-check-12"
+                            ]
+                        },
+                        {
+                            "name": "node-failure-4",
+                            "template": "node-failure",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "node-name",
+                                        "value": "worker-w004"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "health-check-1",
+                                "health-check-2",
+                                "health-check-3",
+                                "health-check-4",
+                                "health-check-5",
+                                "health-check-6",
+                                "health-check-7",
+                                "health-check-8",
+                                "health-check-9",
+                                "health-check-10",
+                                "health-check-11",
+                                "health-check-12"
+                            ]
+                        },
+                        {
+                            "name": "interim-check-1",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "interim-1"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "node-failure-1",
+                                "node-failure-2",
+                                "node-failure-3",
+                                "node-failure-4"
+                            ]
+                        },
+                        {
+                            "name": "interim-check-2",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "interim-2"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "node-failure-1",
+                                "node-failure-2",
+                                "node-failure-3",
+                                "node-failure-4"
+                            ]
+                        },
+                        {
+                            "name": "interim-check-3",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "interim-3"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "node-failure-1",
+                                "node-failure-2",
+                                "node-failure-3",
+                                "node-failure-4"
+                            ]
+                        },
+                        {
+                            "name": "interim-check-4",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "interim-4"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "node-failure-1",
+                                "node-failure-2",
+                                "node-failure-3",
+                                "node-failure-4"
+                            ]
+                        },
+                        {
+                            "name": "rack-failure-1",
+                            "template": "rack-failure",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "rack-name",
+                                        "value": "R1"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "interim-check-1",
+                                "interim-check-2",
+                                "interim-check-3",
+                                "interim-check-4"
+                            ]
+                        },
+                        {
+                            "name": "rack-failure-2",
+                            "template": "rack-failure",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "rack-name",
+                                        "value": "R2"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "interim-check-1",
+                                "interim-check-2",
+                                "interim-check-3",
+                                "interim-check-4"
+                            ]
+                        },
+                        {
+                            "name": "rack-failure-3",
+                            "template": "rack-failure",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "rack-name",
+                                        "value": "R3"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "interim-check-1",
+                                "interim-check-2",
+                                "interim-check-3",
+                                "interim-check-4"
+                            ]
+                        },
+                        {
+                            "name": "rack-failure-4",
+                            "template": "rack-failure",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "rack-name",
+                                        "value": "R4"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "interim-check-1",
+                                "interim-check-2",
+                                "interim-check-3",
+                                "interim-check-4"
+                            ]
+                        },
+                        {
+                            "name": "final-check-1",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "final-1"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "rack-failure-1",
+                                "rack-failure-2",
+                                "rack-failure-3",
+                                "rack-failure-4"
+                            ]
+                        },
+                        {
+                            "name": "final-check-2",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "final-2"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "rack-failure-1",
+                                "rack-failure-2",
+                                "rack-failure-3",
+                                "rack-failure-4"
+                            ]
+                        },
+                        {
+                            "name": "final-check-3",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "final-3"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "rack-failure-1",
+                                "rack-failure-2",
+                                "rack-failure-3",
+                                "rack-failure-4"
+                            ]
+                        },
+                        {
+                            "name": "final-check-4",
+                            "template": "health-check",
+                            "arguments": {
+                                "parameters": [
+                                    {
+                                        "name": "check-id",
+                                        "value": "final-4"
+                                    }
+                                ]
+                            },
+                            "dependencies": [
+                                "rack-failure-1",
+                                "rack-failure-2",
+                                "rack-failure-3",
+                                "rack-failure-4"
+                            ]
+                        }
+                    ]
+                }
+            },
+            {
+                "name": "health-check",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "/bin/sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"Health Check {{inputs.parameters.check-id}} starting...\"\nsleep 5\necho \"Health Check {{inputs.parameters.check-id}} complete\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "node-failure",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "node-name"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "/bin/sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"Simulating node failure: {{inputs.parameters.node-name}}\"\nsleep 10\necho \"Node {{inputs.parameters.node-name}} recovered\"\n"
+                    ],
+                    "resources": {}
+                }
+            },
+            {
+                "name": "rack-failure",
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "rack-name"
+                        }
+                    ]
+                },
+                "outputs": {},
+                "metadata": {},
+                "container": {
+                    "name": "",
+                    "image": "busybox:1.35",
+                    "command": [
+                        "/bin/sh",
+                        "-c"
+                    ],
+                    "args": [
+                        "echo \"Simulating rack failure: {{inputs.parameters.rack-name}}\"\nsleep 10\necho \"Rack {{inputs.parameters.rack-name}} recovered\"\n"
+                    ],
+                    "resources": {}
+                }
+            }
+        ],
+        "entrypoint": "rack-resiliency-4x",
+        "arguments": {}
+    },
+    "status": {
+        "phase": "Error",
+        "startedAt": "2026-02-08T17:40:13Z",
+        "finishedAt": "2026-02-08T17:43:56Z",
+        "progress": "0/12",
+        "nodes": {
+            "rack-resiliency-4x-87gbw": {
+                "id": "rack-resiliency-4x-87gbw",
+                "name": "rack-resiliency-4x-87gbw",
+                "displayName": "rack-resiliency-4x-87gbw",
+                "type": "DAG",
+                "templateName": "rack-resiliency-4x",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "startedAt": "2026-02-08T17:40:13Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "progress": "0/12",
+                "resourcesDuration": {
+                    "cpu": 29,
+                    "memory": 452
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-2072997959",
+                    "rack-resiliency-4x-87gbw-2056220340",
+                    "rack-resiliency-4x-87gbw-2039442721",
+                    "rack-resiliency-4x-87gbw-2022665102",
+                    "rack-resiliency-4x-87gbw-2005887483",
+                    "rack-resiliency-4x-87gbw-1989109864",
+                    "rack-resiliency-4x-87gbw-1972332245",
+                    "rack-resiliency-4x-87gbw-2089775578",
+                    "rack-resiliency-4x-87gbw-13653233",
+                    "rack-resiliency-4x-87gbw-4291842910",
+                    "rack-resiliency-4x-87gbw-4258287672",
+                    "rack-resiliency-4x-87gbw-1955554626"
+                ],
+                "outboundNodes": [
+                    "rack-resiliency-4x-87gbw-2595735798",
+                    "rack-resiliency-4x-87gbw-2578958179",
+                    "rack-resiliency-4x-87gbw-2562180560",
+                    "rack-resiliency-4x-87gbw-2679623893"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-13653233": {
+                "id": "rack-resiliency-4x-87gbw-13653233",
+                "name": "rack-resiliency-4x-87gbw.health-check-11",
+                "displayName": "health-check-11",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): pods \"rack-resiliency-4x-87gbw-health-check-13653233\" is forbidden: User \"system:serviceaccount:argo:default\" cannot patch resource \"pods\" in API group \"\" in the namespace \"argo\"",
+                "startedAt": "2026-02-08T17:40:14Z",
+                "finishedAt": "2026-02-08T17:43:29Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 1,
+                    "memory": 27
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "11"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "worker-w004"
+            },
+            "rack-resiliency-4x-87gbw-1955554626": {
+                "id": "rack-resiliency-4x-87gbw-1955554626",
+                "name": "rack-resiliency-4x-87gbw.health-check-9",
+                "displayName": "health-check-9",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): pods \"rack-resiliency-4x-87gbw-health-check-1955554626\" is forbidden: User \"system:serviceaccount:argo:default\" cannot patch resource \"pods\" in API group \"\" in the namespace \"argo\"",
+                "startedAt": "2026-02-08T17:40:14Z",
+                "finishedAt": "2026-02-08T17:43:51Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 13
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "9"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "master-m002"
+            },
+            "rack-resiliency-4x-87gbw-1972332245": {
+                "id": "rack-resiliency-4x-87gbw-1972332245",
+                "name": "rack-resiliency-4x-87gbw.health-check-8",
+                "displayName": "health-check-8",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): Post \"https://10.96.0.1:443/apis/argoproj.io/v1alpha1/namespaces/argo/workflowtaskresults\": dial tcp 10.96.0.1:443: connect: connection refused",
+                "startedAt": "2026-02-08T17:40:13Z",
+                "finishedAt": "2026-02-08T17:43:01Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 5,
+                    "memory": 56
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "8"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "worker-w005"
+            },
+            "rack-resiliency-4x-87gbw-1989109864": {
+                "id": "rack-resiliency-4x-87gbw-1989109864",
+                "name": "rack-resiliency-4x-87gbw.health-check-7",
+                "displayName": "health-check-7",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): Post \"https://10.96.0.1:443/apis/argoproj.io/v1alpha1/namespaces/argo/workflowtaskresults\": dial tcp 10.96.0.1:443: connect: connection refused",
+                "startedAt": "2026-02-08T17:40:13Z",
+                "finishedAt": "2026-02-08T17:43:15Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 5,
+                    "memory": 60
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "7"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "worker-w006"
+            },
+            "rack-resiliency-4x-87gbw-2005887483": {
+                "id": "rack-resiliency-4x-87gbw-2005887483",
+                "name": "rack-resiliency-4x-87gbw.health-check-6",
+                "displayName": "health-check-6",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): pods \"rack-resiliency-4x-87gbw-health-check-2005887483\" is forbidden: User \"system:serviceaccount:argo:default\" cannot patch resource \"pods\" in API group \"\" in the namespace \"argo\"",
+                "startedAt": "2026-02-08T17:40:13Z",
+                "finishedAt": "2026-02-08T17:43:17Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 11,
+                    "memory": 127
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "6"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "master-m003"
+            },
+            "rack-resiliency-4x-87gbw-2022665102": {
+                "id": "rack-resiliency-4x-87gbw-2022665102",
+                "name": "rack-resiliency-4x-87gbw.health-check-5",
+                "displayName": "health-check-5",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): pods \"rack-resiliency-4x-87gbw-health-check-2022665102\" is forbidden: User \"system:serviceaccount:argo:default\" cannot patch resource \"pods\" in API group \"\" in the namespace \"argo\"",
+                "startedAt": "2026-02-08T17:40:13Z",
+                "finishedAt": "2026-02-08T17:43:50Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 13
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "5"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "master-m002"
+            },
+            "rack-resiliency-4x-87gbw-2039442721": {
+                "id": "rack-resiliency-4x-87gbw-2039442721",
+                "name": "rack-resiliency-4x-87gbw.health-check-4",
+                "displayName": "health-check-4",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): pods \"rack-resiliency-4x-87gbw-health-check-2039442721\" is forbidden: User \"system:serviceaccount:argo:default\" cannot patch resource \"pods\" in API group \"\" in the namespace \"argo\"",
+                "startedAt": "2026-02-08T17:40:13Z",
+                "finishedAt": "2026-02-08T17:43:29Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 1,
+                    "memory": 25
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "4"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "worker-w004"
+            },
+            "rack-resiliency-4x-87gbw-2056220340": {
+                "id": "rack-resiliency-4x-87gbw-2056220340",
+                "name": "rack-resiliency-4x-87gbw.health-check-3",
+                "displayName": "health-check-3",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): pods \"rack-resiliency-4x-87gbw-health-check-2056220340\" is forbidden: User \"system:serviceaccount:argo:default\" cannot patch resource \"pods\" in API group \"\" in the namespace \"argo\"",
+                "startedAt": "2026-02-08T17:40:13Z",
+                "finishedAt": "2026-02-08T17:43:13Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 2,
+                    "memory": 43
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "3"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "worker-w001"
+            },
+            "rack-resiliency-4x-87gbw-2072997959": {
+                "id": "rack-resiliency-4x-87gbw-2072997959",
+                "name": "rack-resiliency-4x-87gbw.health-check-2",
+                "displayName": "health-check-2",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): pods \"rack-resiliency-4x-87gbw-health-check-2072997959\" is forbidden: User \"system:serviceaccount:argo:default\" cannot patch resource \"pods\" in API group \"\" in the namespace \"argo\"",
+                "startedAt": "2026-02-08T17:40:13Z",
+                "finishedAt": "2026-02-08T17:43:24Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 1,
+                    "memory": 23
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "2"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "worker-w002"
+            },
+            "rack-resiliency-4x-87gbw-2089775578": {
+                "id": "rack-resiliency-4x-87gbw-2089775578",
+                "name": "rack-resiliency-4x-87gbw.health-check-1",
+                "displayName": "health-check-1",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): pods \"rack-resiliency-4x-87gbw-health-check-2089775578\" is forbidden: User \"system:serviceaccount:argo:default\" cannot patch resource \"pods\" in API group \"\" in the namespace \"argo\"",
+                "startedAt": "2026-02-08T17:40:13Z",
+                "finishedAt": "2026-02-08T17:43:34Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 2,
+                    "memory": 31
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "1"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "worker-w003"
+            },
+            "rack-resiliency-4x-87gbw-2562180560": {
+                "id": "rack-resiliency-4x-87gbw-2562180560",
+                "name": "rack-resiliency-4x-87gbw.final-check-3",
+                "displayName": "final-check-3",
+                "type": "Skipped",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {}
+            },
+            "rack-resiliency-4x-87gbw-2578958179": {
+                "id": "rack-resiliency-4x-87gbw-2578958179",
+                "name": "rack-resiliency-4x-87gbw.final-check-2",
+                "displayName": "final-check-2",
+                "type": "Skipped",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {}
+            },
+            "rack-resiliency-4x-87gbw-2595735798": {
+                "id": "rack-resiliency-4x-87gbw-2595735798",
+                "name": "rack-resiliency-4x-87gbw.final-check-1",
+                "displayName": "final-check-1",
+                "type": "Skipped",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {}
+            },
+            "rack-resiliency-4x-87gbw-2679623893": {
+                "id": "rack-resiliency-4x-87gbw-2679623893",
+                "name": "rack-resiliency-4x-87gbw.final-check-4",
+                "displayName": "final-check-4",
+                "type": "Skipped",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {}
+            },
+            "rack-resiliency-4x-87gbw-3402741241": {
+                "id": "rack-resiliency-4x-87gbw-3402741241",
+                "name": "rack-resiliency-4x-87gbw.node-failure-4",
+                "displayName": "node-failure-4",
+                "type": "Skipped",
+                "templateName": "node-failure",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-4066959998",
+                    "rack-resiliency-4x-87gbw-4050182379",
+                    "rack-resiliency-4x-87gbw-4033404760",
+                    "rack-resiliency-4x-87gbw-4150848093"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-3419518860": {
+                "id": "rack-resiliency-4x-87gbw-3419518860",
+                "name": "rack-resiliency-4x-87gbw.node-failure-3",
+                "displayName": "node-failure-3",
+                "type": "Skipped",
+                "templateName": "node-failure",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-4066959998",
+                    "rack-resiliency-4x-87gbw-4050182379",
+                    "rack-resiliency-4x-87gbw-4033404760",
+                    "rack-resiliency-4x-87gbw-4150848093"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-3436296479": {
+                "id": "rack-resiliency-4x-87gbw-3436296479",
+                "name": "rack-resiliency-4x-87gbw.node-failure-2",
+                "displayName": "node-failure-2",
+                "type": "Skipped",
+                "templateName": "node-failure",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-4066959998",
+                    "rack-resiliency-4x-87gbw-4050182379",
+                    "rack-resiliency-4x-87gbw-4033404760",
+                    "rack-resiliency-4x-87gbw-4150848093"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-3453074098": {
+                "id": "rack-resiliency-4x-87gbw-3453074098",
+                "name": "rack-resiliency-4x-87gbw.node-failure-1",
+                "displayName": "node-failure-1",
+                "type": "Skipped",
+                "templateName": "node-failure",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-4066959998",
+                    "rack-resiliency-4x-87gbw-4050182379",
+                    "rack-resiliency-4x-87gbw-4033404760",
+                    "rack-resiliency-4x-87gbw-4150848093"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-4033404760": {
+                "id": "rack-resiliency-4x-87gbw-4033404760",
+                "name": "rack-resiliency-4x-87gbw.interim-check-3",
+                "displayName": "interim-check-3",
+                "type": "Skipped",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-817242537",
+                    "rack-resiliency-4x-87gbw-766909680",
+                    "rack-resiliency-4x-87gbw-783687299",
+                    "rack-resiliency-4x-87gbw-867575394"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-4050182379": {
+                "id": "rack-resiliency-4x-87gbw-4050182379",
+                "name": "rack-resiliency-4x-87gbw.interim-check-2",
+                "displayName": "interim-check-2",
+                "type": "Skipped",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-817242537",
+                    "rack-resiliency-4x-87gbw-766909680",
+                    "rack-resiliency-4x-87gbw-783687299",
+                    "rack-resiliency-4x-87gbw-867575394"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-4066959998": {
+                "id": "rack-resiliency-4x-87gbw-4066959998",
+                "name": "rack-resiliency-4x-87gbw.interim-check-1",
+                "displayName": "interim-check-1",
+                "type": "Skipped",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-817242537",
+                    "rack-resiliency-4x-87gbw-766909680",
+                    "rack-resiliency-4x-87gbw-783687299",
+                    "rack-resiliency-4x-87gbw-867575394"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-4150848093": {
+                "id": "rack-resiliency-4x-87gbw-4150848093",
+                "name": "rack-resiliency-4x-87gbw.interim-check-4",
+                "displayName": "interim-check-4",
+                "type": "Skipped",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-817242537",
+                    "rack-resiliency-4x-87gbw-766909680",
+                    "rack-resiliency-4x-87gbw-783687299",
+                    "rack-resiliency-4x-87gbw-867575394"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-4258287672": {
+                "id": "rack-resiliency-4x-87gbw-4258287672",
+                "name": "rack-resiliency-4x-87gbw.health-check-12",
+                "displayName": "health-check-12",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): pods \"rack-resiliency-4x-87gbw-health-check-4258287672\" is forbidden: User \"system:serviceaccount:argo:default\" cannot patch resource \"pods\" in API group \"\" in the namespace \"argo\"",
+                "startedAt": "2026-02-08T17:40:14Z",
+                "finishedAt": "2026-02-08T17:43:16Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 0,
+                    "memory": 14
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "12"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "worker-w001"
+            },
+            "rack-resiliency-4x-87gbw-4291842910": {
+                "id": "rack-resiliency-4x-87gbw-4291842910",
+                "name": "rack-resiliency-4x-87gbw.health-check-10",
+                "displayName": "health-check-10",
+                "type": "Pod",
+                "templateName": "health-check",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Error",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "Error (exit code 1): pods \"rack-resiliency-4x-87gbw-health-check-4291842910\" is forbidden: User \"system:serviceaccount:argo:default\" cannot patch resource \"pods\" in API group \"\" in the namespace \"argo\"",
+                "startedAt": "2026-02-08T17:40:14Z",
+                "finishedAt": "2026-02-08T17:43:24Z",
+                "progress": "0/1",
+                "resourcesDuration": {
+                    "cpu": 1,
+                    "memory": 20
+                },
+                "inputs": {
+                    "parameters": [
+                        {
+                            "name": "check-id",
+                            "value": "10"
+                        }
+                    ]
+                },
+                "outputs": {
+                    "exitCode": "0"
+                },
+                "children": [
+                    "rack-resiliency-4x-87gbw-3453074098",
+                    "rack-resiliency-4x-87gbw-3436296479",
+                    "rack-resiliency-4x-87gbw-3419518860",
+                    "rack-resiliency-4x-87gbw-3402741241"
+                ],
+                "hostNodeName": "worker-w002"
+            },
+            "rack-resiliency-4x-87gbw-766909680": {
+                "id": "rack-resiliency-4x-87gbw-766909680",
+                "name": "rack-resiliency-4x-87gbw.rack-failure-2",
+                "displayName": "rack-failure-2",
+                "type": "Skipped",
+                "templateName": "rack-failure",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-2595735798",
+                    "rack-resiliency-4x-87gbw-2578958179",
+                    "rack-resiliency-4x-87gbw-2562180560",
+                    "rack-resiliency-4x-87gbw-2679623893"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-783687299": {
+                "id": "rack-resiliency-4x-87gbw-783687299",
+                "name": "rack-resiliency-4x-87gbw.rack-failure-3",
+                "displayName": "rack-failure-3",
+                "type": "Skipped",
+                "templateName": "rack-failure",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-2595735798",
+                    "rack-resiliency-4x-87gbw-2578958179",
+                    "rack-resiliency-4x-87gbw-2562180560",
+                    "rack-resiliency-4x-87gbw-2679623893"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-817242537": {
+                "id": "rack-resiliency-4x-87gbw-817242537",
+                "name": "rack-resiliency-4x-87gbw.rack-failure-1",
+                "displayName": "rack-failure-1",
+                "type": "Skipped",
+                "templateName": "rack-failure",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-2595735798",
+                    "rack-resiliency-4x-87gbw-2578958179",
+                    "rack-resiliency-4x-87gbw-2562180560",
+                    "rack-resiliency-4x-87gbw-2679623893"
+                ]
+            },
+            "rack-resiliency-4x-87gbw-867575394": {
+                "id": "rack-resiliency-4x-87gbw-867575394",
+                "name": "rack-resiliency-4x-87gbw.rack-failure-4",
+                "displayName": "rack-failure-4",
+                "type": "Skipped",
+                "templateName": "rack-failure",
+                "templateScope": "local/rack-resiliency-4x-87gbw",
+                "phase": "Omitted",
+                "boundaryID": "rack-resiliency-4x-87gbw",
+                "message": "omitted: depends condition not met",
+                "startedAt": "2026-02-08T17:43:56Z",
+                "finishedAt": "2026-02-08T17:43:56Z",
+                "nodeFlag": {},
+                "children": [
+                    "rack-resiliency-4x-87gbw-2595735798",
+                    "rack-resiliency-4x-87gbw-2578958179",
+                    "rack-resiliency-4x-87gbw-2562180560",
+                    "rack-resiliency-4x-87gbw-2679623893"
+                ]
+            }
+        },
+        "conditions": [
+            {
+                "type": "PodRunning",
+                "status": "False"
+            },
+            {
+                "type": "Completed",
+                "status": "True"
+            }
+        ],
+        "resourcesDuration": {
+            "cpu": 29,
+            "memory": 452
+        },
+        "artifactRepositoryRef": {
+            "default": true,
+            "artifactRepository": {}
+        },
+        "artifactGCStatus": {
+            "notSpecified": true
+        },
+        "taskResultsCompletionStatus": {
+            "rack-resiliency-4x-87gbw-13653233": true,
+            "rack-resiliency-4x-87gbw-1955554626": true,
+            "rack-resiliency-4x-87gbw-1972332245": true,
+            "rack-resiliency-4x-87gbw-1989109864": true,
+            "rack-resiliency-4x-87gbw-2005887483": true,
+            "rack-resiliency-4x-87gbw-2022665102": true,
+            "rack-resiliency-4x-87gbw-2039442721": true,
+            "rack-resiliency-4x-87gbw-2056220340": true,
+            "rack-resiliency-4x-87gbw-2072997959": true,
+            "rack-resiliency-4x-87gbw-2089775578": true,
+            "rack-resiliency-4x-87gbw-4258287672": true,
+            "rack-resiliency-4x-87gbw-4291842910": true
+        }
+    }
+}

@@ -143,4 +143,3 @@ done
 [ $N_RUNS -gt 0 ] && AVG=$((TOTAL_DURATION / N_RUNS)) || AVG=0
 
 echo -e "\n${CYAN}===== COMPLETE: ${SUCCESSFUL_RUNS}/${N_RUNS} successful, avg ${AVG}s =====${NC}"
-

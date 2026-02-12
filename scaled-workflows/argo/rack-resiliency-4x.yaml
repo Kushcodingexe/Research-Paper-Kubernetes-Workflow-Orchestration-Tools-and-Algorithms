@@ -1,0 +1,196 @@
+# Argo Workflow - 4x Scale Rack Resiliency
+# 28 jobs: 12 HC + 4 Node + 4 Interim + 4 Rack + 4 Final
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: rack-resiliency-4x-
+  namespace: argo
+  labels:
+    scale: "4x"
+    benchmark: "true"
+spec:
+  entrypoint: rack-resiliency-4x
+  serviceAccountName: argo
+  templates:
+    - name: rack-resiliency-4x
+      dag:
+        tasks:
+          # Stage 1: 12 Parallel Health Checks
+          - name: health-check-1
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "1"}]
+          - name: health-check-2
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "2"}]
+          - name: health-check-3
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "3"}]
+          - name: health-check-4
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "4"}]
+          - name: health-check-5
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "5"}]
+          - name: health-check-6
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "6"}]
+          - name: health-check-7
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "7"}]
+          - name: health-check-8
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "8"}]
+          - name: health-check-9
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "9"}]
+          - name: health-check-10
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "10"}]
+          - name: health-check-11
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "11"}]
+          - name: health-check-12
+            template: health-check
+            arguments:
+              parameters: [{name: check-id, value: "12"}]
+
+          # Stage 2: 4 Node Failure Simulations
+          - name: node-failure-1
+            template: node-failure
+            dependencies: [health-check-1, health-check-2, health-check-3, health-check-4, health-check-5, health-check-6, health-check-7, health-check-8, health-check-9, health-check-10, health-check-11, health-check-12]
+            arguments:
+              parameters: [{name: node-name, value: "worker-w001"}]
+          - name: node-failure-2
+            template: node-failure
+            dependencies: [health-check-1, health-check-2, health-check-3, health-check-4, health-check-5, health-check-6, health-check-7, health-check-8, health-check-9, health-check-10, health-check-11, health-check-12]
+            arguments:
+              parameters: [{name: node-name, value: "worker-w002"}]
+          - name: node-failure-3
+            template: node-failure
+            dependencies: [health-check-1, health-check-2, health-check-3, health-check-4, health-check-5, health-check-6, health-check-7, health-check-8, health-check-9, health-check-10, health-check-11, health-check-12]
+            arguments:
+              parameters: [{name: node-name, value: "worker-w003"}]
+          - name: node-failure-4
+            template: node-failure
+            dependencies: [health-check-1, health-check-2, health-check-3, health-check-4, health-check-5, health-check-6, health-check-7, health-check-8, health-check-9, health-check-10, health-check-11, health-check-12]
+            arguments:
+              parameters: [{name: node-name, value: "worker-w004"}]
+
+          # Stage 3: 4 Interim Health Checks
+          - name: interim-check-1
+            template: health-check
+            dependencies: [node-failure-1, node-failure-2, node-failure-3, node-failure-4]
+            arguments:
+              parameters: [{name: check-id, value: "interim-1"}]
+          - name: interim-check-2
+            template: health-check
+            dependencies: [node-failure-1, node-failure-2, node-failure-3, node-failure-4]
+            arguments:
+              parameters: [{name: check-id, value: "interim-2"}]
+          - name: interim-check-3
+            template: health-check
+            dependencies: [node-failure-1, node-failure-2, node-failure-3, node-failure-4]
+            arguments:
+              parameters: [{name: check-id, value: "interim-3"}]
+          - name: interim-check-4
+            template: health-check
+            dependencies: [node-failure-1, node-failure-2, node-failure-3, node-failure-4]
+            arguments:
+              parameters: [{name: check-id, value: "interim-4"}]
+
+          # Stage 4: 4 Rack Failure Simulations
+          - name: rack-failure-1
+            template: rack-failure
+            dependencies: [interim-check-1, interim-check-2, interim-check-3, interim-check-4]
+            arguments:
+              parameters: [{name: rack-name, value: "R1"}]
+          - name: rack-failure-2
+            template: rack-failure
+            dependencies: [interim-check-1, interim-check-2, interim-check-3, interim-check-4]
+            arguments:
+              parameters: [{name: rack-name, value: "R2"}]
+          - name: rack-failure-3
+            template: rack-failure
+            dependencies: [interim-check-1, interim-check-2, interim-check-3, interim-check-4]
+            arguments:
+              parameters: [{name: rack-name, value: "R3"}]
+          - name: rack-failure-4
+            template: rack-failure
+            dependencies: [interim-check-1, interim-check-2, interim-check-3, interim-check-4]
+            arguments:
+              parameters: [{name: rack-name, value: "R4"}]
+
+          # Stage 5: 4 Final Health Checks
+          - name: final-check-1
+            template: health-check
+            dependencies: [rack-failure-1, rack-failure-2, rack-failure-3, rack-failure-4]
+            arguments:
+              parameters: [{name: check-id, value: "final-1"}]
+          - name: final-check-2
+            template: health-check
+            dependencies: [rack-failure-1, rack-failure-2, rack-failure-3, rack-failure-4]
+            arguments:
+              parameters: [{name: check-id, value: "final-2"}]
+          - name: final-check-3
+            template: health-check
+            dependencies: [rack-failure-1, rack-failure-2, rack-failure-3, rack-failure-4]
+            arguments:
+              parameters: [{name: check-id, value: "final-3"}]
+          - name: final-check-4
+            template: health-check
+            dependencies: [rack-failure-1, rack-failure-2, rack-failure-3, rack-failure-4]
+            arguments:
+              parameters: [{name: check-id, value: "final-4"}]
+
+    # Health Check Template
+    - name: health-check
+      inputs:
+        parameters:
+          - name: check-id
+      container:
+        image: busybox:1.35
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            echo "Health Check {{inputs.parameters.check-id}} starting..."
+            sleep 5
+            echo "Health Check {{inputs.parameters.check-id}} complete"
+
+    # Node Failure Template
+    - name: node-failure
+      inputs:
+        parameters:
+          - name: node-name
+      container:
+        image: busybox:1.35
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            echo "Simulating node failure: {{inputs.parameters.node-name}}"
+            sleep 10
+            echo "Node {{inputs.parameters.node-name}} recovered"
+
+    # Rack Failure Template
+    - name: rack-failure
+      inputs:
+        parameters:
+          - name: rack-name
+      container:
+        image: busybox:1.35
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            echo "Simulating rack failure: {{inputs.parameters.rack-name}}"
+            sleep 10
+            echo "Rack {{inputs.parameters.rack-name}} recovered"

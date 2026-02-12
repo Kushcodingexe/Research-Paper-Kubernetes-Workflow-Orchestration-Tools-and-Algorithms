@@ -1,0 +1,209 @@
+# Argo Workflow - Montage Astronomical Image Mosaic (1x Scale)
+# 9-stage DAG: mProjectPP → mImgtbl → mDiffFit → mConcatFit → mBgModel → mBgExec → mAdd → mShrink + mJPEG
+# Total: 15 jobs (4 mProjectPP, 1 mImgtbl, 3 mDiffFit, 1 mConcatFit, 1 mBgModel, 4 mBgExec - reused count, 1 mAdd, 1 mShrink, 1 mJPEG = ~17 tasks)
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: montage-1x-
+  labels:
+    workflow: montage
+    scale: "1x"
+spec:
+  entrypoint: montage-pipeline
+  serviceAccountName: argo
+  templates:
+    # ===== Container Templates =====
+    - name: mprojectpp
+      inputs:
+        parameters:
+          - name: image-id
+      container:
+        image: busybox:1.35
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "mProjectPP: Reprojecting image {{inputs.parameters.image-id}}"
+            sleep $(shuf -i 2-4 -n 1)
+            echo "mProjectPP: Image {{inputs.parameters.image-id}} reprojection complete"
+
+    - name: mimgtbl
+      container:
+        image: busybox:1.35
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "mImgtbl: Generating image metadata table"
+            sleep 2
+            echo "mImgtbl: Image table generated (4 images)"
+
+    - name: mdifffit
+      inputs:
+        parameters:
+          - name: pair-id
+      container:
+        image: busybox:1.35
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "mDiffFit: Computing difference for pair {{inputs.parameters.pair-id}}"
+            sleep $(shuf -i 1-3 -n 1)
+            echo "mDiffFit: Pair {{inputs.parameters.pair-id}} fit complete"
+
+    - name: mconcatfit
+      container:
+        image: busybox:1.35
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "mConcatFit: Concatenating fit results"
+            sleep 2
+            echo "mConcatFit: fits.tbl generated"
+
+    - name: mbgmodel
+      container:
+        image: busybox:1.35
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "mBgModel: Computing background model (sequential bottleneck)"
+            sleep 5
+            echo "mBgModel: Background corrections computed"
+
+    - name: mbgexec
+      inputs:
+        parameters:
+          - name: image-id
+      container:
+        image: busybox:1.35
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "mBgExec: Applying background correction to image {{inputs.parameters.image-id}}"
+            sleep $(shuf -i 1-3 -n 1)
+            echo "mBgExec: Image {{inputs.parameters.image-id}} corrected"
+
+    - name: madd
+      container:
+        image: busybox:1.35
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "mAdd: Co-adding 4 corrected images into mosaic"
+            sleep 4
+            echo "mAdd: mosaic.fits created"
+
+    - name: mshrink
+      container:
+        image: busybox:1.35
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "mShrink: Creating thumbnail"
+            sleep 2
+            echo "mShrink: mosaic_thumb.fits created"
+
+    - name: mjpeg
+      container:
+        image: busybox:1.35
+        command: ["sh", "-c"]
+        args:
+          - |
+            echo "mJPEG: Converting mosaic to JPEG"
+            sleep 2
+            echo "mJPEG: mosaic.jpg created"
+
+    # ===== DAG Template =====
+    - name: montage-pipeline
+      dag:
+        tasks:
+          # Stage 1: Parallel Image Reprojection (4 images)
+          - name: project-1
+            template: mprojectpp
+            arguments:
+              parameters: [{name: image-id, value: "001"}]
+          - name: project-2
+            template: mprojectpp
+            arguments:
+              parameters: [{name: image-id, value: "002"}]
+          - name: project-3
+            template: mprojectpp
+            arguments:
+              parameters: [{name: image-id, value: "003"}]
+          - name: project-4
+            template: mprojectpp
+            arguments:
+              parameters: [{name: image-id, value: "004"}]
+
+          # Stage 2: Generate Image Table
+          - name: imgtbl
+            template: mimgtbl
+            dependencies: [project-1, project-2, project-3, project-4]
+
+          # Stage 3: Parallel Difference Fitting (4 pairs)
+          - name: difffit-1
+            template: mdifffit
+            dependencies: [imgtbl]
+            arguments:
+              parameters: [{name: pair-id, value: "001-002"}]
+          - name: difffit-2
+            template: mdifffit
+            dependencies: [imgtbl]
+            arguments:
+              parameters: [{name: pair-id, value: "002-003"}]
+          - name: difffit-3
+            template: mdifffit
+            dependencies: [imgtbl]
+            arguments:
+              parameters: [{name: pair-id, value: "003-004"}]
+          - name: difffit-4
+            template: mdifffit
+            dependencies: [imgtbl]
+            arguments:
+              parameters: [{name: pair-id, value: "001-003"}]
+
+          # Stage 4: Concatenate Fits
+          - name: concatfit
+            template: mconcatfit
+            dependencies: [difffit-1, difffit-2, difffit-3, difffit-4]
+
+          # Stage 5: Background Model (sequential bottleneck)
+          - name: bgmodel
+            template: mbgmodel
+            dependencies: [concatfit]
+
+          # Stage 6: Parallel Background Correction (4 images)
+          - name: bgexec-1
+            template: mbgexec
+            dependencies: [bgmodel]
+            arguments:
+              parameters: [{name: image-id, value: "001"}]
+          - name: bgexec-2
+            template: mbgexec
+            dependencies: [bgmodel]
+            arguments:
+              parameters: [{name: image-id, value: "002"}]
+          - name: bgexec-3
+            template: mbgexec
+            dependencies: [bgmodel]
+            arguments:
+              parameters: [{name: image-id, value: "003"}]
+          - name: bgexec-4
+            template: mbgexec
+            dependencies: [bgmodel]
+            arguments:
+              parameters: [{name: image-id, value: "004"}]
+
+          # Stage 7: Co-add into Mosaic
+          - name: mosaic-add
+            template: madd
+            dependencies: [bgexec-1, bgexec-2, bgexec-3, bgexec-4]
+
+          # Stage 8: Create Thumbnail (parallel with JPEG)
+          - name: shrink
+            template: mshrink
+            dependencies: [mosaic-add]
+
+          # Stage 9: Create JPEG (parallel with thumbnail)
+          - name: jpeg
+            template: mjpeg
+            dependencies: [mosaic-add]

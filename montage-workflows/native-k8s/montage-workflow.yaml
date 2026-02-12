@@ -1,0 +1,418 @@
+# Native Kubernetes - Montage Astronomical Image Mosaic (1x Scale)
+# 9-stage DAG using Jobs with init containers for dependencies
+# Total: 19 jobs matching Argo workflow structure
+---
+# ============================================
+# Stage 1: Parallel Image Reprojection (4 jobs)
+# ============================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-project-1
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "1-project"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: mprojectpp
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mProjectPP: Reprojecting image 001'; sleep 3; echo 'mProjectPP: Image 001 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-project-2
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "1-project"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: mprojectpp
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mProjectPP: Reprojecting image 002'; sleep 3; echo 'mProjectPP: Image 002 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-project-3
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "1-project"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: mprojectpp
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mProjectPP: Reprojecting image 003'; sleep 3; echo 'mProjectPP: Image 003 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-project-4
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "1-project"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: mprojectpp
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mProjectPP: Reprojecting image 004'; sleep 3; echo 'mProjectPP: Image 004 complete'"]
+---
+# ============================================
+# Stage 2: Image Table Generation (1 job)
+# Depends on: All Stage 1 jobs
+# ============================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-imgtbl
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "2-imgtbl"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-project
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for projections...'; sleep 15"]
+      containers:
+        - name: mimgtbl
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mImgtbl: Generating image metadata table'; sleep 2; echo 'mImgtbl: Image table generated (4 images)'"]
+---
+# ============================================
+# Stage 3: Parallel Difference Fitting (4 jobs)
+# Depends on: Stage 2
+# ============================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-difffit-1
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "3-difffit"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-imgtbl
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for image table...'; sleep 20"]
+      containers:
+        - name: mdifffit
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mDiffFit: Computing difference for pair 001-002'; sleep 2; echo 'mDiffFit: Pair 001-002 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-difffit-2
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "3-difffit"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-imgtbl
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for image table...'; sleep 20"]
+      containers:
+        - name: mdifffit
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mDiffFit: Computing difference for pair 002-003'; sleep 2; echo 'mDiffFit: Pair 002-003 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-difffit-3
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "3-difffit"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-imgtbl
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for image table...'; sleep 20"]
+      containers:
+        - name: mdifffit
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mDiffFit: Computing difference for pair 003-004'; sleep 2; echo 'mDiffFit: Pair 003-004 complete'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-difffit-4
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "3-difffit"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-imgtbl
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for image table...'; sleep 20"]
+      containers:
+        - name: mdifffit
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mDiffFit: Computing difference for pair 001-003'; sleep 2; echo 'mDiffFit: Pair 001-003 complete'"]
+---
+# ============================================
+# Stage 4: Concatenate Fits (1 job)
+# Depends on: All Stage 3 jobs
+# ============================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-concatfit
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "4-concatfit"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-difffit
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for diff-fits...'; sleep 30"]
+      containers:
+        - name: mconcatfit
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mConcatFit: Concatenating fit results'; sleep 2; echo 'mConcatFit: fits.tbl generated'"]
+---
+# ============================================
+# Stage 5: Background Model (1 job - bottleneck)
+# Depends on: Stage 4
+# ============================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-bgmodel
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "5-bgmodel"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-concat
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for concatenated fits...'; sleep 35"]
+      containers:
+        - name: mbgmodel
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mBgModel: Computing background model (bottleneck)'; sleep 5; echo 'mBgModel: corrections.tbl generated'"]
+---
+# ============================================
+# Stage 6: Parallel Background Correction (4 jobs)
+# Depends on: Stage 5
+# ============================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-bgexec-1
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "6-bgexec"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-bgmodel
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for background model...'; sleep 45"]
+      containers:
+        - name: mbgexec
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mBgExec: Correcting image 001'; sleep 2; echo 'mBgExec: Image 001 corrected'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-bgexec-2
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "6-bgexec"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-bgmodel
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for background model...'; sleep 45"]
+      containers:
+        - name: mbgexec
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mBgExec: Correcting image 002'; sleep 2; echo 'mBgExec: Image 002 corrected'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-bgexec-3
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "6-bgexec"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-bgmodel
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for background model...'; sleep 45"]
+      containers:
+        - name: mbgexec
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mBgExec: Correcting image 003'; sleep 2; echo 'mBgExec: Image 003 corrected'"]
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-bgexec-4
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "6-bgexec"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-bgmodel
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for background model...'; sleep 45"]
+      containers:
+        - name: mbgexec
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mBgExec: Correcting image 004'; sleep 2; echo 'mBgExec: Image 004 corrected'"]
+---
+# ============================================
+# Stage 7: Co-add Images (1 job)
+# Depends on: All Stage 6 jobs
+# ============================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-add
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "7-add"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-bgexec
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for background corrections...'; sleep 55"]
+      containers:
+        - name: madd
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mAdd: Co-adding 4 corrected images into mosaic'; sleep 4; echo 'mAdd: mosaic.fits created'"]
+---
+# ============================================
+# Stage 8: Create Thumbnail (1 job)
+# Depends on: Stage 7
+# ============================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-shrink
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "8-shrink"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-add
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for mosaic...'; sleep 65"]
+      containers:
+        - name: mshrink
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mShrink: Creating thumbnail'; sleep 2; echo 'mShrink: mosaic_thumb.fits created'"]
+---
+# ============================================
+# Stage 9: Create JPEG (1 job - parallel with shrink)
+# Depends on: Stage 7
+# ============================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: montage-jpeg
+  labels:
+    workflow: montage
+    scale: "1x"
+    stage: "9-jpeg"
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-add
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'Waiting for mosaic...'; sleep 65"]
+      containers:
+        - name: mjpeg
+          image: busybox:1.35
+          command: ["sh", "-c", "echo 'mJPEG: Converting mosaic to JPEG'; sleep 2; echo 'Montage Workflow Complete - mosaic.jpg created'"]

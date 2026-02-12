@@ -237,4 +237,3 @@ Average Duration: ${AVG_DURATION} seconds
 EOF
 
 echo "Done!"
-
