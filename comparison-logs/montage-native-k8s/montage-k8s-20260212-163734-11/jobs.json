@@ -1,0 +1,1839 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "7-add",
+                    "workflow": "montage"
+                },
+                "name": "montage-add",
+                "namespace": "default",
+                "resourceVersion": "9488083",
+                "uid": "dda2d484-ffb8-4de6-80ef-09bf4b5a2181"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "dda2d484-ffb8-4de6-80ef-09bf4b5a2181"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "dda2d484-ffb8-4de6-80ef-09bf4b5a2181",
+                            "batch.kubernetes.io/job-name": "montage-add",
+                            "controller-uid": "dda2d484-ffb8-4de6-80ef-09bf4b5a2181",
+                            "job-name": "montage-add"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mAdd: Co-adding 4 corrected images into mosaic'; sleep 4; echo 'mAdd: mosaic.fits created'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "madd",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for background corrections...'; sleep 55"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-bgexec",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:59Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:59Z",
+                        "lastTransitionTime": "2026-02-12T11:08:59Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:09:00Z",
+                        "lastTransitionTime": "2026-02-12T11:09:00Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "6-bgexec",
+                    "workflow": "montage"
+                },
+                "name": "montage-bgexec-1",
+                "namespace": "default",
+                "resourceVersion": "9487972",
+                "uid": "8349215b-db50-46d8-b6ce-c1ce088256f1"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "8349215b-db50-46d8-b6ce-c1ce088256f1"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "8349215b-db50-46d8-b6ce-c1ce088256f1",
+                            "batch.kubernetes.io/job-name": "montage-bgexec-1",
+                            "controller-uid": "8349215b-db50-46d8-b6ce-c1ce088256f1",
+                            "job-name": "montage-bgexec-1"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mBgExec: Correcting image 001'; sleep 2; echo 'mBgExec: Image 001 corrected'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mbgexec",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for background model...'; sleep 45"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-bgmodel",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:38Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:38Z",
+                        "lastTransitionTime": "2026-02-12T11:08:38Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:38Z",
+                        "lastTransitionTime": "2026-02-12T11:08:38Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "6-bgexec",
+                    "workflow": "montage"
+                },
+                "name": "montage-bgexec-2",
+                "namespace": "default",
+                "resourceVersion": "9488071",
+                "uid": "d07d53a2-e2d7-41ec-a4a1-7bb0708daea9"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "d07d53a2-e2d7-41ec-a4a1-7bb0708daea9"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "d07d53a2-e2d7-41ec-a4a1-7bb0708daea9",
+                            "batch.kubernetes.io/job-name": "montage-bgexec-2",
+                            "controller-uid": "d07d53a2-e2d7-41ec-a4a1-7bb0708daea9",
+                            "job-name": "montage-bgexec-2"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mBgExec: Correcting image 002'; sleep 2; echo 'mBgExec: Image 002 corrected'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mbgexec",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for background model...'; sleep 45"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-bgmodel",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:57Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:57Z",
+                        "lastTransitionTime": "2026-02-12T11:08:57Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:57Z",
+                        "lastTransitionTime": "2026-02-12T11:08:57Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "6-bgexec",
+                    "workflow": "montage"
+                },
+                "name": "montage-bgexec-3",
+                "namespace": "default",
+                "resourceVersion": "9488067",
+                "uid": "0d3982be-5f2c-4048-9b08-985c56e8b038"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "0d3982be-5f2c-4048-9b08-985c56e8b038"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "0d3982be-5f2c-4048-9b08-985c56e8b038",
+                            "batch.kubernetes.io/job-name": "montage-bgexec-3",
+                            "controller-uid": "0d3982be-5f2c-4048-9b08-985c56e8b038",
+                            "job-name": "montage-bgexec-3"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mBgExec: Correcting image 003'; sleep 2; echo 'mBgExec: Image 003 corrected'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mbgexec",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for background model...'; sleep 45"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-bgmodel",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:57Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:57Z",
+                        "lastTransitionTime": "2026-02-12T11:08:57Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:57Z",
+                        "lastTransitionTime": "2026-02-12T11:08:57Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "6-bgexec",
+                    "workflow": "montage"
+                },
+                "name": "montage-bgexec-4",
+                "namespace": "default",
+                "resourceVersion": "9488029",
+                "uid": "b1cf1607-6c3d-43c1-9561-e20c049c49e3"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "b1cf1607-6c3d-43c1-9561-e20c049c49e3"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "b1cf1607-6c3d-43c1-9561-e20c049c49e3",
+                            "batch.kubernetes.io/job-name": "montage-bgexec-4",
+                            "controller-uid": "b1cf1607-6c3d-43c1-9561-e20c049c49e3",
+                            "job-name": "montage-bgexec-4"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mBgExec: Correcting image 004'; sleep 2; echo 'mBgExec: Image 004 corrected'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mbgexec",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for background model...'; sleep 45"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-bgmodel",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:51Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:51Z",
+                        "lastTransitionTime": "2026-02-12T11:08:51Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:51Z",
+                        "lastTransitionTime": "2026-02-12T11:08:51Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "5-bgmodel",
+                    "workflow": "montage"
+                },
+                "name": "montage-bgmodel",
+                "namespace": "default",
+                "resourceVersion": "9487955",
+                "uid": "8fd39584-7497-4fc0-97da-4d56bea3fc65"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "8fd39584-7497-4fc0-97da-4d56bea3fc65"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "8fd39584-7497-4fc0-97da-4d56bea3fc65",
+                            "batch.kubernetes.io/job-name": "montage-bgmodel",
+                            "controller-uid": "8fd39584-7497-4fc0-97da-4d56bea3fc65",
+                            "job-name": "montage-bgmodel"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mBgModel: Computing background model (bottleneck)'; sleep 5; echo 'mBgModel: corrections.tbl generated'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mbgmodel",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for concatenated fits...'; sleep 35"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-concat",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:35Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:35Z",
+                        "lastTransitionTime": "2026-02-12T11:08:35Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:35Z",
+                        "lastTransitionTime": "2026-02-12T11:08:35Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "4-concatfit",
+                    "workflow": "montage"
+                },
+                "name": "montage-concatfit",
+                "namespace": "default",
+                "resourceVersion": "9487863",
+                "uid": "ea8b11d9-a77d-45d0-9c79-3a90d0bba456"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "ea8b11d9-a77d-45d0-9c79-3a90d0bba456"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "ea8b11d9-a77d-45d0-9c79-3a90d0bba456",
+                            "batch.kubernetes.io/job-name": "montage-concatfit",
+                            "controller-uid": "ea8b11d9-a77d-45d0-9c79-3a90d0bba456",
+                            "job-name": "montage-concatfit"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mConcatFit: Concatenating fit results'; sleep 2; echo 'mConcatFit: fits.tbl generated'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mconcatfit",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for diff-fits...'; sleep 30"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-difffit",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:21Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:21Z",
+                        "lastTransitionTime": "2026-02-12T11:08:21Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:21Z",
+                        "lastTransitionTime": "2026-02-12T11:08:21Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "3-difffit",
+                    "workflow": "montage"
+                },
+                "name": "montage-difffit-1",
+                "namespace": "default",
+                "resourceVersion": "9487938",
+                "uid": "e8afcdf6-691c-4d6b-a6bb-84ae1a1d16ce"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "e8afcdf6-691c-4d6b-a6bb-84ae1a1d16ce"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "e8afcdf6-691c-4d6b-a6bb-84ae1a1d16ce",
+                            "batch.kubernetes.io/job-name": "montage-difffit-1",
+                            "controller-uid": "e8afcdf6-691c-4d6b-a6bb-84ae1a1d16ce",
+                            "job-name": "montage-difffit-1"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mDiffFit: Computing difference for pair 001-002'; sleep 2; echo 'mDiffFit: Pair 001-002 complete'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mdifffit",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for image table...'; sleep 20"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-imgtbl",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:34Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:34Z",
+                        "lastTransitionTime": "2026-02-12T11:08:34Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:34Z",
+                        "lastTransitionTime": "2026-02-12T11:08:34Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "3-difffit",
+                    "workflow": "montage"
+                },
+                "name": "montage-difffit-2",
+                "namespace": "default",
+                "resourceVersion": "9487829",
+                "uid": "607a96a2-cfae-48b5-9d16-2a277af43d1f"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "607a96a2-cfae-48b5-9d16-2a277af43d1f"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "607a96a2-cfae-48b5-9d16-2a277af43d1f",
+                            "batch.kubernetes.io/job-name": "montage-difffit-2",
+                            "controller-uid": "607a96a2-cfae-48b5-9d16-2a277af43d1f",
+                            "job-name": "montage-difffit-2"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mDiffFit: Computing difference for pair 002-003'; sleep 2; echo 'mDiffFit: Pair 002-003 complete'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mdifffit",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for image table...'; sleep 20"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-imgtbl",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:14Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:14Z",
+                        "lastTransitionTime": "2026-02-12T11:08:14Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:15Z",
+                        "lastTransitionTime": "2026-02-12T11:08:15Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "3-difffit",
+                    "workflow": "montage"
+                },
+                "name": "montage-difffit-3",
+                "namespace": "default",
+                "resourceVersion": "9487937",
+                "uid": "9e757b4f-ae42-4dbf-87b0-b26427f35829"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "9e757b4f-ae42-4dbf-87b0-b26427f35829"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "9e757b4f-ae42-4dbf-87b0-b26427f35829",
+                            "batch.kubernetes.io/job-name": "montage-difffit-3",
+                            "controller-uid": "9e757b4f-ae42-4dbf-87b0-b26427f35829",
+                            "job-name": "montage-difffit-3"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mDiffFit: Computing difference for pair 003-004'; sleep 2; echo 'mDiffFit: Pair 003-004 complete'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mdifffit",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for image table...'; sleep 20"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-imgtbl",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:34Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:34Z",
+                        "lastTransitionTime": "2026-02-12T11:08:34Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:34Z",
+                        "lastTransitionTime": "2026-02-12T11:08:34Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "3-difffit",
+                    "workflow": "montage"
+                },
+                "name": "montage-difffit-4",
+                "namespace": "default",
+                "resourceVersion": "9487830",
+                "uid": "8853d2ae-6959-4479-939e-2e7664424410"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "8853d2ae-6959-4479-939e-2e7664424410"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "8853d2ae-6959-4479-939e-2e7664424410",
+                            "batch.kubernetes.io/job-name": "montage-difffit-4",
+                            "controller-uid": "8853d2ae-6959-4479-939e-2e7664424410",
+                            "job-name": "montage-difffit-4"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mDiffFit: Computing difference for pair 001-003'; sleep 2; echo 'mDiffFit: Pair 001-003 complete'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mdifffit",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for image table...'; sleep 20"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-imgtbl",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:14Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:14Z",
+                        "lastTransitionTime": "2026-02-12T11:08:14Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:15Z",
+                        "lastTransitionTime": "2026-02-12T11:08:15Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "2-imgtbl",
+                    "workflow": "montage"
+                },
+                "name": "montage-imgtbl",
+                "namespace": "default",
+                "resourceVersion": "9487945",
+                "uid": "6dcaaa13-461e-4169-8dbb-9cc63e31780a"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "6dcaaa13-461e-4169-8dbb-9cc63e31780a"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "6dcaaa13-461e-4169-8dbb-9cc63e31780a",
+                            "batch.kubernetes.io/job-name": "montage-imgtbl",
+                            "controller-uid": "6dcaaa13-461e-4169-8dbb-9cc63e31780a",
+                            "job-name": "montage-imgtbl"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mImgtbl: Generating image metadata table'; sleep 2; echo 'mImgtbl: Image table generated (4 images)'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mimgtbl",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for projections...'; sleep 15"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-project",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:34Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:34Z",
+                        "lastTransitionTime": "2026-02-12T11:08:34Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:34Z",
+                        "lastTransitionTime": "2026-02-12T11:08:34Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "9-jpeg",
+                    "workflow": "montage"
+                },
+                "name": "montage-jpeg",
+                "namespace": "default",
+                "resourceVersion": "9488142",
+                "uid": "d9668752-01ad-4e9d-88c7-5920872bd865"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "d9668752-01ad-4e9d-88c7-5920872bd865"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "d9668752-01ad-4e9d-88c7-5920872bd865",
+                            "batch.kubernetes.io/job-name": "montage-jpeg",
+                            "controller-uid": "d9668752-01ad-4e9d-88c7-5920872bd865",
+                            "job-name": "montage-jpeg"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mJPEG: Converting mosaic to JPEG'; sleep 2; echo 'Montage Workflow Complete - mosaic.jpg created'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mjpeg",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for mosaic...'; sleep 65"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-add",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:09:11Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:09:11Z",
+                        "lastTransitionTime": "2026-02-12T11:09:11Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:09:11Z",
+                        "lastTransitionTime": "2026-02-12T11:09:11Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:41Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "1-project",
+                    "workflow": "montage"
+                },
+                "name": "montage-project-1",
+                "namespace": "default",
+                "resourceVersion": "9487735",
+                "uid": "1aa5f42e-fa46-4f4a-96e5-3b1be6ede013"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "1aa5f42e-fa46-4f4a-96e5-3b1be6ede013"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "1aa5f42e-fa46-4f4a-96e5-3b1be6ede013",
+                            "batch.kubernetes.io/job-name": "montage-project-1",
+                            "controller-uid": "1aa5f42e-fa46-4f4a-96e5-3b1be6ede013",
+                            "job-name": "montage-project-1"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mProjectPP: Reprojecting image 001'; sleep 3; echo 'mProjectPP: Image 001 complete'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mprojectpp",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:07:58Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:07:58Z",
+                        "lastTransitionTime": "2026-02-12T11:07:58Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:07:58Z",
+                        "lastTransitionTime": "2026-02-12T11:07:58Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "1-project",
+                    "workflow": "montage"
+                },
+                "name": "montage-project-2",
+                "namespace": "default",
+                "resourceVersion": "9487737",
+                "uid": "f1311cc1-0005-4851-a70a-385b99c0131e"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "f1311cc1-0005-4851-a70a-385b99c0131e"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "f1311cc1-0005-4851-a70a-385b99c0131e",
+                            "batch.kubernetes.io/job-name": "montage-project-2",
+                            "controller-uid": "f1311cc1-0005-4851-a70a-385b99c0131e",
+                            "job-name": "montage-project-2"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mProjectPP: Reprojecting image 002'; sleep 3; echo 'mProjectPP: Image 002 complete'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mprojectpp",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:07:58Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:07:58Z",
+                        "lastTransitionTime": "2026-02-12T11:07:58Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:07:58Z",
+                        "lastTransitionTime": "2026-02-12T11:07:58Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "1-project",
+                    "workflow": "montage"
+                },
+                "name": "montage-project-3",
+                "namespace": "default",
+                "resourceVersion": "9487782",
+                "uid": "7430fbb4-49fa-48d4-ae0f-4fa3b29eb9df"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "7430fbb4-49fa-48d4-ae0f-4fa3b29eb9df"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "7430fbb4-49fa-48d4-ae0f-4fa3b29eb9df",
+                            "batch.kubernetes.io/job-name": "montage-project-3",
+                            "controller-uid": "7430fbb4-49fa-48d4-ae0f-4fa3b29eb9df",
+                            "job-name": "montage-project-3"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mProjectPP: Reprojecting image 003'; sleep 3; echo 'mProjectPP: Image 003 complete'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mprojectpp",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:08:06Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:06Z",
+                        "lastTransitionTime": "2026-02-12T11:08:06Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:08:08Z",
+                        "lastTransitionTime": "2026-02-12T11:08:08Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "1-project",
+                    "workflow": "montage"
+                },
+                "name": "montage-project-4",
+                "namespace": "default",
+                "resourceVersion": "9487736",
+                "uid": "a736f7d9-0b52-4d99-8590-f0947ae4f784"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "a736f7d9-0b52-4d99-8590-f0947ae4f784"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "a736f7d9-0b52-4d99-8590-f0947ae4f784",
+                            "batch.kubernetes.io/job-name": "montage-project-4",
+                            "controller-uid": "a736f7d9-0b52-4d99-8590-f0947ae4f784",
+                            "job-name": "montage-project-4"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mProjectPP: Reprojecting image 004'; sleep 3; echo 'mProjectPP: Image 004 complete'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mprojectpp",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:07:58Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:07:58Z",
+                        "lastTransitionTime": "2026-02-12T11:07:58Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:07:58Z",
+                        "lastTransitionTime": "2026-02-12T11:07:58Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        },
+        {
+            "apiVersion": "batch/v1",
+            "kind": "Job",
+            "metadata": {
+                "creationTimestamp": "2026-02-12T11:07:40Z",
+                "generation": 1,
+                "labels": {
+                    "scale": "1x",
+                    "stage": "8-shrink",
+                    "workflow": "montage"
+                },
+                "name": "montage-shrink",
+                "namespace": "default",
+                "resourceVersion": "9488130",
+                "uid": "a55c2a1f-bb5c-40d7-974b-1f50c82c6bd1"
+            },
+            "spec": {
+                "backoffLimit": 2,
+                "completionMode": "NonIndexed",
+                "completions": 1,
+                "manualSelector": false,
+                "parallelism": 1,
+                "podReplacementPolicy": "TerminatingOrFailed",
+                "selector": {
+                    "matchLabels": {
+                        "batch.kubernetes.io/controller-uid": "a55c2a1f-bb5c-40d7-974b-1f50c82c6bd1"
+                    }
+                },
+                "suspend": false,
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "batch.kubernetes.io/controller-uid": "a55c2a1f-bb5c-40d7-974b-1f50c82c6bd1",
+                            "batch.kubernetes.io/job-name": "montage-shrink",
+                            "controller-uid": "a55c2a1f-bb5c-40d7-974b-1f50c82c6bd1",
+                            "job-name": "montage-shrink"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'mShrink: Creating thumbnail'; sleep 2; echo 'mShrink: mosaic_thumb.fits created'"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "mshrink",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "dnsPolicy": "ClusterFirst",
+                        "initContainers": [
+                            {
+                                "command": [
+                                    "sh",
+                                    "-c",
+                                    "echo 'Waiting for mosaic...'; sleep 65"
+                                ],
+                                "image": "busybox:1.35",
+                                "imagePullPolicy": "IfNotPresent",
+                                "name": "wait-add",
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "terminationMessagePolicy": "File"
+                            }
+                        ],
+                        "restartPolicy": "Never",
+                        "schedulerName": "default-scheduler",
+                        "securityContext": {},
+                        "terminationGracePeriodSeconds": 30
+                    }
+                }
+            },
+            "status": {
+                "completionTime": "2026-02-12T11:09:10Z",
+                "conditions": [
+                    {
+                        "lastProbeTime": "2026-02-12T11:09:10Z",
+                        "lastTransitionTime": "2026-02-12T11:09:10Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "SuccessCriteriaMet"
+                    },
+                    {
+                        "lastProbeTime": "2026-02-12T11:09:10Z",
+                        "lastTransitionTime": "2026-02-12T11:09:10Z",
+                        "message": "Reached expected number of succeeded pods",
+                        "reason": "CompletionsReached",
+                        "status": "True",
+                        "type": "Complete"
+                    }
+                ],
+                "ready": 0,
+                "startTime": "2026-02-12T11:07:40Z",
+                "succeeded": 1,
+                "terminating": 0,
+                "uncountedTerminatedPods": {}
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}

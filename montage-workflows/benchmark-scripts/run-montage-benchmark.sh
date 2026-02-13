@@ -4,7 +4,7 @@
 # Tests Montage workflow on Pegasus/HTCondor
 #===============================================================================
 
-set -e
+# Note: NOT using set -e so pegasus-plan errors are captured in the loop
 
 NUM_RUNS=${1:-5}
 DEGREE=${2:-1.0}

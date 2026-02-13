@@ -1,0 +1,40 @@
+######################################################################
+# PEGASUS WMS GENERATED SUBMIT FILE
+# DAG : montage-1.0deg-20260212-224757, Index = 0, Count = null
+# SUBMIT FILE NAME : clean_up_local_level_7_0.sub
+######################################################################
+stream_error  = false
+stream_output = false
+environment = "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin CONDOR_JOBID=$(cluster).$(process) PEGASUS_WF_UUID=fdc2b226-565d-4ae6-84fa-bcd322117bb8 PEGASUS_WF_LABEL=montage-1.0deg-20260212-224757 PEGASUS_DAG_JOB_ID=clean_up_local_level_7_0 PEGASUS_SITE=local PEGASUS_BIN_DIR=/usr/bin _PEGASUS_CONNECT_STDIN=true"
+arguments = "pegasus-kickstart  -n pegasus::cleanup -N null -i - -R local  -L montage-1.0deg-20260212-224757 -T 2026-02-12T22:47:57+00:00 pegasus-transfer "
+error = /app/output/montage-benchmarks/montage-1.0deg-run16/submit/pegasus/pegasus/montage-1.0deg-20260212-224757/run0001//00/00/clean_up_local_level_7_0.err
+executable = /usr/share/pegasus/sh/pegasus-lite-local.sh
+input = /app/output/montage-benchmarks/montage-1.0deg-run16/submit/pegasus/pegasus/montage-1.0deg-20260212-224757/run0001//00/00/clean_up_local_level_7_0.in
+log = /app/output/montage-benchmarks/montage-1.0deg-run16/submit/pegasus/pegasus/montage-1.0deg-20260212-224757/run0001/montage-1.0deg-20260212-224757-0.log
+notification = NEVER
+output = /app/output/montage-benchmarks/montage-1.0deg-run16/submit/pegasus/pegasus/montage-1.0deg-20260212-224757/run0001//00/00/clean_up_local_level_7_0.out
+periodic_release = False
+periodic_remove = (JobStatus == 5) && ((CurrentTime - EnteredCurrentStatus) > 1800)
+priority = 1000
+submit_event_user_notes = pool:local
+transfer_executable = false
+universe = local
++pegasus_generator = "Pegasus"
++pegasus_root_wf_uuid = "fdc2b226-565d-4ae6-84fa-bcd322117bb8"
++pegasus_wf_uuid = "fdc2b226-565d-4ae6-84fa-bcd322117bb8"
++pegasus_version = "5.0.9"
++pegasus_wf_name = "montage-1.0deg-20260212-224757-0"
++pegasus_wf_time = "20260212T224757+0000"
++pegasus_wf_xformation = "pegasus::cleanup"
++pegasus_wf_dax_job_id = "null"
++pegasus_wf_dag_job_id = "clean_up_local_level_7_0"
++pegasus_job_class = 8
++pegasus_site = "local"
++pegasus_job_runtime = 0
++pegasus_cores = 1
++pegasus_gpus = 1
++pegasus_cluster_size = 1
+queue
+######################################################################
+# END OF SUBMIT FILE
+######################################################################

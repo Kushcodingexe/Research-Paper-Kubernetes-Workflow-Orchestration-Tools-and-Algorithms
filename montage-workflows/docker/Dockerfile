@@ -45,6 +45,10 @@ RUN chmod +x /app/executables/*.py
 # Copy DAX generator
 COPY daxgen/*.py /app/daxgen/
 
+# Copy benchmark scripts
+COPY benchmark-scripts/*.sh /app/benchmark-scripts/
+RUN chmod +x /app/benchmark-scripts/*.sh
+
 # Create input files
 RUN for i in $(seq -w 1 16); do \
     echo "FITS INPUT $i" > /app/input/input_${i}.fits; \
@@ -62,3 +66,4 @@ RUN echo '#!/bin/bash' > /entrypoint.sh && \
 WORKDIR /app
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bash"]
+
